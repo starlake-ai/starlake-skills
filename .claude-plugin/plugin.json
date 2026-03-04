@@ -1,0 +1,20 @@
+{
+  "name": "starlake-skills",
+  "version": "1.0.0",
+  "description": "Starlake data pipeline skills — 45 skills covering all CLI commands, configuration patterns, and best practices",
+  "author": {
+    "name": "Starlake Team"
+  },
+  "repository": "https://github.com/starlake-ai/starlake-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "starlake",
+    "data-engineering",
+    "etl",
+    "duckdb",
+    "bigquery",
+    "snowflake",
+    "airflow"
+  ],
+  "skills": "./skills"
+}
