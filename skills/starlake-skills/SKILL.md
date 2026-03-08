@@ -9,7 +9,7 @@ description: Index of all Starlake skills
 
 - [config](../config/SKILL.md): Starlake configuration reference (env vars, app structure, types, best practices).
 
-This library contains 45 skills corresponding to Starlake CLI commands, configuration patterns, and data quality.
+This library contains 46 skills corresponding to Starlake CLI commands, configuration patterns, and data quality.
 
 ## Ingestion & Loading
 
@@ -54,6 +54,10 @@ This library contains 45 skills corresponding to Starlake CLI commands, configur
 - [col-lineage](../col-lineage/SKILL.md): Generate column lineage.
 - [lineage](../lineage/SKILL.md): Generate task dependencies graph.
 - [table-dependencies](../table-dependencies/SKILL.md): Generate table dependencies graph.
+
+## Configuration & Connections
+
+- [connection](../connection/SKILL.md): Create or modify database connections in application.sl.yml.
 
 ## Operations & Maintenance
 
