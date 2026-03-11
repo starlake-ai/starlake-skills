@@ -10,7 +10,7 @@ Manages GizmoSQL processes that expose DuckLake databases as PostgreSQL-compatib
 ## Usage
 
 ```bash
-starlake gizmo <action> [options]
+starlake gizmosql <action> [options]
 ```
 
 ## Actions
@@ -92,24 +92,151 @@ When `storageType` is `gcs` or `s3`, additional options are read from the connec
 | `fs.s3a.endpoint.region`  | `AWS_REGION`         | AWS region                |
 | `fs.s3a.endpoint`         | `AWS_ENDPOINT`       | S3-compatible endpoint    |
 
+## Cloud Storage Data Path Examples
+
+### GCS (Google Cloud Storage)
+
+```yaml
+version: 1
+application:
+  connections:
+    my-ducklake-gcs:
+      type: "jdbc"
+      options:
+        url: "jdbc:duckdb:"
+        driver: "org.duckdb.DuckDBDriver"
+        preActions: >
+          INSTALL POSTGRES;
+          INSTALL ducklake;
+          LOAD POSTGRES;
+          LOAD ducklake;
+          CREATE OR REPLACE SECRET (
+              TYPE gcs,
+              KEY_ID '{{GCS_HMAC_ACCESS_KEY_ID}}',
+              SECRET '{{GCS_HMAC_SECRET_ACCESS_KEY}}'
+              SCOPE 'gs://{{GCS_BUCKET}}/');
+          ATTACH IF NOT EXISTS 'ducklake:postgres:
+                  dbname={{PG_DATABASE}}
+                  host={{PG_HOST}}
+                  port={{PG_PORT}}
+                  user={{PG_USER}}
+                  password={{PG_PASSWORD}}' AS my_ducklake
+              (DATA_PATH 'gs://{{GCS_BUCKET}}/data_files/');
+          USE my_ducklake;
+        PG_HOST: "{{PG_HOST}}"
+        PG_PORT: "{{PG_PORT}}"
+        PG_USERNAME: "{{PG_USER}}"
+        PG_PASSWORD: "{{PG_PASSWORD}}"
+        SL_DUCKDB_PORT: "5433"
+        SL_DATA_PATH: "gs://{{GCS_BUCKET}}/data_files/"
+        storageType: "gcs"
+        fs.s3a.access.key: "{{GCS_HMAC_ACCESS_KEY_ID}}"
+        fs.s3a.secret.key: "{{GCS_HMAC_SECRET_ACCESS_KEY}}"
+        fs.s3a.endpoint: "https://storage.googleapis.com"
+        fs.s3a.endpoint.region: "auto"
+```
+
+> **Note:** GCS uses HMAC keys for S3-compatible access. Generate them in the GCP Console under Cloud Storage > Settings > Interoperability.
+
+### AWS S3
+
+```yaml
+version: 1
+application:
+  connections:
+    my-ducklake-s3:
+      type: "jdbc"
+      options:
+        url: "jdbc:duckdb:"
+        driver: "org.duckdb.DuckDBDriver"
+        preActions: >
+          INSTALL POSTGRES;
+          INSTALL ducklake;
+          LOAD POSTGRES;
+          LOAD ducklake;
+          CREATE OR REPLACE SECRET (
+              TYPE s3,
+              KEY_ID '{{AWS_ACCESS_KEY_ID}}',
+              SECRET '{{AWS_SECRET_ACCESS_KEY}}',
+              REGION '{{AWS_REGION}}'
+              SCOPE 's3://{{S3_BUCKET}}/');
+          ATTACH IF NOT EXISTS 'ducklake:postgres:
+                  dbname={{PG_DATABASE}}
+                  host={{PG_HOST}}
+                  port={{PG_PORT}}
+                  user={{PG_USER}}
+                  password={{PG_PASSWORD}}' AS my_ducklake
+              (DATA_PATH 's3://{{S3_BUCKET}}/data_files/');
+          USE my_ducklake;
+        PG_HOST: "{{PG_HOST}}"
+        PG_PORT: "{{PG_PORT}}"
+        PG_USERNAME: "{{PG_USER}}"
+        PG_PASSWORD: "{{PG_PASSWORD}}"
+        SL_DUCKDB_PORT: "5433"
+        SL_DATA_PATH: "s3://{{S3_BUCKET}}/data_files/"
+        storageType: "s3"
+        fs.s3a.access.key: "{{AWS_ACCESS_KEY_ID}}"
+        fs.s3a.secret.key: "{{AWS_SECRET_ACCESS_KEY}}"
+        fs.s3a.endpoint: "https://s3.amazonaws.com"
+        fs.s3a.endpoint.region: "{{AWS_REGION}}"
+```
+
+### Azure Blob Storage
+
+```yaml
+version: 1
+application:
+  connections:
+    my-ducklake-azure:
+      type: "jdbc"
+      options:
+        url: "jdbc:duckdb:"
+        driver: "org.duckdb.DuckDBDriver"
+        preActions: >
+          INSTALL POSTGRES;
+          INSTALL ducklake;
+          LOAD POSTGRES;
+          LOAD ducklake;
+          CREATE OR REPLACE SECRET (
+              TYPE azure,
+              CONNECTION_STRING 'DefaultEndpointsProtocol=https;AccountName={{AZURE_STORAGE_ACCOUNT}};AccountKey={{AZURE_STORAGE_KEY}};EndpointSuffix=core.windows.net'
+              SCOPE 'az://{{AZURE_CONTAINER}}/');
+          ATTACH IF NOT EXISTS 'ducklake:postgres:
+                  dbname={{PG_DATABASE}}
+                  host={{PG_HOST}}
+                  port={{PG_PORT}}
+                  user={{PG_USER}}
+                  password={{PG_PASSWORD}}' AS my_ducklake
+              (DATA_PATH 'az://{{AZURE_CONTAINER}}/data_files/');
+          USE my_ducklake;
+        PG_HOST: "{{PG_HOST}}"
+        PG_PORT: "{{PG_PORT}}"
+        PG_USERNAME: "{{PG_USER}}"
+        PG_PASSWORD: "{{PG_PASSWORD}}"
+        SL_DUCKDB_PORT: "5433"
+        SL_DATA_PATH: "az://{{AZURE_CONTAINER}}/data_files/"
+```
+
+> **Note:** Azure uses the `az://` URI scheme for DuckDB. Alternative schemes include `abfss://{{AZURE_CONTAINER}}@{{AZURE_STORAGE_ACCOUNT}}.dfs.core.windows.net/` for ADLS Gen2 access.
+
 ## Examples
 
 ### Start a GizmoSQL Process
 
 ```bash
-starlake gizmo start --connection my-ducklake
+starlake gizmosql start --connection my-ducklake
 ```
 
 ### Start on a Specific Port
 
 ```bash
-starlake gizmo start --connection my-ducklake --port 5433
+starlake gizmosql start --connection my-ducklake --port 5433
 ```
 
 ### List Running GizmoSQL Processes
 
 ```bash
-starlake gizmo list
+starlake gizmosql list
 ```
 
 Output columns: `processName`, `port`, `pid`, `status`
@@ -117,13 +244,13 @@ Output columns: `processName`, `port`, `pid`, `status`
 ### Stop a Specific GizmoSQL Process
 
 ```bash
-starlake gizmo stop --process-name my-ducklake
+starlake gizmosql stop --process-name my-ducklake
 ```
 
 ### Stop All GizmoSQL Processes
 
 ```bash
-starlake gizmo stop-all
+starlake gizmosql stop-all
 ```
 
 ## Related Skills
