@@ -64,7 +64,7 @@ git clone https://github.com/starlake-ai/starlake-skills.git .claude/skills/star
 - **acl-dependencies** / **col-lineage** / **lineage** / **table-dependencies**
 
 ### Operations
-- **console** / **freshness** / **metrics** / **migrate** / **serve** / **settings** / **validate**
+- **console** / **freshness** / **gizmosql** / **metrics** / **migrate** / **serve** / **settings** / **validate**
 
 ### Security
 - **iam-policies** — IAM policies
