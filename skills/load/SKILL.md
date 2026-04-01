@@ -24,6 +24,7 @@ starlake load [options]
 - `--primaryKeys <value>`: Primary keys to set on the table schema (when inferring schema)
 - `--scheduledDate <value>`: Scheduled date for the job, format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`
 - `--reportFormat <value>`: Report output format: `console`, `json`, or `html`
+- `--inPlace`: Ingest files from their current location without moving or deleting them. Requires `--files`
 
 ## Configuration Context
 
@@ -391,6 +392,14 @@ starlake load --test
 
 ```bash
 starlake load --files /path/to/incoming/starbake/orders_20240301.json
+```
+
+### Load a File In-Place (No Move/Delete)
+
+Ingest a file directly from its current location without moving or deleting it:
+
+```bash
+starlake load --domains starbake --tables orders --files /mnt/shared/orders_20240301.json --inPlace
 ```
 
 ### Load with Custom Options
