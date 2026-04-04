@@ -267,7 +267,7 @@ Additionally, any option starting with `SL_` or `fs.` is filtered out (these are
 
 #### MotherDuck (Cloud DuckDB)
 
-Use the `jdbc:duckdb:md:` URL prefix for MotherDuck cloud connections:
+MotherDuck requires the `MOTHERDUCK_TOKEN` environment variable to be set for authentication. Use the `jdbc:duckdb:md:` URL prefix:
 
 ```yaml
 connections:
@@ -275,6 +275,46 @@ connections:
     type: "jdbc"
     options:
       url: "jdbc:duckdb:md:{{MOTHERDUCK_DATABASE}}"
+      driver: "org.duckdb.DuckDBDriver"
+```
+
+> **Authentication:** Set the `MOTHERDUCK_TOKEN` environment variable before running Starlake. Obtain your token from the [MotherDuck UI](https://app.motherduck.com/) under Settings > Access Tokens.
+>
+> ```bash
+> export MOTHERDUCK_TOKEN="your_token_here"
+> ```
+>
+> You can also define it in `env.sl.yml`:
+> ```yaml
+> env:
+>   MOTHERDUCK_TOKEN: "${MOTHERDUCK_TOKEN}"  # From system environment
+>   MOTHERDUCK_DATABASE: "my_database"
+> ```
+
+#### MotherDuck with Shared Database
+
+To attach to a shared MotherDuck database:
+
+```yaml
+connections:
+  motherduck:
+    type: "jdbc"
+    options:
+      url: "jdbc:duckdb:md:{{MOTHERDUCK_DATABASE}}"
+      driver: "org.duckdb.DuckDBDriver"
+      preActions: "ATTACH '{{MOTHERDUCK_SHARED_DB}}' AS shared_db;"
+```
+
+#### MotherDuck with Local Hybrid
+
+MotherDuck supports a hybrid mode where queries can span both local and cloud data. Use a local DuckDB file with MotherDuck attached:
+
+```yaml
+connections:
+  motherduck_hybrid:
+    type: "jdbc"
+    options:
+      url: "jdbc:duckdb:md:{{MOTHERDUCK_DATABASE}}?motherduck_attach_mode=single"
       driver: "org.duckdb.DuckDBDriver"
 ```
 
