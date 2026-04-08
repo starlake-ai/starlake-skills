@@ -1,0 +1,25 @@
+# Starflow Method Configuration
+# Version: 1.0.0
+
+# Project Settings
+project_name: my-project
+user_name: Dev
+user_skill_level: intermediate
+communication_language: english
+document_output_language: english
+
+# Output Paths
+output_folder: "{project-root}/starflow-output"
+planning_artifacts: "{project-root}/starflow-output/planning-artifacts"
+implementation_artifacts: "{project-root}/starflow-output/implementation-artifacts"
+project_knowledge: "{project-root}/docs"
+
+# Data Engineering Defaults
+default_engine: duckdb
+target_engines:
+  - duckdb
+  - bigquery
+  - snowflake
+  - postgresql
+default_file_format: parquet
+starlake_metadata_path: "{project-root}/metadata"

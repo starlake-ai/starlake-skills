@@ -1,0 +1,24 @@
+# Data Engineering Team Configuration
+team:
+  name: "Data Engineering Team"
+  agents:
+    - data-analyst
+    - data-architect
+    - data-engineer
+    - data-quality-engineer
+    - platform-engineer
+  workflows:
+    discovery:
+      - starflow-domain-discovery
+      - starflow-source-analysis
+    architecture:
+      - starflow-create-data-architecture
+      - starflow-schema-design
+    pipeline-design:
+      - starflow-create-pipeline-spec
+      - starflow-transform-design
+      - starflow-orchestration-design
+    implementation:
+      - starflow-dev-pipeline
+      - starflow-sprint-planning
+      - starflow-code-review

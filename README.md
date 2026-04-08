@@ -1,6 +1,6 @@
 # Starlake Skills
 
-Claude Code plugin providing 45+ skills for the [Starlake](https://starlake.ai) data pipeline CLI.
+Claude Code plugin providing 45+ skills for the [Starlake](https://starlake.ai) data pipeline CLI, plus the optional Starflow guided methodology for data engineering workflows.
 
 Covers all CLI commands (load, transform, extract, autoload, dag-generate...), configuration patterns, connection types, write strategies, data quality expectations, and production best practices for DuckDB, BigQuery, Snowflake, Redshift, and Airflow/Dagster orchestration.
 
@@ -75,6 +75,44 @@ git clone https://github.com/starlake-ai/starlake-skills.git .claude/skills/star
 
 ### Utilities
 - **bq-info** / **compare** / **parquet2csv** / **site** / **summarize** / **test**
+
+## Starflow Method (Optional)
+
+Starflow is an optional guided methodology layer that helps you plan and implement data pipelines step-by-step. While the skills above give you direct access to every Starlake command, Starflow provides a structured workflow with specialized agent personas.
+
+### Workflow Phases
+
+| Phase | Skills | Description |
+|-------|--------|-------------|
+| 1. Discovery | `starflow-domain-discovery`, `starflow-source-analysis` | Map data domains, analyze sources |
+| 2. Architecture | `starflow-create-data-architecture`, `starflow-schema-design` | Design platform and schemas |
+| 3. Pipeline Design | `starflow-create-pipeline-spec`, `starflow-transform-design`, `starflow-orchestration-design` | Specify pipelines end-to-end |
+| 4. Implementation | `starflow-dev-pipeline`, `starflow-sprint-planning`, `starflow-code-review` | Build, plan sprints, review |
+
+### Agent Personas
+
+Talk to a specialized agent for guided assistance:
+
+| Skill | Agent | Specialty |
+|-------|-------|-----------|
+| `starflow-data-analyst` | Lea | Domain discovery, source analysis |
+| `starflow-data-architect` | Winston | Architecture, schemas, pipeline design |
+| `starflow-data-engineer` | Amelia | Pipeline implementation, transforms |
+| `starflow-data-quality-engineer` | Quinn | Data quality, lineage, expectations |
+| `starflow-platform-engineer` | Max | Orchestration, deployment, operations |
+
+### Utility Skills
+
+- **starflow-help** — Navigate the Starflow method and get recommendations
+- **starflow-data-quality-review** — Review data quality expectations coverage
+- **starflow-lineage-review** — Trace and document data lineage
+
+### Getting Started with Starflow
+
+1. Run `starflow-help` to see where to start
+2. Begin with `starflow-domain-discovery` to map your data landscape
+3. Follow the phases in order, or jump to the phase you need
+4. Each Starflow skill references the relevant Starlake CLI skills for implementation details
 
 ## Links
 
