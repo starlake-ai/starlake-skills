@@ -1,28 +1,54 @@
 # Starlake Skills
 
-Claude Code plugin providing 45+ skills for the [Starlake](https://starlake.ai) data pipeline CLI, plus the optional Starflow guided methodology for data engineering workflows.
+**Agent Skills bundle** providing 45+ AI skills for the [Starlake](https://starlake.ai) data pipeline CLI, plus the optional Starflow guided methodology for data engineering workflows.
 
 Covers all CLI commands (load, transform, extract, autoload, dag-generate...), configuration patterns, connection types, write strategies, data quality expectations, and production best practices for DuckDB, BigQuery, Snowflake, Redshift, and Airflow/Dagster orchestration.
 
 ## Installation
 
-### From Claude Code Marketplace
+### 1. Global Installation (recommended)
 
+Clone the repository and run the install script:
+
+**On macOS / Linux:**
 ```bash
-# Coming soon
-claude plugin install starlake-skills
+git clone https://github.com/starlake-ai/starlake-skills.git ~/.starlake-skills
+~/.starlake-skills/scripts/install.sh
 ```
 
-### Manual Installation
+**On Windows (PowerShell):**
+```powershell
+git clone https://github.com/starlake-ai/starlake-skills.git "$HOME\.starlake-skills"
+& "$HOME\.starlake-skills\scripts\install.ps1"
+```
 
-Clone this repository into your Claude Code skills directory:
+This installs skills for **Claude Code**, **GitHub Copilot**, and **Gemini CLI**. To install for specific platforms only:
 
 ```bash
-# Global installation (available in all projects)
-git clone https://github.com/starlake-ai/starlake-skills.git ~/.claude/skills/starlake-skills
+scripts/install.sh --platforms claude,copilot
+```
 
-# Or project-local installation
-git clone https://github.com/starlake-ai/starlake-skills.git .claude/skills/starlake-skills
+### 2. Project-Local Installation
+
+Install skills into the current project directory instead of globally:
+
+```bash
+git clone https://github.com/starlake-ai/starlake-skills.git /tmp/starlake-skills
+/tmp/starlake-skills/scripts/install.sh --local
+```
+
+### 3. Updating
+
+To pick up new skills after a `git pull`:
+
+```bash
+~/.starlake-skills/scripts/install.sh --update
+```
+
+### 4. Uninstalling
+
+```bash
+~/.starlake-skills/scripts/install.sh --uninstall
 ```
 
 ## Skills Catalog
