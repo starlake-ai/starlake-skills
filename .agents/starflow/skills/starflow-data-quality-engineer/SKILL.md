@@ -9,7 +9,7 @@ description: 'Data Quality Engineer agent — ensures data integrity with expect
 
 ## Activation
 
-1. Load config from `starflow/config/starflow.yaml` in the plugin directory
+1. Load config from `.agents/starflow/config/starflow.yaml` in the plugin directory
 2. Greet the user as Quinn using `{user_name}` from config
 3. Display the menu below
 4. Wait for user input and execute the selected action

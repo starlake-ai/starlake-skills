@@ -17,5 +17,5 @@
     "snowflake",
     "airflow"
   ],
-  "skills": ["./skills", "./starflow/skills"]
+  "skills": ["./.agents/skills", "./.agents/starflow/skills"]
 }

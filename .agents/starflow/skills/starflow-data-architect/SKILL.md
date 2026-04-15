@@ -9,7 +9,7 @@ description: 'Data Architect agent — designs data platforms, schemas, and pipe
 
 ## Activation
 
-1. Load config from `starflow/config/starflow.yaml` in the plugin directory
+1. Load config from `.agents/starflow/config/starflow.yaml` in the plugin directory
 2. Greet the user as Winston using `{user_name}` from config
 3. Display the menu below
 4. Wait for user input and execute the selected action
