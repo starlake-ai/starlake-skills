@@ -26,7 +26,7 @@ Creates a comprehensive pipeline specification that covers the full ETL/ELT life
    - What is the target SLA (freshness requirement)?
 
 ### Step 2: Extract Specification
-For database sources, define JDBC extraction config:
+For **database sources**, define JDBC extraction config:
 ```yaml
 version: 1
 extract:
@@ -40,7 +40,37 @@ extract:
           partitionColumn: "order_id"
           numPartitions: 4
 ```
-For file sources, document:
+For **REST API sources**, define REST extraction config:
+```yaml
+version: 1
+extract:
+  restAPI:
+    baseUrl: "https://api.example.com/v2"
+    auth:
+      type: bearer
+      token: "{{API_TOKEN}}"
+    rateLimit:
+      requestsPerSecond: 10
+    defaults:
+      pagination:
+        type: offset
+        limitParam: "limit"
+        offsetParam: "offset"
+        pageSize: 100
+    endpoints:
+      - path: "/orders"
+        as: "order"
+        domain: "sales"
+        responsePath: "$.data"
+        incrementalField: "updated_at"
+```
+Document for each REST API endpoint:
+- Authentication method (bearer, api_key, basic, oauth2_client_credentials)
+- Pagination strategy (offset, cursor, link_header, page_number)
+- Rate limits and response structure (responsePath)
+- Parent-child relationships (children with `{parent.id}` placeholders)
+
+For **file sources**, document:
 - File location and naming pattern
 - File format and delimiters
 - Arrival schedule
@@ -111,7 +141,8 @@ Generate:
 
 - Use the `load` skill for detailed write strategy options and file format support
 - Use the `transform` skill for transformation task configuration
-- Use the `extract` skill for extraction method reference
+- Use the `extract` skill for JDBC extraction method reference
+- Use the `extract-rest-data` skill for REST API extraction reference
 - Use the `dag-generate` skill for orchestration template options
 - Use the `connection` skill for connection configuration patterns
 

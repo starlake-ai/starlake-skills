@@ -99,6 +99,40 @@ application:
         password: "{{DATABASE_PASSWORD}}"
 ```
 
+## REST API Extract Configuration
+
+Extract schemas and data from REST API endpoints. See dedicated skills for full details:
+- [extract-rest-schema](../extract-rest-schema/SKILL.md) — infer schemas from API responses
+- [extract-rest-data](../extract-rest-data/SKILL.md) — extract data to CSV with pagination, auth, rate limiting
+
+```yaml
+# metadata/extract/my-rest-api.sl.yml
+version: 1
+extract:
+  restAPI:
+    baseUrl: "https://api.example.com/v2"
+    auth:
+      type: bearer
+      token: "{{API_TOKEN}}"
+    rateLimit:
+      requestsPerSecond: 10
+    defaults:
+      pagination:
+        type: offset
+        limitParam: "limit"
+        offsetParam: "offset"
+        pageSize: 100
+    endpoints:
+      - path: "/customers"
+        as: "customer"
+        domain: "crm"
+        responsePath: "$.data"
+        incrementalField: "updated_at"
+```
+
+Supported auth types: `bearer`, `api_key`, `basic`, `oauth2_client_credentials`.
+Supported pagination: `offset`, `cursor`, `link_header`, `page_number`.
+
 ## OpenAPI Extract Configuration
 
 Extract schemas from OpenAPI/Swagger specifications:
@@ -161,8 +195,10 @@ starlake extract --config source_db --tables sales.orders,sales.customers
 
 ## Related Skills
 
-- [extract-schema](../extract-schema/SKILL.md) - Extract schema only
-- [extract-data](../extract-data/SKILL.md) - Extract data only
+- [extract-schema](../extract-schema/SKILL.md) - Extract schema from JDBC databases
+- [extract-data](../extract-data/SKILL.md) - Extract data from JDBC databases
+- [extract-rest-schema](../extract-rest-schema/SKILL.md) - Extract schema from REST API endpoints
+- [extract-rest-data](../extract-rest-data/SKILL.md) - Extract data from REST API endpoints
 - [extract-script](../extract-script/SKILL.md) - Generate extraction scripts from templates
 - [freshness](../freshness/SKILL.md) - Check data freshness
 - [load](../load/SKILL.md) - Load extracted data into the warehouse

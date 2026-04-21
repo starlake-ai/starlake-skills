@@ -49,10 +49,16 @@ For each transformation task:
 4. Create expectations macros: `metadata/expectations/{domain}.j2`
 
 ### Step 5: Implement Extraction (if applicable)
-For JDBC sources:
+For **JDBC sources**:
 1. Create extract config: `metadata/extract/{source}.sl.yml`
-2. Test extraction: `starlake extract-data`
+2. Test extraction: `starlake extract-data --config {source} --outputDir /tmp/output`
 3. Generate schemas from extracted data: `starlake infer-schema`
+
+For **REST API sources**:
+1. Create extract config: `metadata/extract/{source}.sl.yml` with `restAPI` section
+2. Extract schemas: `starlake extract-rest-schema --config {source}`
+3. Test data extraction: `starlake extract-rest-data --config {source} --outputDir /tmp/output`
+4. For incremental: `starlake extract-rest-data --config {source} --outputDir /tmp/output --incremental`
 
 ### Step 6: Implement Orchestration
 1. Create DAG configs: `metadata/dags/{dag_name}.sl.yml`
@@ -91,7 +97,9 @@ Generate implementation summary to `{implementation_artifacts}/pipeline-impl-{{p
 - Use the `load` skill for write strategy and sink configuration details
 - Use the `transform` skill for SQL transformation execution options
 - Use the `extract-schema` skill for JDBC schema extraction
-- Use the `extract-data` skill for data extraction to files
+- Use the `extract-data` skill for JDBC data extraction to files
+- Use the `extract-rest-schema` skill for REST API schema extraction
+- Use the `extract-rest-data` skill for REST API data extraction
 - Use the `dag-generate` skill for DAG generation options and templates
 - Use the `validate` skill to check all configuration files
 - Use the `config` skill for environment variables and connection setup

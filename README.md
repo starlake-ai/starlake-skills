@@ -1,6 +1,6 @@
 # Starlake Skills
 
-**Agent Skills bundle** providing 45+ AI skills for the [Starlake](https://starlake.ai) data pipeline CLI, plus the optional Starflow guided methodology for data engineering workflows.
+**Agent Skills bundle** providing 47+ AI skills for the [Starlake](https://starlake.ai) data pipeline CLI, plus the optional Starflow guided methodology for data engineering workflows.
 
 Covers all CLI commands (load, transform, extract, autoload, dag-generate...), configuration patterns, connection types, write strategies, data quality expectations, and production best practices for DuckDB, BigQuery, Snowflake, Redshift, and Airflow/Dagster orchestration.
 
@@ -73,6 +73,8 @@ To pick up new skills after a `git pull`:
 - **extract** — Schema + data extraction
 - **extract-bq-schema** — BigQuery schema extraction
 - **extract-data** — Data extraction to files
+- **extract-rest-data** — REST API data extraction (pagination, auth, rate limiting, incremental)
+- **extract-rest-schema** — REST API schema extraction (infer from sample responses)
 - **extract-schema** — JDBC schema extraction (custom remarks, column selection)
 - **extract-script** — Generate extraction scripts
 

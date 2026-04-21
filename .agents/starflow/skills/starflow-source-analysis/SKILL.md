@@ -52,8 +52,13 @@ Assess data quality dimensions:
 
 ### Step 5: Extraction Strategy
 - Recommended extraction method (full, incremental, CDC)
+- Source type determines the extraction approach:
+  - **Database sources**: JDBC extraction with `extract-data` (partition, parallelism, incremental via timestamp)
+  - **REST API sources**: REST extraction with `extract-rest-data` (pagination, auth, rate limiting, incremental via field tracking)
+  - **File sources**: Direct file ingestion with `load` (landing area pattern matching)
 - Extraction frequency
 - Partitioning strategy (if applicable)
+- For REST APIs: authentication method, pagination type, rate limits, response structure
 - File format recommendation (Parquet preferred for columnar analytics, JSON for nested structures)
 - Error handling: what happens with rejected records?
 

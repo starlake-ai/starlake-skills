@@ -44,6 +44,7 @@ application:
 | `JDBC`   | Generic JDBC (Snowflake, DuckDB, PostgreSQL, Redshift, MySQL, etc.) |
 | `ES`     | Elasticsearch                           |
 | `KAFKA`  | Apache Kafka                            |
+| `REST`   | REST API (aliases: `HTTP`, `API`) — used with `extract-rest-schema` and `extract-rest-data` |
 
 Starlake auto-detects the specific database engine from the JDBC URL prefix (e.g., `jdbc:snowflake:`, `jdbc:duckdb:`, `jdbc:postgresql:`, `jdbc:redshift:`, `jdbc:mysql:`, `jdbc:mariadb:`).
 
