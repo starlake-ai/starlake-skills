@@ -1,11 +1,11 @@
 ---
 name: extract-rest-data
-description: Extract data from REST API endpoints into CSV files with pagination, auth, and incremental support
+description: Extract data from REST API endpoints into CSV or JSON Lines files with pagination, auth, incremental, resume, proxy, and mTLS support
 ---
 
 # Extract REST Data Skill
 
-Extracts data from REST API endpoints into CSV files. Handles pagination (offset, cursor, link header, page number), authentication (bearer, API key, basic, OAuth2), rate limiting, nested JSON flattening, parent-child endpoint relationships, and incremental extraction with state tracking. The extracted CSV files can then be loaded using `starlake load`.
+Extracts data from REST API endpoints into CSV or JSON Lines files. Handles pagination (offset, cursor, link header, page number), authentication (bearer, API key, basic, OAuth2), rate limiting, retries with configurable backoff, timeouts, proxy, mTLS/custom certificates, nested JSON flattening, parent-child endpoint relationships, incremental extraction with state tracking, resume on failure, and response validation for error-in-200 APIs. The extracted files can then be loaded using `starlake load`.
 
 ## Usage
 
@@ -16,10 +16,12 @@ starlake extract-rest-data [options]
 ## Options
 
 - `--config <value>`: REST API extraction config name (required) — references a file in `metadata/extract/`
-- `--outputDir <value>`: Where to output CSV files (required)
+- `--outputDir <value>`: Where to output files (required)
 - `--limit <value>`: Limit number of records extracted per endpoint
 - `--parallelism <value>`: Parallelism level for endpoint extraction (default: available CPU cores)
 - `--incremental`: Only extract new data since last extraction (uses `incrementalField` from endpoint config)
+- `--resume`: Resume extraction from where a previous run failed, skipping already-extracted pages
+- `--outputFormat <value>`: Output format: `csv` (default) or `jsonl` (JSON Lines, preserves nested structures)
 - `--reportFormat <value>`: Report output format: `console`, `json`, or `html`
 
 ## Configuration
@@ -39,6 +41,19 @@ extract:
       Accept: "application/json"
     rateLimit:
       requestsPerSecond: 10
+    retry:
+      maxRetries: 3
+      initialBackoffMs: 1000
+      maxBackoffMs: 30000
+    timeout:
+      connectTimeoutMs: 30000
+      readTimeoutMs: 60000
+    # proxy:                        # Optional HTTP proxy
+    #   host: "proxy.corp.com"
+    #   port: 8080
+    # tls:                          # Optional mTLS / custom CA
+    #   trustStorePath: "/path/to/truststore.jks"
+    #   trustStorePassword: "{{TRUST_PASS}}"
     defaults:
       pagination:
         type: offset
@@ -105,7 +120,53 @@ rateLimit:
   requestsPerSecond: 10  # Max 10 requests/second
 ```
 
-Automatic retry with exponential backoff on HTTP 429 (Too Many Requests) and 5xx errors.
+### Retry Configuration
+
+```yaml
+retry:
+  maxRetries: 5           # Default: 3
+  initialBackoffMs: 2000  # Default: 1000 (doubles on each retry)
+  maxBackoffMs: 60000     # Default: 30000
+```
+
+Automatic retry with exponential backoff on HTTP 429 (Too Many Requests), 5xx errors, and connection failures.
+
+### Timeout Configuration
+
+```yaml
+timeout:
+  connectTimeoutMs: 15000  # Default: 30000
+  readTimeoutMs: 120000    # Default: 60000
+```
+
+### Proxy Support
+
+```yaml
+proxy:
+  host: "proxy.corp.com"
+  port: 8080
+  username: "{{PROXY_USER}}"   # Optional
+  password: "{{PROXY_PASS}}"   # Optional
+```
+
+### TLS / mTLS
+
+```yaml
+tls:
+  trustStorePath: "/path/to/truststore.jks"
+  trustStorePassword: "{{TRUST_PASS}}"
+  keyStorePath: "/path/to/keystore.jks"     # For mTLS client cert
+  keyStorePassword: "{{KEY_PASS}}"
+  # insecure: true                          # Dev only: trust all certs
+```
+
+### Response Validation (Error-in-200)
+
+```yaml
+endpoints:
+  - path: "/data"
+    errorPath: "$.error"   # Treat as error if $.error is non-null in 200 response
+```
 
 ### Parent-Child Endpoints
 
@@ -199,6 +260,18 @@ starlake extract-rest-data --config my-rest-api --outputDir /tmp/api-data --limi
 
 ```bash
 starlake extract-rest-data --config my-rest-api --outputDir /tmp/api-data --parallelism 4
+```
+
+### JSON Lines Output
+
+```bash
+starlake extract-rest-data --config my-rest-api --outputDir /tmp/api-data --outputFormat jsonl
+```
+
+### Resume After Failure
+
+```bash
+starlake extract-rest-data --config my-rest-api --outputDir /tmp/api-data --resume
 ```
 
 ## End-to-End Workflow

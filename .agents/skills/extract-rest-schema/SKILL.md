@@ -128,6 +128,14 @@ The schema extractor infers Starlake types from JSON values:
 | Array of objects | `struct` with `array: true` |
 | Array of scalars | scalar type with `array: true` |
 
+## Schema Evolution Detection
+
+When re-extracting schemas, Starlake compares the inferred schema against existing YAML definitions and logs warnings when:
+- **New fields** appear in the API response that weren't in the previous schema
+- **Fields are removed** from the API response that existed in the previous schema
+
+This helps detect API changes early before they break downstream pipelines.
+
 ## Examples
 
 ### Extract Schema from REST API
