@@ -8,7 +8,7 @@ Covers all CLI commands (load, transform, extract, autoload, dag-generate...), c
 
 ### 1. Global Installation (recommended)
 
-Clone the repository and run the install script:
+Clone the repository and run the install script ([scripts/install.sh](scripts/install.sh) on macOS/Linux, [scripts/install.ps1](scripts/install.ps1) on Windows):
 
 **On macOS / Linux:**
 ```bash
@@ -25,12 +25,12 @@ git clone https://github.com/starlake-ai/starlake-skills.git "$HOME\.starlake-sk
 This installs skills for **Claude Code**, **GitHub Copilot**, and **Gemini CLI**. To install for specific platforms only:
 
 ```bash
-scripts/install.sh --platforms claude,copilot
+~/.starlake-skills/scripts/install.sh --platforms claude,copilot
 ```
 
 ### 2. Project-Local Installation
 
-Install skills into the current project directory instead of globally:
+Install skills into the current project directory instead of globally using [scripts/install.sh](scripts/install.sh) (or [scripts/install.ps1](scripts/install.ps1) on Windows):
 
 ```bash
 git clone https://github.com/starlake-ai/starlake-skills.git /tmp/starlake-skills
@@ -39,13 +39,15 @@ git clone https://github.com/starlake-ai/starlake-skills.git /tmp/starlake-skill
 
 ### 3. Updating
 
-To pick up new skills after a `git pull`:
+To pick up new skills after a `git pull`, re-run [scripts/install.sh](scripts/install.sh) with `--update`:
 
 ```bash
 ~/.starlake-skills/scripts/install.sh --update
 ```
 
 ### 4. Uninstalling
+
+Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all symlinks:
 
 ```bash
 ~/.starlake-skills/scripts/install.sh --uninstall
