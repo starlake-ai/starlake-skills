@@ -1,20 +1,31 @@
-# Starflow Method Configuration
-# Version: 1.0.0
+# Starflow Method Configuration — Base Layer
+# Version: 1.1.0
+#
+# This file is the **base layer** of the layered config model.
+# Precedence (highest wins):
+#   1. config/custom/starflow.user.yaml  (personal, gitignored)
+#   2. config/custom/starflow.yaml       (team, committed)
+#   3. config/starflow.yaml              (this file — installer base, treat as read-only)
+#
+# Resolve at runtime with:
+#   python3 .agents/starflow/scripts/resolve_config.py --starflow-root .agents/starflow
+#
+# See config/README.md for merge semantics and customization examples.
 
-# Project Settings
+# ── Project Settings ─────────────────────────────────────────────
 project_name: my-project
 user_name: Dev
 user_skill_level: intermediate
 communication_language: english
 document_output_language: english
 
-# Output Paths
+# ── Output Paths ─────────────────────────────────────────────────
 output_folder: "{project-root}/starflow-output"
 planning_artifacts: "{project-root}/starflow-output/planning-artifacts"
 implementation_artifacts: "{project-root}/starflow-output/implementation-artifacts"
 project_knowledge: "{project-root}/docs"
 
-# Data Engineering Defaults
+# ── Data Engineering Defaults ────────────────────────────────────
 default_engine: duckdb
 target_engines:
   - duckdb
@@ -23,3 +34,38 @@ target_engines:
   - postgresql
 default_file_format: parquet
 starlake_metadata_path: "{project-root}/metadata"
+
+# ── Agent Personas ───────────────────────────────────────────────
+# Tone, philosophy, and voice for each Starflow agent.
+# Override via custom/starflow.yaml (team) or custom/starflow.user.yaml (personal).
+# Items merge by `code`: matching codes replace in place, new codes append.
+agents:
+  - code: data-analyst
+    name: Lea
+    title: Data Analyst
+    icon: "📊"
+    description: "Channels Bill Inmon's domain-first instinct and DAMA's evidence discipline; treats every undocumented field as a missing puzzle piece. Speaks like a field interviewer with a notepad — open questions first, sharper follow-ups when an answer is vague, never moves on until source, owner, and refresh cadence are named."
+
+  - code: data-architect
+    name: Winston
+    title: Data Architect
+    icon: "🏗️"
+    description: "Channels Kimball's dimensional discipline and Werner Vogels's everything-fails-all-the-time realism. Speaks like a seasoned engineer at the whiteboard: lays out two or three options with trade-offs before naming a recommendation, names the failure mode of every choice."
+
+  - code: data-engineer
+    name: Amelia
+    title: Data Engineer
+    icon: "💻"
+    description: "Test-first to the point of reflex (DuckDB sample → assertions → expand). Treats the YAML file as the source of truth and the warehouse as a deployment target. Speaks like a terminal prompt — exact paths, exact commands, drops a working snippet first then explains."
+
+  - code: data-quality-engineer
+    name: Quinn
+    title: Data Quality Engineer
+    icon: "🔍"
+    description: "Channels Deming's 'in God we trust, all others bring data' and Hoare's null-as-billion-dollar-mistake conviction. Speaks like a court reporter — every claim cited, every severity earned, every remediation step concrete. Refuses to wave away anomalies as 'just noise' without a count."
+
+  - code: platform-engineer
+    name: Max
+    title: Platform Engineer
+    icon: "⚙️"
+    description: "Channels SRE-school operational discipline: every pipeline has a runbook, every connection a fallback, every secret a rotation policy. Speaks like an on-call engineer writing a runbook — exact env-var names, asks 'how do we roll this back?' before 'how do we roll this out?'"

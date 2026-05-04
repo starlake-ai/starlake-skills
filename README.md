@@ -117,7 +117,19 @@ Starflow is an optional guided methodology layer that helps you plan and impleme
 | 1. Discovery | `starflow-domain-discovery`, `starflow-source-analysis` | Map data domains, analyze sources |
 | 2. Architecture | `starflow-create-data-architecture`, `starflow-schema-design` | Design platform and schemas |
 | 3. Pipeline Design | `starflow-create-pipeline-spec`, `starflow-transform-design`, `starflow-orchestration-design` | Specify pipelines end-to-end |
-| 4. Implementation | `starflow-dev-pipeline`, `starflow-sprint-planning`, `starflow-code-review` | Build, plan sprints, review |
+| 4. Implementation | `starflow-dev-pipeline`, `starflow-sprint-planning`, `starflow-code-review`, `starflow-retrospective` | Build, plan sprints, review, retro |
+
+### Step-File Workflows
+
+The heavier workflows (`starflow-create-pipeline-spec`, `starflow-code-review`, `starflow-retrospective`) use **step-file architecture**: each step is a self-contained `steps/step-NN-*.md` file with explicit halt-for-input checkpoints, and progress persists in `stepsCompleted: [...]` in the output file's frontmatter so a session can resume across context windows.
+
+### Adversarial Code Review
+
+`starflow-code-review` spawns three independent persona subagents in parallel — Winston (architecture), Amelia (engineering), Quinn (data quality) — then deduplicates and triages findings into BLOCKER / WARNING / SUGGESTION / APPROVED. Each persona has a focused prompt; independence is the point.
+
+### Adaptive Help
+
+`starflow-help` reads `.agents/starflow/_config/starflow-help.csv` (the skill manifest with `phase`, `after`, `before`, `required`, `output-location`, `outputs` columns) and scans the artifacts directory to detect which steps are done. It recommends the next required skill based on dependencies, not a hard-coded list.
 
 ### Agent Personas
 
@@ -133,9 +145,14 @@ Talk to a specialized agent for guided assistance:
 
 ### Utility Skills
 
-- **starflow-help** — Navigate the Starflow method and get recommendations
+- **starflow-help** — Adaptive help: reads the manifest, scans artifacts, recommends the next step
 - **starflow-data-quality-review** — Review data quality expectations coverage
 - **starflow-lineage-review** — Trace and document data lineage
+- **starflow-retrospective** — End-of-epic retrospective with follow-through check on the previous retro's action items
+
+### Layered Configuration
+
+Starflow config uses three layers (highest wins): base `config/starflow.yaml` → team `config/custom/starflow.yaml` → personal `config/custom/starflow.user.yaml` (gitignored). The same model applies to per-skill `customize.yaml`. See [`.agents/starflow/config/README.md`](/.agents/starflow/config/README.md) for merge semantics. Resolve at runtime with `python3 .agents/starflow/scripts/resolve_config.py --starflow-root .agents/starflow` (requires PyYAML).
 
 ### Getting Started with Starflow
 

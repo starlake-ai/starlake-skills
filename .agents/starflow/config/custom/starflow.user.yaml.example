@@ -1,0 +1,19 @@
+# Personal Configuration — gitignored
+#
+# Copy this file to `starflow.user.yaml` (drop the `.example` suffix) and
+# customize. The real file is gitignored so your personal tweaks never
+# enter git. Overrides everything below it in precedence:
+#   1. config/starflow.yaml              (base, this repo)
+#   2. config/custom/starflow.yaml       (team, committed)
+#   3. config/custom/starflow.user.yaml  (you, gitignored)  ← this file
+#
+# Common personal overrides:
+#
+# user_name: Hayssam
+# communication_language: french
+# default_engine: duckdb
+#
+# # Add a persistent fact to one persona without touching the base:
+# agents:
+#   - code: data-engineer
+#     description: "Hayssam prefers Polars over pandas for local validation."

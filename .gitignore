@@ -1,1 +1,9 @@
 .DS_Store
+
+# Personal Starflow overrides — never committed
+.agents/starflow/config/custom/*.user.yaml
+!.agents/starflow/config/custom/*.user.yaml.example
+
+# Python
+__pycache__/
+*.pyc

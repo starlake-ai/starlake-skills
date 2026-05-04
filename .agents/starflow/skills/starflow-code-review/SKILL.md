@@ -1,78 +1,86 @@
 ---
 name: starflow-code-review
-description: 'Review data pipeline configuration and SQL for correctness, performance, and best practices. Use when the user says "review pipeline" or "review this data code".'
+description: 'Adversarial parallel review of pipeline changes. Spawns Winston (architect), Amelia (engineer), and Quinn (data quality) as independent subagents, then triages findings. Use when the user says "review pipeline", "code review", or "review this data change".'
 ---
 
-# Data Pipeline Code Review
+# Starflow Code Review
 
-## Overview
+**Goal:** Review Starlake pipeline changes — YAML configs, SQL transformations, DAG specs — using three independent reviewers running in parallel, then triage their findings into actionable buckets.
 
-Reviews Starlake pipeline configuration (YAML) and SQL transformations for correctness, performance, data quality coverage, and adherence to best practices. Uses parallel review layers adapted for data engineering concerns.
+**Your Role:** Reviewer-of-record. You gather context, dispatch the three parallel reviews, deduplicate and triage findings, and present a single actionable report. No noise, no filler.
 
-**Role Guidance:** Act as a Senior Data Engineer performing an adversarial review of pipeline configurations.
+## Why three reviewers (not five layers in series)
 
-## Review Layers
+The previous version of this skill listed five sequential review layers in prose. That guarantees coverage but produces a single perspective doing five passes — the same biases apply each time. Three independent personas reviewing **in parallel** catches more, because each has a different prior:
 
-### Layer 1: Configuration Correctness
-- All `.sl.yml` files have `version: 1` header
-- File patterns (regex) correctly match expected filenames
-- Write strategies match the data update pattern (e.g., SCD2 for slowly changing dimensions)
-- Attribute types reference defined types (built-in or custom)
-- Required fields are marked correctly
-- Privacy annotations are applied to PII columns
-- Connection references resolve to defined connections
-- DAG assignments reference defined DAGs
+- **Winston (Architect)** sees write strategies, partition design, schema evolution risk. Cares about "will this design hold up at 10× volume?"
+- **Amelia (Engineer)** sees SQL correctness, idempotence, performance, convention compliance. Cares about "will this run reliably and re-run safely?"
+- **Quinn (Data Quality)** sees expectations coverage, severity choices, PII annotations, freshness checks. Cares about "will bad data make it through?"
 
-### Layer 2: SQL Quality
-- Standard SQL used (no engine-specific syntax unless justified)
-- Table references use `{domain}.{table}` notation
-- JOINs have proper ON clauses (no cartesian products)
-- WHERE clauses use partition columns for pruning
-- GROUP BY matches SELECT non-aggregated columns
-- No SELECT * in transforms (explicit column lists)
-- CTEs preferred over nested subqueries for readability
-- Date handling uses proper functions (not string manipulation)
+## Conventions
 
-### Layer 3: Data Quality Coverage
-- Every load table has at least one expectation
-- Primary key uniqueness is validated
-- NOT NULL constraints are enforced via expectations
-- Referential integrity checks exist for foreign keys
-- Row count checks prevent empty loads from succeeding
-- Business rule validations cover critical logic
-- Expectations use appropriate severity (ERROR vs WARN)
+- Bare paths resolve from the skill root.
+- `{skill-root}` resolves to this skill's installed directory.
+- `{starflow-root}` resolves to the directory containing `config/starflow.yaml`.
+- `{project-root}` resolves to the project working directory.
 
-### Layer 4: Performance & Scalability
-- Partitioning strategy aligns with query patterns
-- Clustering columns match common filter/join columns
-- Incremental loads use partition pruning
-- Large table JOINs are optimized (small table on right side)
-- No full table scans where incremental processing is possible
-- Write strategies avoid unnecessary full overwrites
+## On Activation
 
-### Layer 5: Operational Readiness
-- DAG schedules avoid resource contention
-- Retry policies are configured for transient failures
-- Timeout values are set appropriately
-- Alerting is configured for SLA-critical pipelines
-- Lineage is traceable through all pipeline stages
-- Environment configs exist for dev/staging/prod
+### Step 1: Resolve config
 
-## Output
+Run:
 
-A structured review report with findings categorized as:
-- **BLOCKER**: Must fix before deployment
-- **WARNING**: Should fix, risk of future issues
-- **SUGGESTION**: Nice to have improvements
-- **APPROVED**: Aspects that pass review
+```
+python3 {starflow-root}/scripts/resolve_config.py --starflow-root {starflow-root}
+```
 
-## Related Starlake Skills
+Bind `user_name`, `communication_language`, `planning_artifacts`, `implementation_artifacts`, `date`, and the `agents` array (you'll need each persona's `description` and `principles` when constructing subagent prompts).
 
-- Use the `validate` skill to run automated configuration validation
-- Use the `expectations` skill to verify expectation syntax
-- Use the `freshness` skill for data freshness checks
-- Use the `test` skill for running pipeline tests
+### Step 2: Greet
+
+Greet `{user_name}` in `{communication_language}`. Explain that the review will run three reviewers in parallel and may take a minute or two. Lead the greeting with a generic icon — you're the orchestrator, not one of the personas.
+
+## Workflow Architecture
+
+Step-file architecture (same rules as `starflow-create-pipeline-spec`):
+
+- Read **only the current step file** at a time.
+- Halt at every checkpoint marked `**HALT**`.
+- Persist progress in memory variables; the review report is the artifact.
+
+### Critical Rules
+
+- **NEVER** combine the three reviewers into one prompt. The whole point is independence.
+- **NEVER** skip Quinn for "config-only" changes — config IS what defines data quality.
+- **ALWAYS** triage; never just dump raw findings on the user.
+
+## First Step
+
+Read fully and follow: `steps/step-01-gather-context.md`
+
+## Step Index
+
+| # | File | Output |
+|---|------|--------|
+| 1 | `steps/step-01-gather-context.md` | `{diff_output}`, `{spec_file}`, `{review_mode}` |
+| 2 | `steps/step-02-parallel-review.md` | Three independent finding lists |
+| 3 | `steps/step-03-triage.md` | Deduped, classified findings (BLOCKER/WARNING/SUGGESTION/APPROVED) |
+| 4 | `steps/step-04-present.md` | Report + write-back to spec file (if any) |
 
 ## Outcome
 
-A comprehensive review report ensuring pipeline quality, performance, and operational readiness before deployment.
+A structured review report categorized into:
+
+- **BLOCKER** — must fix before deployment.
+- **WARNING** — should fix; risk of future incident.
+- **SUGGESTION** — improvement, not required.
+- **APPROVED** — explicitly checked aspects that pass.
+
+If a `spec_file` was provided, findings are also appended to it as a `### Review Findings` section so the implementation skill can pick them up.
+
+## Related Starlake Skills
+
+- `validate` — automated configuration validation (run this *before* a code review)
+- `expectations` — expectation syntax reference
+- `freshness` — freshness checks
+- `test` — pipeline test execution

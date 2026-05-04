@@ -1,0 +1,21 @@
+module,skill,display-name,menu-code,description,action,args,phase,after,before,required,output-location,outputs
+Starflow,_meta,,,,,,,,,false,https://docs.starlake.ai,
+Starflow,starflow-help,Starflow Help,SH,Where am I? What's next? Reads the manifest and scans artifacts to recommend the next required skill.,,,anytime,,,false,,
+Starflow,starflow-domain-discovery,Domain Discovery,DD,Map data domains, sources, and ownership. Start here for any new project.,,,1-discovery,,,true,planning_artifacts,domain-discovery-*.md
+Starflow,starflow-source-analysis,Source Analysis,SA,Deep-dive on a specific source — schema, refresh cadence, owners.,,,1-discovery,starflow-domain-discovery,,false,planning_artifacts,source-analysis-*.md
+Starflow,starflow-create-data-architecture,Data Architecture,CA,Design layers (raw / staging / mart), engines, governance.,,,2-architecture,starflow-domain-discovery,,true,planning_artifacts,data-architecture-*.md
+Starflow,starflow-schema-design,Schema Design,SD,Define Starlake-compatible table schemas (.sl.yml).,,,2-architecture,starflow-create-data-architecture,,true,planning_artifacts,schema-design-*.md
+Starflow,starflow-create-pipeline-spec,Pipeline Spec,PS,Full ETL/ELT pipeline specification covering extract, load, transform, orchestrate.,,,3-pipeline-design,starflow-schema-design,,true,implementation_artifacts,pipeline-spec-*.md
+Starflow,starflow-transform-design,Transform Design,TD,Design SQL transformations and dependencies.,,,3-pipeline-design,starflow-create-pipeline-spec,,false,implementation_artifacts,transform-design-*.md
+Starflow,starflow-orchestration-design,Orchestration Design,OD,Design schedules, DAGs, retry/timeout policies.,,,3-pipeline-design,starflow-create-pipeline-spec,,false,implementation_artifacts,orchestration-design-*.md
+Starflow,starflow-sprint-planning,Sprint Planning,SP,Break pipelines into sprint-sized tasks with dependency ordering.,,,4-implementation,starflow-create-pipeline-spec,,true,implementation_artifacts,sprint-plan-*.md
+Starflow,starflow-dev-pipeline,Dev Pipeline,DP,Implement a pipeline from a spec — YAML + SQL + expectations.,,,4-implementation,starflow-sprint-planning,,true,implementation_artifacts,*-implementation
+Starflow,starflow-code-review,Code Review,CR,Adversarial parallel review (Winston + Amelia + Quinn). Run before deploy.,,,4-implementation,starflow-dev-pipeline,,false,implementation_artifacts,review-*.md
+Starflow,starflow-data-quality-review,Data Quality Review,DQR,Audit expectations coverage and severity across pipelines.,,,4-implementation,starflow-dev-pipeline,,false,implementation_artifacts,data-quality-review-*.md
+Starflow,starflow-lineage-review,Lineage Review,LR,Trace and document data lineage end-to-end.,,,4-implementation,starflow-dev-pipeline,,false,implementation_artifacts,lineage-review-*.md
+Starflow,starflow-retrospective,Retrospective,ER,End-of-epic review. Pulls previous retro to check follow-through on action items.,,,4-implementation,starflow-code-review,,false,implementation_artifacts,retrospective-epic-*.md
+Starflow,starflow-data-analyst,Talk to Lea,LE,Data Analyst persona — domain discovery, source analysis.,,,anytime,,,false,,
+Starflow,starflow-data-architect,Talk to Winston,WI,Data Architect persona — architecture, schemas, pipeline specs.,,,anytime,,,false,,
+Starflow,starflow-data-engineer,Talk to Amelia,AM,Data Engineer persona — pipeline implementation, transforms.,,,anytime,,,false,,
+Starflow,starflow-data-quality-engineer,Talk to Quinn,QU,Data Quality Engineer persona — expectations, lineage, governance.,,,anytime,,,false,,
+Starflow,starflow-platform-engineer,Talk to Max,MX,Platform Engineer persona — orchestration, deployment, CI/CD.,,,anytime,,,false,,
