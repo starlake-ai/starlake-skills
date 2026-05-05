@@ -1,6 +1,6 @@
 # Starlake Skills
 
-**Agent Skills bundle** providing 47+ AI skills for the [Starlake](https://starlake.ai) data pipeline CLI, plus the optional Starflow guided methodology for data engineering workflows.
+**Agent Skills bundle** providing 49 core AI skills for the [Starlake](https://starlake.ai) data pipeline CLI, plus the optional Starflow guided methodology (19 workflow skills and personas) for data engineering.
 
 Covers all CLI commands (load, transform, extract, autoload, dag-generate...), configuration patterns, connection types, write strategies, data quality expectations, and production best practices for DuckDB, BigQuery, Snowflake, Redshift, and Airflow/Dagster orchestration.
 
@@ -57,6 +57,7 @@ Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all sy
 
 ### Reference
 - **config** — Configuration reference (env vars, app structure, types, best practices)
+- **connection** — Create or modify database connections in `application.sl.yml`
 
 ### Ingestion & Loading
 - **autoload** — Auto-infer schemas and load data
