@@ -255,6 +255,6 @@ starlake gizmosql stop-all
 
 ## Related Skills
 
-- [connection](../connection/SKILL.md) — Database connection configuration
-- [settings](../settings/SKILL.md) — Print settings and test connections
-- [config](../config/SKILL.md) — Configuration reference
+- [connection](../connection/SKILL.md): Database connection configuration
+- [settings](../settings/SKILL.md): Print settings and test connections
+- [config](../config/SKILL.md): Configuration reference

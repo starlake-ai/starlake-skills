@@ -15,7 +15,7 @@ starlake extract-data [options]
 
 ## Options
 
-- `--config <value>`: Extract configuration name (required) — references a file in `metadata/extract/`
+- `--config <value>`: Extract configuration name (required): references a file in `metadata/extract/`
 - `--outputDir <value>`: Where to output data files (required)
 - `--limit <value>`: Limit number of records extracted per table
 - `--numPartitions <value>`: Parallelism level for partitioned table extraction

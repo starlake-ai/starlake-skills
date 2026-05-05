@@ -2,7 +2,7 @@
 followup_status: []  # set in this step: list of {action, status, evidence, blockers, carry_forward}
 ---
 
-# Step 2 — Follow-Through on Previous Retro's Actions
+# Step 2: Follow-Through on Previous Retro's Actions
 
 ## Rules
 
@@ -33,10 +33,10 @@ For each prior action item, **HALT** and ask the user:
 > Action `{prior_id}`: **{description}** (owner: {owner}, target: {target_epic})
 >
 > What's its status?
-> 1. **Done** — paste evidence (commit, PR, file path, deployed pipeline name).
-> 2. **Partial** — what got done, what didn't, and why.
-> 3. **Dropped** — why it was de-prioritized.
-> 4. **Carry-forward** — still relevant but didn't land; should re-up as a new action item with the same or updated wording.
+> 1. **Done**: paste evidence (commit, PR, file path, deployed pipeline name).
+> 2. **Partial**: what got done, what didn't, and why.
+> 3. **Dropped**: why it was de-prioritized.
+> 4. **Carry-forward**: still relevant but didn't land; should re-up as a new action item with the same or updated wording.
 
 Capture per item:
 
@@ -54,7 +54,7 @@ Capture per item:
 
 Cross-check this list against `epic_artifacts`. Flag any of these patterns:
 
-- An action item marked `dropped` whose problem the user *also* lists in this epic's struggles (will be captured in step 3) — that's compounding debt; call it out by name in step 4.
+- An action item marked `dropped` whose problem the user *also* lists in this epic's struggles (will be captured in step 3): that's compounding debt; call it out by name in step 4.
 - Two consecutive retros where the same theme appears in struggles — root-cause investigation needed.
 - Prior actions where `target_epic` is `{epic_id}` (this epic) and status is anything other than `done` — follow-through is breaking down for this current cycle.
 

@@ -1,4 +1,4 @@
-# Starflow — Guided Data Engineering Method
+# Starflow: Guided Data Engineering Method
 
 Starflow is an optional methodology layer on top of Starlake skills. It provides structured workflows and agent personas to guide you through the full data engineering lifecycle — from domain discovery to production deployment.
 
@@ -6,8 +6,8 @@ Starflow is an optional methodology layer on top of Starlake skills. It provides
 
 Starflow adds two things on top of Starlake's CLI skills:
 
-1. **Phased workflows** — a step-by-step method that ensures you build pipelines in the right order (discover domains first, design schemas second, implement third)
-2. **Agent personas** — specialized AI agents (Lea, Winston, Amelia, Quinn, Max) that bring domain expertise and opinionated guidance
+1. **Phased workflows**: a step-by-step method that ensures you build pipelines in the right order (discover domains first, design schemas second, implement third)
+2. **Agent personas**: specialized AI agents (Lea, Winston, Amelia, Quinn, Max) that bring domain expertise and opinionated guidance
 
 ## Phases
 
@@ -16,22 +16,22 @@ Discovery → Architecture → Pipeline Design → Implementation
 ```
 
 ### Phase 1: Discovery
-- [`starflow-domain-discovery`](skills/starflow-domain-discovery/SKILL.md) — Map data domains, sources, and ownership
-- [`starflow-source-analysis`](skills/starflow-source-analysis/SKILL.md) — Deep-dive into a specific data source
+- [`starflow-domain-discovery`](skills/starflow-domain-discovery/SKILL.md): Map data domains, sources, and ownership
+- [`starflow-source-analysis`](skills/starflow-source-analysis/SKILL.md): Deep-dive into a specific data source
 
 ### Phase 2: Architecture
-- [`starflow-create-data-architecture`](skills/starflow-create-data-architecture/SKILL.md) — Design layers, engines, governance
-- [`starflow-schema-design`](skills/starflow-schema-design/SKILL.md) — Define Starlake-compatible table schemas
+- [`starflow-create-data-architecture`](skills/starflow-create-data-architecture/SKILL.md): Design layers, engines, governance
+- [`starflow-schema-design`](skills/starflow-schema-design/SKILL.md): Define Starlake-compatible table schemas
 
 ### Phase 3: Pipeline Design
-- [`starflow-create-pipeline-spec`](skills/starflow-create-pipeline-spec/SKILL.md) — Full ETL/ELT pipeline specification
-- [`starflow-transform-design`](skills/starflow-transform-design/SKILL.md) — Design SQL transformations
-- [`starflow-orchestration-design`](skills/starflow-orchestration-design/SKILL.md) — Design scheduling and DAGs
+- [`starflow-create-pipeline-spec`](skills/starflow-create-pipeline-spec/SKILL.md): Full ETL/ELT pipeline specification
+- [`starflow-transform-design`](skills/starflow-transform-design/SKILL.md): Design SQL transformations
+- [`starflow-orchestration-design`](skills/starflow-orchestration-design/SKILL.md): Design scheduling and DAGs
 
 ### Phase 4: Implementation
-- [`starflow-dev-pipeline`](skills/starflow-dev-pipeline/SKILL.md) — Implement pipeline from spec
-- [`starflow-sprint-planning`](skills/starflow-sprint-planning/SKILL.md) — Plan and track sprint progress
-- [`starflow-code-review`](skills/starflow-code-review/SKILL.md) — Review pipeline configuration and SQL
+- [`starflow-dev-pipeline`](skills/starflow-dev-pipeline/SKILL.md): Implement pipeline from spec
+- [`starflow-sprint-planning`](skills/starflow-sprint-planning/SKILL.md): Plan and track sprint progress
+- [`starflow-code-review`](skills/starflow-code-review/SKILL.md): Review pipeline configuration and SQL
 
 ## Agents
 
@@ -45,9 +45,9 @@ Discovery → Architecture → Pipeline Design → Implementation
 
 ## Utility Skills
 
-- [`starflow-help`](skills/starflow-help/SKILL.md) — Navigate the Starflow method and get recommendations
-- [`starflow-data-quality-review`](skills/starflow-data-quality-review/SKILL.md) — Review data quality expectations coverage
-- [`starflow-lineage-review`](skills/starflow-lineage-review/SKILL.md) — Trace and document data lineage
+- [`starflow-help`](skills/starflow-help/SKILL.md): Navigate the Starflow method and get recommendations
+- [`starflow-data-quality-review`](skills/starflow-data-quality-review/SKILL.md): Review data quality expectations coverage
+- [`starflow-lineage-review`](skills/starflow-lineage-review/SKILL.md): Trace and document data lineage
 
 ## Configuration
 

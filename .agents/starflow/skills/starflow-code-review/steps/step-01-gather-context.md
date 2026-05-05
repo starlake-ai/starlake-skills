@@ -5,7 +5,7 @@ review_mode: ''     # set at runtime: "full" | "no-spec"
 sprint_status_file: '{implementation_artifacts}/sprint-status.yaml'
 ---
 
-# Step 1 — Gather Context
+# Step 1: Gather Context
 
 ## Rules
 
@@ -17,7 +17,7 @@ sprint_status_file: '{implementation_artifacts}/sprint-status.yaml'
 
 Walk this cascade in order. **Stop as soon as the target is identified.**
 
-### Tier 1 — Explicit argument
+### Tier 1: Explicit argument
 
 Did the user pass a PR, commit SHA, branch, spec file, or diff source in this message?
 
@@ -32,11 +32,11 @@ Also scan for diff-mode keywords:
 - "commit range" / "last N commits" / "<sha>..<sha>" → commit range
 - "this diff" / "provided diff" / "paste" → user-provided diff
 
-### Tier 2 — Recent conversation
+### Tier 2: Recent conversation
 
 Do the last few messages reveal what the user wants reviewed? Spec paths, commit refs, branches, PRs, descriptions of a change. Apply same keyword scan.
 
-### Tier 3 — Sprint tracking
+### Tier 3: Sprint tracking
 
 Look for `*sprint-status*` in `{implementation_artifacts}` or `{planning_artifacts}`. Scan for stories with status `review`:
 
@@ -44,11 +44,11 @@ Look for `*sprint-status*` in `{implementation_artifacts}` or `{planning_artifac
 - **Multiple `review` stories**: present numbered options + manual choice. **HALT** for selection.
 - **None**: fall through.
 
-### Tier 4 — Current git state
+### Tier 4: Current git state
 
 If git is available and HEAD is not on `main` (or default), confirm: "HEAD is `<sha>` on `<branch>` — review this branch's changes vs main?" On yes, use as branch diff.
 
-### Tier 5 — Ask
+### Tier 5: Ask
 
 Fall through to the explicit ask below.
 

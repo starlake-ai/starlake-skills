@@ -1,4 +1,4 @@
-# Team Configuration — Committed
+# Team Configuration: Committed
 # This file overrides the base config/starflow.yaml.
 # Use it for team-wide policies (target engines, governance rules, persona pinning).
 # Personal/per-developer tweaks go in starflow.user.yaml (gitignored).
@@ -14,4 +14,4 @@
 # # Pin a tougher tone on Quinn for compliance-heavy projects (merges by `code`):
 # agents:
 #   - code: data-quality-engineer
-#     description: "Strict severity bias — when in doubt, FAIL not WARN. PII columns must carry a privacy annotation, no exceptions."
+#     description: "Strict severity bias: when in doubt, FAIL not WARN. PII columns must carry a privacy annotation, no exceptions."

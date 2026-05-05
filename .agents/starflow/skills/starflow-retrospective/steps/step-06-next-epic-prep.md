@@ -2,7 +2,7 @@
 next_epic_risks: []
 ---
 
-# Step 6 — Seed the Next Epic
+# Step 6: Seed the Next Epic
 
 ## Rules
 

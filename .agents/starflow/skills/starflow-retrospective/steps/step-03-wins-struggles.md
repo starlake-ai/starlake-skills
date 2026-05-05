@@ -4,7 +4,7 @@ struggles: []
 surprises: []
 ---
 
-# Step 3 — Wins, Struggles, Surprises
+# Step 3: Wins, Struggles, Surprises
 
 ## Rules
 
@@ -54,7 +54,7 @@ For each struggle, capture:
   prior_signal: <was this in a previous retro? — cross-check {followup_status}>
 ```
 
-If `prior_signal` is non-empty, this is **compounding debt** — flag it for step 4.
+If `prior_signal` is non-empty, this is **compounding debt**: flag it for step 4.
 
 Bind to `{struggles}`.
 

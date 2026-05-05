@@ -2,7 +2,7 @@
 sign_off: false
 ---
 
-# Step 7 — Finalize
+# Step 7: Finalize
 
 ## Rules
 
@@ -16,7 +16,7 @@ sign_off: false
 Render the body of `{output_file}` from the captured frontmatter blocks. Use this structure:
 
 ```markdown
-# Retrospective — {epic_id}
+# Retrospective: {epic_id}
 
 **Date:** {date}
 **Author:** {user_name}

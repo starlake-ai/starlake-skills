@@ -71,10 +71,10 @@ Read fully and follow: `steps/step-01-gather-context.md`
 
 A structured review report categorized into:
 
-- **BLOCKER** — must fix before deployment.
-- **WARNING** — should fix; risk of future incident.
-- **SUGGESTION** — improvement, not required.
-- **APPROVED** — explicitly checked aspects that pass.
+- **BLOCKER**: must fix before deployment.
+- **WARNING**: should fix; risk of future incident.
+- **SUGGESTION**: improvement, not required.
+- **APPROVED**: explicitly checked aspects that pass.
 
 If a `spec_file` was provided, findings are also appended to it as a `### Review Findings` section so the implementation skill can pick them up.
 

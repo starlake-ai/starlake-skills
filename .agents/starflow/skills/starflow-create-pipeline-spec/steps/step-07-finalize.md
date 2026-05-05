@@ -3,7 +3,7 @@ risks: []
 sign_off: false
 ---
 
-# Step 7 — Risks, Sign-off, Finalize
+# Step 7: Risks, Sign-off, Finalize
 
 ## Rules
 
@@ -17,12 +17,12 @@ sign_off: false
 ## Instructions
 
 1. **Risks & Mitigations.** Walk through this checklist and ask the user about any that aren't already obvious from the spec:
-   - **Source instability** — schema drift in `jdbc`/`rest`, file naming changes, API rate-limit changes.
-   - **Volume surprises** — what happens at 10× current row count? What's the `dagrun_timeout` headroom?
-   - **Late data** — does the write strategy + partition column tolerate records arriving after the partition window?
-   - **PII exposure** — every `HIDE`/`SHA256`/`MD5`/`AES`-annotated column reviewed?
-   - **Cost** — full-scan transforms on big tables, expensive cross-region reads, cold-storage rehydration.
-   - **Recovery** — if the pipeline fails halfway through, what's the rollback? Is it idempotent?
+   - **Source instability**: schema drift in `jdbc`/`rest`, file naming changes, API rate-limit changes.
+   - **Volume surprises**: what happens at 10× current row count? What's the `dagrun_timeout` headroom?
+   - **Late data**: does the write strategy + partition column tolerate records arriving after the partition window?
+   - **PII exposure**: every `HIDE`/`SHA256`/`MD5`/`AES`-annotated column reviewed?
+   - **Cost**: full-scan transforms on big tables, expensive cross-region reads, cold-storage rehydration.
+   - **Recovery**: if the pipeline fails halfway through, what's the rollback? Is it idempotent?
 
    For each real risk, write into `## Risks & Mitigations`:
 

@@ -2,12 +2,12 @@
 action_items: []
 ---
 
-# Step 5 — Action Items
+# Step 5: Action Items
 
 ## Rules
 
 - Every action item has an **owner** (a name, not a team) and a **target epic**.
-- Every action item has a **success criterion** — how we'll know in the next retro whether it landed.
+- Every action item has a **success criterion**: how we'll know in the next retro whether it landed.
 - "Do better at X" is not an action item. "Add a partition-strategy review checklist to step-03 of `starflow-create-pipeline-spec` by epic-N+1" is.
 - Cap at 5 new items. If more are tempting, the team is over-committing — pick the top 5 and explicitly note the rest as deferred.
 

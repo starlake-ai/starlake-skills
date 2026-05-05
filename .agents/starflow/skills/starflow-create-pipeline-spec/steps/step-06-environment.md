@@ -2,7 +2,7 @@
 connections: []  # set in this step: list of named connections
 ---
 
-# Step 6 — Environment Configuration
+# Step 6: Environment Configuration
 
 ## Rules
 

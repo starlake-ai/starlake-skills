@@ -2,7 +2,7 @@
 patterns: []
 ---
 
-# Step 4 — Cross-Cutting Patterns and Root Causes
+# Step 4: Cross-Cutting Patterns and Root Causes
 
 ## Rules
 

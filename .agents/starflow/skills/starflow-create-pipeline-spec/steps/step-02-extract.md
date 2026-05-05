@@ -2,7 +2,7 @@
 extract_block: ''  # set in this step: the full YAML extract: ... block written into the spec
 ---
 
-# Step 2 — Extract Specification
+# Step 2: Extract Specification
 
 ## Rules
 

@@ -2,7 +2,7 @@
 load_tables: []  # set in this step: list of table names defined
 ---
 
-# Step 3 — Load Specification
+# Step 3: Load Specification
 
 ## Rules
 
@@ -13,7 +13,7 @@ load_tables: []  # set in this step: list of table names defined
 
 - Step 2 complete.
 
-## Decision Tree — Write Strategy
+## Decision Tree: Write Strategy
 
 Ask the user (or infer from extract config) and pick:
 

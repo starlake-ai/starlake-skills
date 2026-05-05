@@ -6,7 +6,7 @@ sla: ''                 # set in this step
 source_class: ''        # set in this step: jdbc | rest | file | stream | mixed
 ---
 
-# Step 1 — Context
+# Step 1: Context
 
 ## Rules
 

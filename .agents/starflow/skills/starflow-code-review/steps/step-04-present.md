@@ -2,7 +2,7 @@
 report_file: '{implementation_artifacts}/review-{date}-{spec_basename}.md'
 ---
 
-# Step 4 — Present and Act
+# Step 4: Present and Act
 
 ## Rules
 
@@ -46,12 +46,12 @@ counts:
   dismissed: <D>
 ---
 
-# Pipeline Code Review — {date}
+# Pipeline Code Review: {date}
 
 ## BLOCKERS (<B>)
 
 For each BLOCKER, full detail:
-- **Title** — `<file:line>` — sources: `<source>`
+- **Title**: `<file:line>` — sources: `<source>`
 - Detail
 - Suggested fix
 
@@ -77,7 +77,7 @@ Compact list (collapsible if rendering supports it):
 Append a `### Review Findings — {date}` subsection to the spec file's "Risks & Mitigations" or "Review" section. Use checkbox format so the implementation skill can track resolution:
 
 ```markdown
-### Review Findings — {date}
+### Review Findings: {date}
 
 **Blockers** (must fix before status flips to `done`):
 - [ ] [Blocker] <title> — `<file:line>`

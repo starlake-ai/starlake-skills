@@ -56,40 +56,40 @@ Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all sy
 ## Skills Catalog
 
 ### Reference
-- **config** — Configuration reference (env vars, app structure, types, best practices)
-- **connection** — Create or modify database connections in `application.sl.yml`
+- **config**: Configuration reference (env vars, app structure, types, best practices)
+- **connection**: Create or modify database connections in `application.sl.yml`
 
 ### Ingestion & Loading
-- **autoload** — Auto-infer schemas and load data
-- **cnxload** — Load files into JDBC tables
-- **esload** / **index** — Load into Elasticsearch
-- **ingest** — Generic data ingestion
-- **kafkaload** — Kafka load/offload
-- **load** — Load from pending area (write strategies, sink config)
-- **preload** — Check landing area
-- **stage** — Move files landing → pending
+- **autoload**: Auto-infer schemas and load data
+- **cnxload**: Load files into JDBC tables
+- **esload** / **index**: Load into Elasticsearch
+- **ingest**: Generic data ingestion
+- **kafkaload**: Kafka load/offload
+- **load**: Load from pending area (write strategies, sink config)
+- **preload**: Check landing area
+- **stage**: Move files landing → pending
 
 ### Transformation
-- **job** / **transform** — Run SQL/Python transformations
+- **job** / **transform**: Run SQL/Python transformations
 
 ### Extraction
-- **extract** — Schema + data extraction
-- **extract-bq-schema** — BigQuery schema extraction
-- **extract-data** — Data extraction to files
-- **extract-rest-data** — REST API data extraction (pagination, auth, rate limiting, incremental)
-- **extract-rest-schema** — REST API schema extraction (infer from sample responses)
-- **extract-schema** — JDBC schema extraction (custom remarks, column selection)
-- **extract-script** — Generate extraction scripts
+- **extract**: Schema + data extraction
+- **extract-bq-schema**: BigQuery schema extraction
+- **extract-data**: Data extraction to files
+- **extract-rest-data**: REST API data extraction (pagination, auth, rate limiting, incremental)
+- **extract-rest-schema**: REST API schema extraction (infer from sample responses)
+- **extract-schema**: JDBC schema extraction (custom remarks, column selection)
+- **extract-script**: Generate extraction scripts
 
 ### Schema Management
-- **bootstrap** — New project from template
-- **infer-schema** — Infer schema from file
-- **xls2yml** / **xls2ymljob** — Excel to YAML conversion
-- **yml2ddl** — YAML to SQL DDL
-- **yml2xls** — YAML to Excel
+- **bootstrap**: New project from template
+- **infer-schema**: Infer schema from file
+- **xls2yml** / **xls2ymljob**: Excel to YAML conversion
+- **yml2ddl**: YAML to SQL DDL
+- **yml2xls**: YAML to Excel
 
 ### Data Quality
-- **expectations** — Expectation syntax, Jinja2 macros, validation patterns
+- **expectations**: Expectation syntax, Jinja2 macros, validation patterns
 
 ### Lineage & Diagrams
 - **acl-dependencies** / **col-lineage** / **lineage** / **table-dependencies**
@@ -98,11 +98,11 @@ Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all sy
 - **console** / **freshness** / **gizmosql** / **metrics** / **migrate** / **serve** / **settings** / **validate**
 
 ### Security
-- **iam-policies** — IAM policies
-- **secure** — RLS, CLS, privacy transformations
+- **iam-policies**: IAM policies
+- **secure**: RLS, CLS, privacy transformations
 
 ### Orchestration
-- **dag-deploy** / **dag-generate** — Airflow/Dagster DAG generation
+- **dag-deploy** / **dag-generate**: Airflow/Dagster DAG generation
 
 ### Utilities
 - **bq-info** / **compare** / **parquet2csv** / **site** / **summarize** / **test**
@@ -126,7 +126,7 @@ The heavier workflows (`starflow-create-pipeline-spec`, `starflow-code-review`, 
 
 ### Adversarial Code Review
 
-`starflow-code-review` spawns three independent persona subagents in parallel — Winston (architecture), Amelia (engineering), Quinn (data quality) — then deduplicates and triages findings into BLOCKER / WARNING / SUGGESTION / APPROVED. Each persona has a focused prompt; independence is the point.
+`starflow-code-review` spawns three independent persona subagents in parallel: Winston (architecture), Amelia (engineering), and Quinn (data quality). Findings are deduplicated and triaged into BLOCKER / WARNING / SUGGESTION / APPROVED. Each persona has a focused prompt; independence is the point.
 
 ### Adaptive Help
 
@@ -146,10 +146,10 @@ Talk to a specialized agent for guided assistance:
 
 ### Utility Skills
 
-- **starflow-help** — Adaptive help: reads the manifest, scans artifacts, recommends the next step
-- **starflow-data-quality-review** — Review data quality expectations coverage
-- **starflow-lineage-review** — Trace and document data lineage
-- **starflow-retrospective** — End-of-epic retrospective with follow-through check on the previous retro's action items
+- **starflow-help**: Adaptive help: reads the manifest, scans artifacts, recommends the next step
+- **starflow-data-quality-review**: Review data quality expectations coverage
+- **starflow-lineage-review**: Trace and document data lineage
+- **starflow-retrospective**: End-of-epic retrospective with follow-through check on the previous retro's action items
 
 ### Layered Configuration
 
@@ -170,4 +170,4 @@ Starflow config uses three layers (highest wins): base `config/starflow.yaml` �
 
 ## License
 
-Apache-2.0 — See [LICENSE](LICENSE) for details.
+Apache-2.0. See [LICENSE](LICENSE) for details.

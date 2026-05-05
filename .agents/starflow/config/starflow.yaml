@@ -1,11 +1,11 @@
-# Starflow Method Configuration — Base Layer
+# Starflow Method Configuration: Base Layer
 # Version: 1.1.0
 #
 # This file is the **base layer** of the layered config model.
 # Precedence (highest wins):
 #   1. config/custom/starflow.user.yaml  (personal, gitignored)
 #   2. config/custom/starflow.yaml       (team, committed)
-#   3. config/starflow.yaml              (this file — installer base, treat as read-only)
+#   3. config/starflow.yaml              (this file: installer base, treat as read-only)
 #
 # Resolve at runtime with:
 #   python3 .agents/starflow/scripts/resolve_config.py --starflow-root .agents/starflow

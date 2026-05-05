@@ -13,11 +13,11 @@ Help the user understand where they are in their Starflow workflow and what to r
 
 When this skill completes, the user should:
 
-1. **Know where they are** — which phase, what's already complete, what's blocked.
-2. **Know what to do next** — the next required skill, with clear reasoning.
-3. **Know how to invoke it** — skill name, menu code, action context.
-4. **Get offered a quick start** — when one skill is the obvious next step, offer to run it now rather than just listing it.
-5. **Feel oriented, not overwhelmed** — only what fits their current position.
+1. **Know where they are**: which phase, what's already complete, what's blocked.
+2. **Know what to do next**: the next required skill, with clear reasoning.
+3. **Know how to invoke it**: skill name, menu code, action context.
+4. **Get offered a quick start**: when one skill is the obvious next step, offer to run it now rather than just listing it.
+5. **Feel oriented, not overwhelmed**: only what fits their current position.
 
 ## Data Sources
 
@@ -36,12 +36,12 @@ When this skill completes, the user should:
 module, skill, display-name, menu-code, description, action, args, phase, after, before, required, output-location, outputs
 ```
 
-- **phase** — `1-discovery`, `2-architecture`, `3-pipeline-design`, `4-implementation`, or `anytime`.
-- **after** — comma-separated skill names that should ideally complete first.
-- **before** — comma-separated skill names that should run after this one.
-- **required** — `true` items must complete before later phases can meaningfully proceed. Phases with no required items are entirely optional.
-- **output-location** — config key (`planning_artifacts`, `implementation_artifacts`, `project_knowledge`, `output_folder`) whose resolved path is where outputs land.
-- **outputs** — glob pattern relative to `output-location` to detect completion.
+- **phase**: `1-discovery`, `2-architecture`, `3-pipeline-design`, `4-implementation`, or `anytime`.
+- **after**: comma-separated skill names that should ideally complete first.
+- **before**: comma-separated skill names that should run after this one.
+- **required**: `true` items must complete before later phases can meaningfully proceed. Phases with no required items are entirely optional.
+- **output-location**: config key (`planning_artifacts`, `implementation_artifacts`, `project_knowledge`, `output_folder`) whose resolved path is where outputs land.
+- **outputs**: glob pattern relative to `output-location` to detect completion.
 
 ## Procedure
 
@@ -74,7 +74,7 @@ Use this shape (compact, in `{communication_language}`):
 > **Where you are:** Phase 2 — Architecture. Discovery is complete (3 artifacts found). Schema design is the next required step.
 >
 > **Recommended next:**
-> - `[SD]` **Schema Design** — `starflow-schema-design` — Define `.sl.yml` for tables identified in the architecture doc.
+> - `[SD]` **Schema Design**: `starflow-schema-design` — Define `.sl.yml` for tables identified in the architecture doc.
 >
 > **Optional in this phase:** _(none currently — all optional Discovery items already done)_
 >
@@ -85,9 +85,9 @@ If the user has a specific question that doesn't map cleanly to a skill (e.g. "w
 ## Constraints
 
 - **Recommend running each skill in a fresh context window** when the workflow is heavy (Discovery, Pipeline Spec, Dev Pipeline, Retrospective). For lightweight skills (Help, Sprint Status), continuing in the current context is fine.
-- **Match the user's tone** — conversational when they're casual, structured when they want specifics.
-- **Never fabricate completion** — if you can't read the artifacts directory, say so and ask.
-- **Prefer the recommendation over the list** — list every option only when explicitly asked.
+- **Match the user's tone**: conversational when they're casual, structured when they want specifics.
+- **Never fabricate completion**: if you can't read the artifacts directory, say so and ask.
+- **Prefer the recommendation over the list**: list every option only when explicitly asked.
 
 ## Outcome
 

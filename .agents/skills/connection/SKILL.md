@@ -44,7 +44,7 @@ application:
 | `JDBC`   | Generic JDBC (Snowflake, DuckDB, PostgreSQL, Redshift, MySQL, etc.) |
 | `ES`     | Elasticsearch                           |
 | `KAFKA`  | Apache Kafka                            |
-| `REST`   | REST API (aliases: `HTTP`, `API`) — used with `extract-rest-schema` and `extract-rest-data` |
+| `REST`   | REST API (aliases: `HTTP`, `API`): used with `extract-rest-schema` and `extract-rest-data` |
 
 Starlake auto-detects the specific database engine from the JDBC URL prefix (e.g., `jdbc:snowflake:`, `jdbc:duckdb:`, `jdbc:postgresql:`, `jdbc:redshift:`, `jdbc:mysql:`, `jdbc:mariadb:`).
 
@@ -111,7 +111,7 @@ connections:
 
 Starlake supports Snowflake OAuth in two modes:
 
-**Web App OAuth** — set `authenticator` to `oauth` and provide `sl_access_token` in the format `account°user°token`:
+**Web App OAuth**: set `authenticator` to `oauth` and provide `sl_access_token` in the format `account°user°token`:
 
 ```yaml
 connections:
@@ -128,7 +128,7 @@ connections:
       keep_column_case: "off"
 ```
 
-**Snowflake Native App** — additionally set `SL_APP_TYPE` to `snowflake_native_app`:
+**Snowflake Native App**: additionally set `SL_APP_TYPE` to `snowflake_native_app`:
 
 ```yaml
 connections:
@@ -145,7 +145,7 @@ connections:
       schema: "{{SNOWFLAKE_SCHEMA}}"
 ```
 
-**Programmatic Access Token** — set `authenticator` to `programmatic_access_token` (Starlake handles this internally and does not pass it to the JDBC driver):
+**Programmatic Access Token**: set `authenticator` to `programmatic_access_token` (Starlake handles this internally and does not pass it to the JDBC driver):
 
 ```yaml
 connections:
@@ -760,8 +760,8 @@ starlake settings --test-connection snowflake
 
 ## Related Skills
 
-- [config](../config/SKILL.md) — Application configuration reference
-- [settings](../settings/SKILL.md) — Print settings and test connections
-- [bootstrap](../bootstrap/SKILL.md) — Create a new project from a template
-- [extract-schema](../extract-schema/SKILL.md) — Extract schema from a database connection
-- [extract-data](../extract-data/SKILL.md) — Extract data from a database connection
+- [config](../config/SKILL.md): Application configuration reference
+- [settings](../settings/SKILL.md): Print settings and test connections
+- [bootstrap](../bootstrap/SKILL.md): Create a new project from a template
+- [extract-schema](../extract-schema/SKILL.md): Extract schema from a database connection
+- [extract-data](../extract-data/SKILL.md): Extract data from a database connection

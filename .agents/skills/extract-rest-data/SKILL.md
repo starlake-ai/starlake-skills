@@ -15,7 +15,7 @@ starlake extract-rest-data [options]
 
 ## Options
 
-- `--config <value>`: REST API extraction config name (required) — references a file in `metadata/extract/`
+- `--config <value>`: REST API extraction config name (required): references a file in `metadata/extract/`
 - `--outputDir <value>`: Where to output files (required)
 - `--limit <value>`: Limit number of records extracted per endpoint
 - `--parallelism <value>`: Parallelism level for endpoint extraction (default: available CPU cores)

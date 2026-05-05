@@ -102,8 +102,8 @@ application:
 ## REST API Extract Configuration
 
 Extract schemas and data from REST API endpoints. See dedicated skills for full details:
-- [extract-rest-schema](../extract-rest-schema/SKILL.md) — infer schemas from API responses
-- [extract-rest-data](../extract-rest-data/SKILL.md) — extract data to CSV with pagination, auth, rate limiting
+- [extract-rest-schema](../extract-rest-schema/SKILL.md): infer schemas from API responses
+- [extract-rest-data](../extract-rest-data/SKILL.md): extract data to CSV with pagination, auth, rate limiting
 
 ```yaml
 # metadata/extract/my-rest-api.sl.yml

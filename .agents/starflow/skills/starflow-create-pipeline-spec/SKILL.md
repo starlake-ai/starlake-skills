@@ -58,10 +58,10 @@ This skill uses **step-file architecture** for disciplined execution:
 
 ### Step Processing Rules
 
-1. **READ COMPLETELY** — read the entire step file before acting.
-2. **FOLLOW SEQUENCE** — execute sections in order.
-3. **WAIT FOR INPUT** — halt at every checkpoint marked `**HALT**`. Do not invent answers.
-4. **PERSIST STATE** — at the end of each step, append the step number to `stepsCompleted` in the spec frontmatter and save the file before loading the next step.
+1. **READ COMPLETELY**: read the entire step file before acting.
+2. **FOLLOW SEQUENCE**: execute sections in order.
+3. **WAIT FOR INPUT**: halt at every checkpoint marked `**HALT**`. Do not invent answers.
+4. **PERSIST STATE**: at the end of each step, append the step number to `stepsCompleted` in the spec frontmatter and save the file before loading the next step.
 
 ### Critical Rules (NO EXCEPTIONS)
 

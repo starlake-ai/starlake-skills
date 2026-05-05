@@ -1,4 +1,4 @@
-# Starflow Config — Layered Customization
+# Starflow Config: Layered Customization
 
 Starflow uses a three-layer config model. Higher layers override lower ones.
 

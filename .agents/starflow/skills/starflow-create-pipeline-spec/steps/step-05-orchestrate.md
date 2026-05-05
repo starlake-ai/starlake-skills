@@ -3,7 +3,7 @@ dag_name: ''       # set in this step
 schedule: ''       # set in this step
 ---
 
-# Step 5 — Orchestration Specification
+# Step 5: Orchestration Specification
 
 ## Rules
 

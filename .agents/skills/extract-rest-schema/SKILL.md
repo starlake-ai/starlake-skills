@@ -15,7 +15,7 @@ starlake extract-rest-schema [options]
 
 ## Options
 
-- `--config <value>`: REST API extraction config name (required) — references a file in `metadata/extract/`
+- `--config <value>`: REST API extraction config name (required): references a file in `metadata/extract/`
 - `--outputDir <value>`: Where to output YAML schema files
 - `--connectionRef <value>`: Connection reference name
 - `--reportFormat <value>`: Report output format: `console`, `json`, or `html`

@@ -2,7 +2,7 @@
 transform_tasks: []  # set in this step
 ---
 
-# Step 4 — Transform Specification
+# Step 4: Transform Specification
 
 ## Rules
 

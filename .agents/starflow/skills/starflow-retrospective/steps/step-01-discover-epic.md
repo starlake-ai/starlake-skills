@@ -6,7 +6,7 @@ sprint_status_file: '{implementation_artifacts}/sprint-status.yaml'
 output_file: ''        # set in this step
 ---
 
-# Step 1 — Discover the Epic
+# Step 1: Discover the Epic
 
 ## Rules
 
@@ -94,7 +94,7 @@ action_items: []                        # filled in step 5
 next_epic_risks: []                     # filled in step 6
 ---
 
-# Retrospective — {epic_id}
+# Retrospective: {epic_id}
 
 (body filled progressively by each step)
 ```

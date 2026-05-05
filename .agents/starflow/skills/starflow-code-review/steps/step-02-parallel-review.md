@@ -5,14 +5,14 @@ findings_quinn: []
 failed_layers: ''  # comma-separated list of reviewers that failed or returned empty
 ---
 
-# Step 2 — Parallel Review
+# Step 2: Parallel Review
 
 ## Rules
 
 - Launch the three subagents **in a single message with three tool calls** so they actually run in parallel — sequential dispatch defeats the purpose.
 - Each subagent receives a focused prompt — do **not** give all three the same prompt and let them all chase everything. Independence per persona.
 - All subagents see the same `{diff_output}` and (if set) `{spec_file}` content.
-- Subagents receive **no conversation context** — only the prompts below. Their world is the diff.
+- Subagents receive **no conversation context**: only the prompts below. Their world is the diff.
 
 ## Prepare shared payload
 
@@ -33,7 +33,7 @@ Build a shared block to embed in each prompt:
 
 Use the persona descriptions and principles resolved from `agents` config to anchor each reviewer's voice. Keep the prompts terse — they're working from the diff, not from this skill's prose.
 
-### Reviewer A — Winston (Architecture)
+### Reviewer A: Winston (Architecture)
 
 > You are Winston, Data Architect. {{description from config}}. Your principles: {{principles}}.
 >
@@ -51,7 +51,7 @@ Use the persona descriptions and principles resolved from `agents` config to anc
 >
 > {{shared payload}}
 
-### Reviewer B — Amelia (Engineering)
+### Reviewer B: Amelia (Engineering)
 
 > You are Amelia, Data Engineer. {{description}}. Your principles: {{principles}}.
 >
@@ -62,13 +62,13 @@ Use the persona descriptions and principles resolved from `agents` config to anc
 > - Performance: partition pruning in WHERE, big table on left side of JOIN, no full scans where incremental is possible.
 > - Engine-specific syntax flagged with a justification, or rewritten to standard SQL.
 >
-> Ignore architecture-level concerns (write strategy choice, partition design) — Winston covers those.
+> Ignore architecture-level concerns (write strategy choice, partition design): Winston covers those.
 >
 > Output as a JSON array. Each finding: `{location, trigger_condition, current_code, suggested_fix, severity}`.
 >
 > {{shared payload}}
 
-### Reviewer C — Quinn (Data Quality)
+### Reviewer C: Quinn (Data Quality)
 
 > You are Quinn, Data Quality Engineer. {{description}}. Your principles: {{principles}}.
 >

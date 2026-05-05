@@ -2,7 +2,7 @@
 findings_unified: []  # set in this step
 ---
 
-# Step 3 — Triage
+# Step 3: Triage
 
 ## Rules
 
