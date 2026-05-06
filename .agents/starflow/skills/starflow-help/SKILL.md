@@ -21,14 +21,14 @@ When this skill completes, the user should:
 
 ## Data Sources
 
-- **Catalog**: `.agents/starflow/_config/starflow-help.csv` — manifest of all Starflow skills with phases, dependencies, and output patterns. Resolve relative to the Starflow root (the directory containing `config/starflow.yaml`).
+- **Catalog**: `.agents/starflow/_config/starflow-help.csv`: manifest of all Starflow skills with phases, dependencies, and output patterns. Resolve relative to the Starflow root (the directory containing `config/starflow.yaml`).
 - **Config**: resolve via the layered resolver:
   ```
   python3 .agents/starflow/scripts/resolve_config.py --starflow-root .agents/starflow
   ```
   Use the resolved values to expand `{planning_artifacts}` / `{implementation_artifacts}` / `{user_name}` / `{communication_language}`.
 - **Artifacts**: scan resolved `output-location` directories for files matching the row's `outputs` glob pattern. Their presence is the strongest "this step is done" signal.
-- **Project knowledge**: if the resolved `project_knowledge` path exists, read it for grounding context — never fabricate project-specific details.
+- **Project knowledge**: if the resolved `project_knowledge` path exists, read it for grounding context: never fabricate project-specific details.
 
 ## CSV Schema
 
@@ -55,7 +55,7 @@ For each row with `output-location` set:
 
 - Resolve the location key against config (e.g. `planning_artifacts` → `/path/to/starflow-output/planning-artifacts`).
 - Glob for `outputs` patterns under that path.
-- If any match exists, mark the skill as **done** (probabilistically — flag uncertainty if filenames are ambiguous).
+- If any match exists, mark the skill as **done** (probabilistically: flag uncertainty if filenames are ambiguous).
 
 ### 3. Determine the current phase
 
@@ -71,16 +71,16 @@ The current phase is the lowest-numbered phase that still has at least one `requ
 
 Use this shape (compact, in `{communication_language}`):
 
-> **Where you are:** Phase 2 — Architecture. Discovery is complete (3 artifacts found). Schema design is the next required step.
+> **Where you are:** Phase 2: Architecture. Discovery is complete (3 artifacts found). Schema design is the next required step.
 >
 > **Recommended next:**
-> - `[SD]` **Schema Design**: `starflow-schema-design` — Define `.sl.yml` for tables identified in the architecture doc.
+> - `[SD]` **Schema Design**: `starflow-schema-design`: Define `.sl.yml` for tables identified in the architecture doc.
 >
-> **Optional in this phase:** _(none currently — all optional Discovery items already done)_
+> **Optional in this phase:** _(none currently: all optional Discovery items already done)_
 >
 > **Want me to start `starflow-schema-design` now? (y/n)**
 
-If the user has a specific question that doesn't map cleanly to a skill (e.g. "what write strategy should I use?"), answer it directly using the relevant agent persona's knowledge — `starflow-data-architect` for design questions, `starflow-data-engineer` for implementation, etc. — and offer to invoke that agent.
+If the user has a specific question that doesn't map cleanly to a skill (e.g. "what write strategy should I use?"), answer it directly using the relevant agent persona's knowledge: `starflow-data-architect` for design questions, `starflow-data-engineer` for implementation, etc.: and offer to invoke that agent.
 
 ## Constraints
 

@@ -1,6 +1,6 @@
 ---
 name: gizmosql
-description: Manage GizmoSQL processes — start, stop, list, and stop-all DuckLake-backed SQL servers
+description: Manage GizmoSQL processes: start, stop, list, and stop-all DuckLake-backed SQL servers
 ---
 
 # GizmoSQL Skill
@@ -24,11 +24,11 @@ starlake gizmosql <action> [options]
 
 ## Options
 
-- `action` (required): Action to perform — `start`, `stop`, `list`, `stop-all`
+- `action` (required): Action to perform: `start`, `stop`, `list`, `stop-all`
 - `--connection <value>`: Connection name (required for `start`). Must reference a DuckLake connection
 - `--process-name <value>`: Process name (required for `stop`)
 - `--port <value>`: Port for the GizmoSQL process (optional, for `start`). Overrides the `SL_DUCKDB_PORT` connection option
-- `--reportFormat <value>`: Report output format — `console`, `json`, or `html`
+- `--reportFormat <value>`: Report output format: `console`, `json`, or `html`
 
 ## Configuration Context
 

@@ -9,7 +9,7 @@ action_items: []
 - Every action item has an **owner** (a name, not a team) and a **target epic**.
 - Every action item has a **success criterion**: how we'll know in the next retro whether it landed.
 - "Do better at X" is not an action item. "Add a partition-strategy review checklist to step-03 of `starflow-create-pipeline-spec` by epic-N+1" is.
-- Cap at 5 new items. If more are tempting, the team is over-committing — pick the top 5 and explicitly note the rest as deferred.
+- Cap at 5 new items. If more are tempting, the team is over-committing: pick the top 5 and explicitly note the rest as deferred.
 
 ## Instructions
 
@@ -19,7 +19,7 @@ For every item in `{followup_status}` with `carry_forward: true`, pre-fill an ac
 
 ```yaml
 - id: <new sequential>
-  description: <updated wording — make it more specific based on what we learned>
+  description: <updated wording: make it more specific based on what we learned>
   source: carry-forward from {previous_retro}
   prior_id: <previous_id>
   draft: true
@@ -54,7 +54,7 @@ For accepted items, prompt for:
 
 - **Owner**: a single name. "The team" is not an owner.
 - **Target epic**: which epic should this land in?
-- **Success criterion**: one sentence — what artifact or measurement proves this got done?
+- **Success criterion**: one sentence: what artifact or measurement proves this got done?
 - **Follow-up date**: explicit calendar date for next-retro check.
 
 Capture each as:
@@ -73,7 +73,7 @@ Capture each as:
 
 ### 4. Cap at 5
 
-If more than 5 items survived, **HALT** and ask the user to pick the top 5. Note the deferred ones in the output file under a "## Deferred from this retro" section — they should be re-considered at next retro.
+If more than 5 items survived, **HALT** and ask the user to pick the top 5. Note the deferred ones in the output file under a "## Deferred from this retro" section: they should be re-considered at next retro.
 
 ### 5. Save
 

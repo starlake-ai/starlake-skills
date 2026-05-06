@@ -5,7 +5,7 @@ description: Data quality expectations syntax, built-in macros, and validation p
 
 # Expectations Skill
 
-Define and enforce data quality checks on loaded and transformed data. Expectations are SQL-based conditions evaluated after data processing — they can warn or fail the pipeline based on configurable thresholds.
+Define and enforce data quality checks on loaded and transformed data. Expectations are SQL-based conditions evaluated after data processing: they can warn or fail the pipeline based on configurable thresholds.
 
 ## Expectation Syntax
 

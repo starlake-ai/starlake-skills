@@ -7,7 +7,7 @@ connections: []  # set in this step: list of named connections
 ## Rules
 
 - Environment parity: the only thing that should change between dev / staging / prod is the **value** of a connection setting, never the **shape** of the config.
-- Secrets live in env vars or a secret manager — never inline in the spec, never in `env.PROD.sl.yml`.
+- Secrets live in env vars or a secret manager: never inline in the spec, never in `env.PROD.sl.yml`.
 
 ## Preconditions
 
@@ -23,7 +23,7 @@ connections: []  # set in this step: list of named connections
 2. **Write three blocks** under `## Environment Configuration`:
 
    ```yaml
-   # env.sl.yml — base / dev defaults
+   # env.sl.yml: base / dev defaults
    connections:
      <conn>:
        type: "<type>"
@@ -32,7 +32,7 @@ connections: []  # set in this step: list of named connections
    ```
 
    ```yaml
-   # env.STAGING.sl.yml — only the keys that differ from base
+   # env.STAGING.sl.yml: only the keys that differ from base
    connections:
      <conn>:
        options:
@@ -40,7 +40,7 @@ connections: []  # set in this step: list of named connections
    ```
 
    ```yaml
-   # env.PROD.sl.yml — only the keys that differ from base
+   # env.PROD.sl.yml: only the keys that differ from base
    connections:
      <conn>:
        options:

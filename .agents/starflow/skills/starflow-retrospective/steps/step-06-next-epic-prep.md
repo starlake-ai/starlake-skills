@@ -19,7 +19,7 @@ For each pattern in `{patterns}` with `compounding: true`, add to `{next_epic_ri
 ```yaml
 - title: <pattern name>
   source: compounding-debt from {epic_id} retro
-  why_now: <one sentence — why this is more urgent now than last time>
+  why_now: <one sentence: why this is more urgent now than last time>
   recommended_mitigation: <link to the action item from step 5 that addresses it>
 ```
 
@@ -57,7 +57,7 @@ For each:
   recommended_mitigation: <one-sentence recommendation, or "investigate during planning">
 ```
 
-Cap at ~5 risks total — the goal is a useful prep memo, not a fear list.
+Cap at ~5 risks total: the goal is a useful prep memo, not a fear list.
 
 ### 4. Save
 

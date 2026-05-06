@@ -67,4 +67,4 @@ Generate the source analysis document and save to `{planning_artifacts}/source-a
 
 ## Outcome
 
-A detailed source analysis document with schema definition, quality profile, volume characteristics, and extraction strategy — ready for pipeline specification and Starlake YAML configuration generation.
+A detailed source analysis document with schema definition, quality profile, volume characteristics, and extraction strategy: ready for pipeline specification and Starlake YAML configuration generation.

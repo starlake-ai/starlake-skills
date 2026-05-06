@@ -20,10 +20,10 @@ source_class: ''        # set in this step: jdbc | rest | file | stream | mixed
 ## Instructions
 
 1. **Load grounding artifacts.** Try to read these so the conversation is grounded in prior decisions:
-   - `{planning_artifacts}/domain-discovery-*.md` — known domains and owners
-   - `{planning_artifacts}/data-architecture-*.md` — layer / engine / governance choices
-   - `{planning_artifacts}/source-analysis-*.md` — per-source detail
-   If none exist, note that out loud — the spec will be less grounded but still valid.
+   - `{planning_artifacts}/domain-discovery-*.md`: known domains and owners
+   - `{planning_artifacts}/data-architecture-*.md`: layer / engine / governance choices
+   - `{planning_artifacts}/source-analysis-*.md`: per-source detail
+   If none exist, note that out loud: the spec will be less grounded but still valid.
 
 2. **Ask the four context questions** (one at a time if the user wants to chat, batched if they want to move fast):
 

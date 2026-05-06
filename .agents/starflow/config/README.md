@@ -4,7 +4,7 @@ Starflow uses a three-layer config model. Higher layers override lower ones.
 
 | # | File | Scope | Tracked? |
 |---|------|-------|----------|
-| 1 | `config/starflow.yaml` | Installer base — defaults shipped with the bundle | committed (read-only) |
+| 1 | `config/starflow.yaml` | Installer base: defaults shipped with the bundle | committed (read-only) |
 | 2 | `config/custom/starflow.yaml` | Team policies (engines, governance, persona pinning) | committed |
 | 3 | `config/custom/starflow.user.yaml` | Personal tweaks (user name, language, preferences) | **gitignored** |
 
@@ -31,11 +31,11 @@ python3 .agents/starflow/scripts/resolve_customization.py \
 ```
 
 Output is JSON to stdout; errors to stderr. Requires Python 3.7+ and PyYAML
-(`pip install pyyaml` — most data-engineering environments already have it).
+(`pip install pyyaml`: most data-engineering environments already have it).
 
 ## Merge semantics
 
-Pure structural rules — no field-name special-casing:
+Pure structural rules: no field-name special-casing:
 
 - **Scalars** (string, number, bool, null): override wins.
 - **Mappings**: deep merge (recurse).
@@ -57,7 +57,7 @@ by `code` with a no-op value, or fork the base file.
 ```yaml
 agents:
   - code: data-quality-engineer
-    description: "Strict severity bias — when in doubt, FAIL not WARN."
+    description: "Strict severity bias: when in doubt, FAIL not WARN."
 ```
 
 Only the `description` of that agent is replaced; the rest of the entry

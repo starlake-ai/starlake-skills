@@ -86,4 +86,4 @@ Generate the data architecture document and save to `{planning_artifacts}/data-a
 
 ## Outcome
 
-A comprehensive data architecture document covering layers, engines, Starlake project structure, governance, and environment strategy — ready to guide all pipeline implementation.
+A comprehensive data architecture document covering layers, engines, Starlake project structure, governance, and environment strategy: ready to guide all pipeline implementation.

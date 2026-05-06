@@ -20,7 +20,7 @@ starlake transform [options]
 - `--sync-apply`: Update YAML attributes to match the SQL query columns
 - `--sync-preview`: Preview YAML attribute changes that would match the SQL query
 - `--query <value>`: Run this SQL query instead of the one defined in the task file
-- `--dry-run`: Dry run only — compile and validate without executing (BigQuery support)
+- `--dry-run`: Dry run only: compile and validate without executing (BigQuery support)
 - `--tags <value>`: Run all tasks matching these tags
 - `--format`: Pretty-print the final SQL query and update the `.sql` file
 - `--interactive <value>`: Run query and display results without sinking. Format: `csv`, `json`, `table`, `json-array`

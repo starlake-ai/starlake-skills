@@ -1,7 +1,7 @@
 ---
 skill_name: config
 version: 3.0.0
-description: Starlake configuration reference — environment variables, application structure, attribute types, storage patterns, and best practices
+description: Starlake configuration reference: environment variables, application structure, attribute types, storage patterns, and best practices
 tags:
   [
     starlake,
@@ -179,18 +179,18 @@ application:
     sink:
       connectionRef: "{{activeConnection}}"
 
-  # Access policies — see [secure](../secure/SKILL.md)
+  # Access policies: see [secure](../secure/SKILL.md)
   accessPolicies:
     apply: true
     location: EU
     taxonomy: RGPD
 
-  # Default DAG references — see [dag-generate](../dag-generate/SKILL.md)
+  # Default DAG references: see [dag-generate](../dag-generate/SKILL.md)
   dagRef:
     load: "default_load_dag"
     transform: "default_transform_dag"
 
-  # Connections — see [settings](../settings/SKILL.md) for all connection types
+  # Connections: see [settings](../settings/SKILL.md) for all connection types
   connections:
     duckdb-local:
       type: jdbc
@@ -198,11 +198,11 @@ application:
         url: "jdbc:duckdb:{{sl_root_local}}/datasets/duckdb.db"
         driver: "org.duckdb.DuckDBDriver"
 
-  # Data quality — see [expectations](../expectations/SKILL.md)
+  # Data quality: see [expectations](../expectations/SKILL.md)
   expectations:
     active: true
 
-  # Metrics — see [metrics](../metrics/SKILL.md)
+  # Metrics: see [metrics](../metrics/SKILL.md)
   metrics:
     active: true
     discreteMaxCardinality: 10

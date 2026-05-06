@@ -6,9 +6,9 @@ transform_tasks: []  # set in this step
 
 ## Rules
 
-- Skip this step (and mark complete) only if the user explicitly says "no transforms — load only".
+- Skip this step (and mark complete) only if the user explicitly says "no transforms: load only".
 - Standard SQL only. Engine-specific syntax requires a written justification in the task block.
-- Dependencies are inferred from `FROM` / `JOIN` references in the SQL — but document them explicitly so the spec is readable without parsing.
+- Dependencies are inferred from `FROM` / `JOIN` references in the SQL: but document them explicitly so the spec is readable without parsing.
 
 ## Preconditions
 
@@ -26,7 +26,7 @@ For each transformation task:
    - Output row count within expected range
    - Aggregations match an independent count
    - No nulls in derived keys
-6. **Recursive execution**: should upstream transforms run first (`recursive: true`)? Default `false` — let the orchestrator handle ordering when possible.
+6. **Recursive execution**: should upstream transforms run first (`recursive: true`)? Default `false`: let the orchestrator handle ordering when possible.
 
 Write each task under `## Transform`:
 

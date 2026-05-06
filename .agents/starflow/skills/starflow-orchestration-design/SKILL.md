@@ -35,8 +35,8 @@ For each DAG, define:
 - **Catchup policy**: Whether to backfill missed runs
 - **Concurrency**: Max parallel task execution
 - **Timeout**: Maximum DAG runtime before alerting
-- **Retry policy**: Number of retries and delay between them. Default `retries` is `0` — retries must be opted in explicitly. On the Cloud Run runner, `retry_delay` is overridden per-task by `retry_delay_in_seconds` (default `10s`); tune that option when running on Cloud Run.
-- **Pre-load "not ready" sentinel** (Cloud Run only): For load DAGs whose pre-load step waits for files, set `pre_load_not_ready_sentinel_path` to a GCS prefix. Orchestration auto-appends `<domain>/<run_id>.notready` and uses the sentinel to distinguish "files not here yet, retry" from "real error" — keeps the Cloud Run console clean of red "Failed" executions for routine waiting polls. Requires `retries > 0` and a tuned `retry_delay_in_seconds` to define the wait window.
+- **Retry policy**: Number of retries and delay between them. Default `retries` is `0`: retries must be opted in explicitly. On the Cloud Run runner, `retry_delay` is overridden per-task by `retry_delay_in_seconds` (default `10s`); tune that option when running on Cloud Run.
+- **Pre-load "not ready" sentinel** (Cloud Run only): For load DAGs whose pre-load step waits for files, set `pre_load_not_ready_sentinel_path` to a GCS prefix. Orchestration auto-appends `<domain>/<run_id>.notready` and uses the sentinel to distinguish "files not here yet, retry" from "real error": keeps the Cloud Run console clean of red "Failed" executions for routine waiting polls. Requires `retries > 0` and a tuned `retry_delay_in_seconds` to define the wait window.
 
 ### Step 4: DAG Configuration
 Create Starlake DAG definitions:
@@ -84,4 +84,4 @@ Run `starlake dag-generate` to produce Airflow/Dagster Python files from the YAM
 
 ## Outcome
 
-Complete orchestration design with DAG configurations, scheduling strategies, and monitoring plans — ready for deployment to Airflow or Dagster.
+Complete orchestration design with DAG configurations, scheduling strategies, and monitoring plans: ready for deployment to Airflow or Dagster.

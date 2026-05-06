@@ -6,9 +6,9 @@ patterns: []
 
 ## Rules
 
-- Look for patterns *across* wins, struggles, and surprises — not within one bucket.
+- Look for patterns *across* wins, struggles, and surprises: not within one bucket.
 - Name root causes carefully. "Schema drift surprised us twice" is a pattern; "the data team is bad at communication" is a person attribution and is wrong on its face.
-- The compounding-debt list from step 2 is your strongest signal — surface it explicitly here.
+- The compounding-debt list from step 2 is your strongest signal: surface it explicitly here.
 
 ## Instructions
 
@@ -30,7 +30,7 @@ Present 2–5 candidate patterns. For each:
 > **Pattern:** `<name>`
 > **Evidence:** `<bullet list of items from wins/struggles/surprises that fit>`
 > **Root-cause hypothesis:** `<one sentence, systems-level>`
-> **Compounding?** yes / no — `<reference to prior retro if yes>`
+> **Compounding?** yes / no: `<reference to prior retro if yes>`
 
 **HALT.** Walk through each:
 

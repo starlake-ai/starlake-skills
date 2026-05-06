@@ -9,7 +9,7 @@ surprises: []
 ## Rules
 
 - One topic at a time. Don't batch.
-- No blame. Phrase struggles in terms of systems, conditions, and processes — not people.
+- No blame. Phrase struggles in terms of systems, conditions, and processes: not people.
 - Concrete examples beat generalities. "The DuckDB → BigQuery promotion took three retries" beats "Deployment was hard".
 
 ## Instructions
@@ -50,8 +50,8 @@ For each struggle, capture:
 ```yaml
 - title: <one line>
   detail: <what happened, in systems terms>
-  cost: <hours / pipelines blocked / incidents — keep it factual>
-  prior_signal: <was this in a previous retro? — cross-check {followup_status}>
+  cost: <hours / pipelines blocked / incidents: keep it factual>
+  prior_signal: <was this in a previous retro?: cross-check {followup_status}>
 ```
 
 If `prior_signal` is non-empty, this is **compounding debt**: flag it for step 4.

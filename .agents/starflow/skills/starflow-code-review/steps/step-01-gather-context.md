@@ -9,7 +9,7 @@ sprint_status_file: '{implementation_artifacts}/sprint-status.yaml'
 
 ## Rules
 
-- The prompt that triggered this skill IS your starting point — not a blank slate.
+- The prompt that triggered this skill IS your starting point: not a blank slate.
 - Do not modify any files in this step. Read-only.
 - Speak in `{communication_language}`.
 
@@ -46,7 +46,7 @@ Look for `*sprint-status*` in `{implementation_artifacts}` or `{planning_artifac
 
 ### Tier 4: Current git state
 
-If git is available and HEAD is not on `main` (or default), confirm: "HEAD is `<sha>` on `<branch>` — review this branch's changes vs main?" On yes, use as branch diff.
+If git is available and HEAD is not on `main` (or default), confirm: "HEAD is `<sha>` on `<branch>`: review this branch's changes vs main?" On yes, use as branch diff.
 
 ### Tier 5: Ask
 

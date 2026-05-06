@@ -5,9 +5,9 @@ description: 'Create a complete pipeline specification covering extract, load, t
 
 # Pipeline Specification Workflow
 
-**Goal:** Produce an implementation-ready pipeline spec — extract + load + transform + orchestrate — as a single Markdown document with embedded Starlake YAML, ready for `starflow-dev-pipeline` to consume.
+**Goal:** Produce an implementation-ready pipeline spec: extract + load + transform + orchestrate: as a single Markdown document with embedded Starlake YAML, ready for `starflow-dev-pipeline` to consume.
 
-**Your Role:** You are a Data Architect (Winston by default — see `starflow-data-architect`). Translate business intent into Starlake declarative configuration. Spec IS the implementation; YAML over code; trade-offs over verdicts.
+**Your Role:** You are a Data Architect (Winston by default: see `starflow-data-architect`). Translate business intent into Starlake declarative configuration. Spec IS the implementation; YAML over code; trade-offs over verdicts.
 
 ## Conventions
 
@@ -15,7 +15,7 @@ description: 'Create a complete pipeline specification covering extract, load, t
 - `{skill-root}` resolves to this skill's installed directory.
 - `{starflow-root}` resolves to the directory containing `config/starflow.yaml`.
 - `{project-root}` resolves to the project working directory.
-- Curly-brace tokens like `{planning_artifacts}`, `{user_name}`, `{communication_language}` are config values — resolve them before use.
+- Curly-brace tokens like `{planning_artifacts}`, `{user_name}`, `{communication_language}` are config values: resolve them before use.
 
 ## On Activation
 
@@ -34,11 +34,11 @@ Bind these values for the rest of the run:
 - `default_engine`, `target_engines`, `default_file_format`
 - `date` = system-generated current datetime
 
-If the resolver script is unreachable (e.g. running outside the bundle), fall back to reading the three layers in order — `config/starflow.yaml` → `config/custom/starflow.yaml` → `config/custom/starflow.user.yaml` — and apply the documented merge rules (scalars override, mappings deep-merge, sequences of `{code}`-keyed mappings replace by code).
+If the resolver script is unreachable (e.g. running outside the bundle), fall back to reading the three layers in order: `config/starflow.yaml` → `config/custom/starflow.yaml` → `config/custom/starflow.user.yaml`: and apply the documented merge rules (scalars override, mappings deep-merge, sequences of `{code}`-keyed mappings replace by code).
 
 ### Step 2: Greet the user
 
-Greet `{user_name}` in `{communication_language}`. Lead with the architect icon `🏗️` so the active persona is visible. State that this is the pipeline-spec workflow and that it is resumable — if a partial spec already exists in `{implementation_artifacts}/`, you'll pick up where it left off.
+Greet `{user_name}` in `{communication_language}`. Lead with the architect icon `🏗️` so the active persona is visible. State that this is the pipeline-spec workflow and that it is resumable: if a partial spec already exists in `{implementation_artifacts}/`, you'll pick up where it left off.
 
 ### Step 3: Check for resumable work
 
@@ -54,7 +54,7 @@ This skill uses **step-file architecture** for disciplined execution:
 - **Just-In-Time Loading**: read only the current step file into context.
 - **Sequential Enforcement**: complete steps in order. No skipping.
 - **State Tracking**: persist progress in `stepsCompleted: [...]` in the spec frontmatter so the workflow is resumable across context windows.
-- **Append-Only Building**: each step adds to the spec — never silently rewrites prior steps.
+- **Append-Only Building**: each step adds to the spec: never silently rewrites prior steps.
 
 ### Step Processing Rules
 
@@ -69,7 +69,7 @@ This skill uses **step-file architecture** for disciplined execution:
 - **NEVER** skip steps or reorder them based on what feels efficient.
 - **ALWAYS** halt at checkpoints and wait for human input.
 - **ALWAYS** save the spec file with the updated `stepsCompleted` before moving on.
-- **NEVER** mark a step complete that hasn't actually finished — partial work stays in-progress.
+- **NEVER** mark a step complete that hasn't actually finished: partial work stays in-progress.
 
 ## First Step
 
@@ -100,8 +100,8 @@ A complete `pipeline-spec-{{pipeline_name}}.md` in `{implementation_artifacts}/`
 
 ## Related Starlake Skills
 
-- `load` — write strategies and file format reference
-- `transform` — transformation task configuration
-- `extract` / `extract-rest-data` — JDBC / REST extraction
-- `dag-generate` — orchestration template options
-- `connection` — connection configuration patterns
+- `load`: write strategies and file format reference
+- `transform`: transformation task configuration
+- `extract` / `extract-rest-data`: JDBC / REST extraction
+- `dag-generate`: orchestration template options
+- `connection`: connection configuration patterns

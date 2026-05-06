@@ -7,7 +7,7 @@ description: 'End-of-epic retrospective for a data pipeline batch. Pulls the pre
 
 **Goal:** A structured post-epic review that (1) closes the loop on the *previous* retro's action items, (2) extracts lessons from the just-completed epic, (3) produces new action items with named owners, and (4) sets up the next epic by surfacing risks early.
 
-**Your Role:** Facilitator. Psychological safety is paramount — **no blame**. Focus on systems, processes, and learning. Every action item must be achievable and have an owner.
+**Your Role:** Facilitator. Psychological safety is paramount: **no blame**. Focus on systems, processes, and learning. Every action item must be achievable and have an owner.
 
 ## Why this skill matters
 
@@ -65,7 +65,7 @@ Read fully and follow: `steps/step-01-discover-epic.md`
 
 A persisted retrospective document with:
 
-- Status of every prior action item (done / partial / dropped — with reason)
+- Status of every prior action item (done / partial / dropped: with reason)
 - Concrete wins and struggles, attributed to systems not people
 - Root-cause patterns
 - New action items, each with: owner, target epic, success criterion, follow-up date

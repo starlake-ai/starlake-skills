@@ -55,4 +55,4 @@ Generate the domain discovery document and save to `{planning_artifacts}/domain-
 
 ## Outcome
 
-A comprehensive domain discovery document that maps all data domains, sources, ownership, and dependencies — ready to inform data architecture design and Starlake domain configuration.
+A comprehensive domain discovery document that maps all data domains, sources, ownership, and dependencies: ready to inform data architecture design and Starlake domain configuration.

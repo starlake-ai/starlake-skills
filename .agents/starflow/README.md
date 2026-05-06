@@ -1,6 +1,6 @@
 # Starflow: Guided Data Engineering Method
 
-Starflow is an optional methodology layer on top of Starlake skills. It provides structured workflows and agent personas to guide you through the full data engineering lifecycle — from domain discovery to production deployment.
+Starflow is an optional methodology layer on top of Starlake skills. It provides structured workflows and agent personas to guide you through the full data engineering lifecycle: from domain discovery to production deployment.
 
 ## How It Works
 
@@ -52,11 +52,11 @@ Discovery → Architecture → Pipeline Design → Implementation
 ## Configuration
 
 Copy [`config/starflow.yaml`](config/starflow.yaml) to your project and customize:
-- `project_name` — your project identifier
-- `user_name` — your name (used in agent greetings)
-- `output_folder` — where Starflow writes planning and implementation artifacts
-- `default_engine` — local development engine (default: duckdb)
-- `target_engines` — production deployment targets
+- `project_name`: your project identifier
+- `user_name`: your name (used in agent greetings)
+- `output_folder`: where Starflow writes planning and implementation artifacts
+- `default_engine`: local development engine (default: duckdb)
+- `target_engines`: production deployment targets
 
 ## Templates
 

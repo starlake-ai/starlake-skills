@@ -19,17 +19,17 @@ output_file: ''        # set in this step
 
 Walk this cascade in order, stop on first hit:
 
-**Tier 1 — Sprint status.** Load `{sprint_status_file}` if it exists. Find the highest-numbered epic where every story is `done` (or all but a few minor ones). Set `{epic_id}` to that epic's identifier.
+**Tier 1: Sprint status.** Load `{sprint_status_file}` if it exists. Find the highest-numbered epic where every story is `done` (or all but a few minor ones). Set `{epic_id}` to that epic's identifier.
 
-**Tier 2 — Pipeline specs.** Scan `{implementation_artifacts}/pipeline-spec-*.md` for files with `status: done` and group by epic frontmatter (or by date range if no epic field). Pick the most recent group.
+**Tier 2: Pipeline specs.** Scan `{implementation_artifacts}/pipeline-spec-*.md` for files with `status: done` and group by epic frontmatter (or by date range if no epic field). Pick the most recent group.
 
-**Tier 3 — Recent reviews.** Scan `{implementation_artifacts}/review-*.md` from the last 6 weeks; group by referenced spec.
+**Tier 3: Recent reviews.** Scan `{implementation_artifacts}/review-*.md` from the last 6 weeks; group by referenced spec.
 
-**Tier 4 — Ask.** **HALT.**
+**Tier 4: Ask.** **HALT.**
 
 > Which epic should we retro? Options I detected:
-> 1. `{candidate1}` — N stories, last activity {date}
-> 2. `{candidate2}` — …
+> 1. `{candidate1}`: N stories, last activity {date}
+> 2. `{candidate2}`: …
 > 3. Something else (paste the epic id or pipeline names)
 
 Set `{epic_id}` from the user's choice.
@@ -43,8 +43,8 @@ Pull all stories / pipelines tied to `{epic_id}`:
 
 If not all are done:
 
-> Heads up — `{epic_id}` has `<n>` items still open: `{list}`. Retros work best after completion. Options:
-> 1. Run a partial retro — useful but limited.
+> Heads up: `{epic_id}` has `<n>` items still open: `{list}`. Retros work best after completion. Options:
+> 1. Run a partial retro: useful but limited.
 > 2. Postpone until those close.
 > 3. Treat the open items as themselves a struggle and proceed (this is a real signal).
 
@@ -55,7 +55,7 @@ If not all are done:
 Glob `{implementation_artifacts}/retrospectives/retrospective-epic-*.md` (excluding any in-progress one for the current epic). Pick the most recent by frontmatter date.
 
 - If found: bind to `{previous_retro}`. Tell the user: "I'll pull `{prev_epic}`'s action items in step 2 and check follow-through."
-- If none: tell the user: "This is the first retrospective in `{project_name}` — no prior action items to check. We'll skip step 2."
+- If none: tell the user: "This is the first retrospective in `{project_name}`: no prior action items to check. We'll skip step 2."
 
 ### 4. Gather artifacts
 
@@ -66,7 +66,7 @@ Bind `{epic_artifacts}` to the list of:
 - Quality reviews
 - Any incident notes or post-mortem docs (look in `{project_knowledge}` if configured)
 
-Read enough of each to be conversant — don't paste them into context wholesale.
+Read enough of each to be conversant: don't paste them into context wholesale.
 
 ### 5. Initialize the output file
 
@@ -103,8 +103,8 @@ Save.
 
 ## Checkpoint
 
-> **Epic:** `{epic_id}` — `<n>` artifacts found, completion state `<state>`.
-> **Previous retro:** `{previous_retro}` (or "none — first retro").
+> **Epic:** `{epic_id}`: `<n>` artifacts found, completion state `<state>`.
+> **Previous retro:** `{previous_retro}` (or "none: first retro").
 >
 > Ready to check follow-through? (y/n)
 
@@ -113,4 +113,4 @@ Save.
 ## Next
 
 If `{previous_retro}` is set: read fully and follow `step-02-followup.md`.
-Otherwise: skip to `step-03-wins-struggles.md` and add `2` to `stepsCompleted` (with note "skipped — no prior retro").
+Otherwise: skip to `step-03-wins-struggles.md` and add `2` to `stepsCompleted` (with note "skipped: no prior retro").

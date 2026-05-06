@@ -9,8 +9,8 @@ failed_layers: ''  # comma-separated list of reviewers that failed or returned e
 
 ## Rules
 
-- Launch the three subagents **in a single message with three tool calls** so they actually run in parallel — sequential dispatch defeats the purpose.
-- Each subagent receives a focused prompt — do **not** give all three the same prompt and let them all chase everything. Independence per persona.
+- Launch the three subagents **in a single message with three tool calls** so they actually run in parallel: sequential dispatch defeats the purpose.
+- Each subagent receives a focused prompt: do **not** give all three the same prompt and let them all chase everything. Independence per persona.
 - All subagents see the same `{diff_output}` and (if set) `{spec_file}` content.
 - Subagents receive **no conversation context**: only the prompts below. Their world is the diff.
 
@@ -23,7 +23,7 @@ Build a shared block to embed in each prompt:
 {diff_output}
 
 === SPEC FILE ({spec_file}) ===
-<contents of spec_file, or "[none — review_mode=no-spec]">
+<contents of spec_file, or "[none: review_mode=no-spec]">
 
 === TARGET ENGINES ===
 <resolved target_engines from config>
@@ -31,7 +31,7 @@ Build a shared block to embed in each prompt:
 
 ## Construct three subagent prompts
 
-Use the persona descriptions and principles resolved from `agents` config to anchor each reviewer's voice. Keep the prompts terse — they're working from the diff, not from this skill's prose.
+Use the persona descriptions and principles resolved from `agents` config to anchor each reviewer's voice. Keep the prompts terse: they're working from the diff, not from this skill's prose.
 
 ### Reviewer A: Winston (Architecture)
 
@@ -45,7 +45,7 @@ Use the persona descriptions and principles resolved from `agents` config to anc
 > - Cross-engine portability: anything that locks the pipeline to a single warehouse?
 > - Data contract risk: missing ownership, missing freshness SLA, missing primary key?
 >
-> Ignore SQL syntax issues and expectation coverage — Amelia and Quinn cover those.
+> Ignore SQL syntax issues and expectation coverage: Amelia and Quinn cover those.
 >
 > Output as a Markdown list. Each finding: one-line title, file:line if available, the architectural concern, and a recommendation.
 >
@@ -81,7 +81,7 @@ Use the persona descriptions and principles resolved from `agents` config to anc
 > - Freshness checks for SLA-critical pipelines.
 > - NOT NULL on critical fields enforced via expectations or schema.
 >
-> Ignore SQL style and architecture choices — that's Amelia's and Winston's territory.
+> Ignore SQL style and architecture choices: that's Amelia's and Winston's territory.
 >
 > Output as a Markdown list. Each finding: one-line title, file:line, the quality gap, severity recommendation, and example expectation SQL if applicable.
 >
@@ -99,7 +99,7 @@ For any subagent that fails, times out, or returns empty:
 
 - Append the reviewer name (`winston`, `amelia`, or `quinn`) to `failed_layers`.
 - Continue with findings from the other reviewers.
-- Do **not** retry inline — note the failure for the user in step 4.
+- Do **not** retry inline: note the failure for the user in step 4.
 
 ## Collect
 

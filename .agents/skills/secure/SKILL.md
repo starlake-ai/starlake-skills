@@ -83,7 +83,7 @@ Privacy transformations are applied during data loading to protect sensitive fie
 attributes:
   - name: "ssn"
     type: "string"
-    privacy: "HIDE" # Never stored — column is dropped
+    privacy: "HIDE" # Never stored: column is dropped
 
   - name: "email"
     type: "string"

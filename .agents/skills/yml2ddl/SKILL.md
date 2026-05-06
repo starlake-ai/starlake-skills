@@ -5,7 +5,7 @@ description: Generate SQL DDL statements from Starlake YAML definitions
 
 # YML to DDL Skill
 
-Generates SQL DDL (Data Definition Language) statements — CREATE TABLE, ALTER TABLE, etc. — from your Starlake YAML table definitions. Supports multiple target databases through type mappings defined in `types/default.sl.yml`.
+Generates SQL DDL (Data Definition Language) statements: CREATE TABLE, ALTER TABLE, etc.: from your Starlake YAML table definitions. Supports multiple target databases through type mappings defined in `types/default.sl.yml`.
 
 ## Usage
 
@@ -15,7 +15,7 @@ starlake yml2ddl [options]
 
 ## Options
 
-- `--datawarehouse <value>`: Target data warehouse name — must match a DDL mapping key in `types/default.sl.yml` (required). Examples: `bigquery`, `snowflake`, `postgres`, `redshift`, `synapse`, `duckdb`
+- `--datawarehouse <value>`: Target data warehouse name: must match a DDL mapping key in `types/default.sl.yml` (required). Examples: `bigquery`, `snowflake`, `postgres`, `redshift`, `synapse`, `duckdb`
 - `--connection <value>`: JDBC connection name with read/write access (for `--apply` mode)
 - `--output <value>`: Output directory for generated DDL files (default: `./{datawarehouse}/`)
 - `--catalog <value>`: Database catalog name (if applicable)

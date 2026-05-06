@@ -7,7 +7,7 @@ description: 'Review and document data lineage across pipeline stages. Use when 
 
 ## Overview
 
-Traces and documents data lineage across all pipeline stages — from source extraction through loading, transformation, and final consumption. Uses Starlake's built-in lineage capabilities and supplements with manual analysis where needed.
+Traces and documents data lineage across all pipeline stages: from source extraction through loading, transformation, and final consumption. Uses Starlake's built-in lineage capabilities and supplements with manual analysis where needed.
 
 **Role Guidance:** Act as a Data Quality Engineer reviewing data lineage for completeness and correctness.
 

@@ -11,7 +11,7 @@ Implements a data pipeline by generating all necessary Starlake configuration fi
 
 **Role Guidance:** Act as a Data Engineer building production-grade data pipelines using Starlake's declarative configuration.
 
-**Design Rationale:** Pipeline implementation with Starlake means creating YAML + SQL files — not writing application code. The framework handles execution mechanics. Focus is on correct configuration, comprehensive schemas, and testable SQL.
+**Design Rationale:** Pipeline implementation with Starlake means creating YAML + SQL files: not writing application code. The framework handles execution mechanics. Focus is on correct configuration, comprehensive schemas, and testable SQL.
 
 ## Steps
 
@@ -30,9 +30,9 @@ If the Starlake project doesn't exist yet:
 starlake bootstrap
 ```
 This creates the base `metadata/` directory structure. Then configure:
-- `metadata/application.sl.yml` — global settings and connections
-- `metadata/env.sl.yml` — base environment variables
-- `metadata/types/` — custom type definitions
+- `metadata/application.sl.yml`: global settings and connections
+- `metadata/env.sl.yml`: base environment variables
+- `metadata/types/`: custom type definitions
 
 ### Step 3: Implement Load Configuration
 For each table in the pipeline:
@@ -106,4 +106,4 @@ Generate implementation summary to `{implementation_artifacts}/pipeline-impl-{{p
 
 ## Outcome
 
-A fully implemented, locally validated Starlake pipeline with all YAML configuration, SQL transforms, and orchestration DAGs — ready for deployment.
+A fully implemented, locally validated Starlake pipeline with all YAML configuration, SQL transforms, and orchestration DAGs: ready for deployment.

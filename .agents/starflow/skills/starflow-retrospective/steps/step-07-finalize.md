@@ -7,7 +7,7 @@ sign_off: false
 ## Rules
 
 - The output file isn't real until it's saved with `status: done` and `stepsCompleted` includes `7`.
-- Sprint status is updated last, after the user signs off — partial retros that update sprint status mid-flight produce confusing trails.
+- Sprint status is updated last, after the user signs off: partial retros that update sprint status mid-flight produce confusing trails.
 
 ## Instructions
 
@@ -95,14 +95,14 @@ If `{sprint_status_file}` exists and contains an `epic-{epic_id}-retrospective` 
 - Set `last_updated` to `{date}`.
 - Preserve all other entries and comments.
 
-If no such entry exists, skip silently — the retro file itself is the artifact.
+If no such entry exists, skip silently: the retro file itself is the artifact.
 
 ### 5. Action-item reminders (optional, best-effort)
 
 For each action item with a `follow_up_date`, suggest the user create a calendar reminder or schedule entry. If a `schedule` skill is installed, offer to schedule a Claude Code reminder; otherwise just print:
 
 > 📅 **Reminder candidates:**
-> - `{owner}` — `{description}` — by `{follow_up_date}`
+> - `{owner}`: `{description}`: by `{follow_up_date}`
 > - …
 
 ### 6. Hand-off
@@ -111,7 +111,7 @@ For each action item with a `follow_up_date`, suggest the user create a calendar
 >
 > **Next steps:**
 > 1. Send the action items to their owners (link the file).
-> 2. Run `starflow-create-pipeline-spec` for the next epic — the seeded risks will be referenced.
+> 2. Run `starflow-create-pipeline-spec` for the next epic: the seeded risks will be referenced.
 > 3. Schedule the next retro now (target: end of next epic).
 
 ## Outcome

@@ -7,7 +7,7 @@ findings_unified: []  # set in this step
 ## Rules
 
 - Be precise. When uncertain between categories, prefer the more conservative classification (BLOCKER over WARNING, WARNING over SUGGESTION).
-- A finding from two reviewers is stronger evidence — note it in the merged source field.
+- A finding from two reviewers is stronger evidence: note it in the merged source field.
 
 ## Instructions
 
@@ -48,7 +48,7 @@ Each finding goes into exactly one of:
 | **BLOCKER** | Must fix before deployment. Wrong write strategy, missing PK uniqueness on a UPSERT table, PII without privacy annotation, secret inlined in YAML, broken SQL. |
 | **WARNING** | Should fix; high risk of future incident. Missing expectations on a load table, no row-count check, missing freshness for SLA-critical, schema change that's technically additive but risky. |
 | **SUGGESTION** | Improvement, not required. Style nits, naming inconsistencies, suboptimal but correct SQL. |
-| **APPROVED** | Aspect that was explicitly checked and passes. Use sparingly — a clean review doesn't need a list of approvals. |
+| **APPROVED** | Aspect that was explicitly checked and passes. Use sparingly: a clean review doesn't need a list of approvals. |
 | **DISMISS** | Noise, false positive, or already handled elsewhere. Drops out of the report. |
 
 ### Hard rules

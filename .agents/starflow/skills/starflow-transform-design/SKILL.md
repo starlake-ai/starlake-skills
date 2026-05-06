@@ -95,4 +95,4 @@ Generate:
 
 ## Outcome
 
-Complete SQL transformations with Starlake task configurations, quality expectations, and a documented dependency graph — ready for implementation and testing.
+Complete SQL transformations with Starlake task configurations, quality expectations, and a documented dependency graph: ready for implementation and testing.

@@ -23,7 +23,7 @@ Skip to section 5.
 
 If `{findings_unified}` is empty BUT `{failed_layers}` is non-empty:
 
-> ⚠️ **Review incomplete.** `{failed_layers}` reviewer(s) failed; the others raised no findings. This is **not** a clean review — re-run code review or address the failure before deploying.
+> ⚠️ **Review incomplete.** `{failed_layers}` reviewer(s) failed; the others raised no findings. This is **not** a clean review: re-run code review or address the failure before deploying.
 
 Skip to section 5.
 
@@ -51,19 +51,19 @@ counts:
 ## BLOCKERS (<B>)
 
 For each BLOCKER, full detail:
-- **Title**: `<file:line>` — sources: `<source>`
+- **Title**: `<file:line>`: sources: `<source>`
 - Detail
 - Suggested fix
 
 ## WARNINGS (<W>)
 
 Compact list:
-- `<file:line>` — title — source
+- `<file:line>`: title: source
 
 ## SUGGESTIONS (<S>)
 
 Compact list (collapsible if rendering supports it):
-- `<file:line>` — title
+- `<file:line>`: title
 
 ## What was checked
 
@@ -74,22 +74,22 @@ Compact list (collapsible if rendering supports it):
 
 ### 3. If a spec file is set, write findings back to it
 
-Append a `### Review Findings — {date}` subsection to the spec file's "Risks & Mitigations" or "Review" section. Use checkbox format so the implementation skill can track resolution:
+Append a `### Review Findings: {date}` subsection to the spec file's "Risks & Mitigations" or "Review" section. Use checkbox format so the implementation skill can track resolution:
 
 ```markdown
 ### Review Findings: {date}
 
 **Blockers** (must fix before status flips to `done`):
-- [ ] [Blocker] <title> — `<file:line>`
+- [ ] [Blocker] <title>: `<file:line>`
 
 **Warnings**:
-- [ ] [Warning] <title> — `<file:line>`
+- [ ] [Warning] <title>: `<file:line>`
 
 **Suggestions**:
-- [ ] [Suggestion] <title> — `<file:line>`
+- [ ] [Suggestion] <title>: `<file:line>`
 
 **Deferred** (pre-existing, not from this change):
-- [x] [Defer] <title> — `<file:line>`
+- [x] [Defer] <title>: `<file:line>`
 ```
 
 ### 4. Present the summary to the user
@@ -111,7 +111,7 @@ Append a `### Review Findings — {date}` subsection to the spec file's "Risks &
 > 1. Walk through each blocker now.
 > 2. Apply patch suggestions where reviewers proposed concrete fixes (prompts you per finding).
 > 3. Defer all and update sprint status.
-> 4. Done — close out.
+> 4. Done: close out.
 
 **HALT** for choice.
 

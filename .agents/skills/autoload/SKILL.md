@@ -5,7 +5,7 @@ description: Automatically infer schemas and load data from the incoming directo
 
 # AutoLoad Skill
 
-Watches the incoming directory, automatically infers schemas for new data files, generates the corresponding YAML table definitions, and loads the data into the data warehouse. This is the quickest way to get data loaded — it combines schema inference and loading in a single step.
+Watches the incoming directory, automatically infers schemas for new data files, generates the corresponding YAML table definitions, and loads the data into the data warehouse. This is the quickest way to get data loaded: it combines schema inference and loading in a single step.
 
 ## Usage
 

@@ -115,4 +115,4 @@ Generate:
 
 ## Outcome
 
-Complete Starlake-compatible schema definitions with custom types, privacy annotations, and expectations — ready to be placed in the `metadata/load/` directory.
+Complete Starlake-compatible schema definitions with custom types, privacy annotations, and expectations: ready to be placed in the `metadata/load/` directory.

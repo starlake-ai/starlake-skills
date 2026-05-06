@@ -7,7 +7,7 @@ extract_block: ''  # set in this step: the full YAML extract: ... block written 
 ## Rules
 
 - One source class at a time. If `{{source_class}}` is `mixed`, ask the user which to define first; loop back through this step for each remaining class before advancing.
-- Reference the `extract` and `extract-rest-data` Starlake skills for full option lists when in doubt — do not invent flags.
+- Reference the `extract` and `extract-rest-data` Starlake skills for full option lists when in doubt: do not invent flags.
 
 ## Preconditions
 
@@ -45,7 +45,7 @@ extract:
 
 Ask:
 - `baseUrl`.
-- Auth: `bearer` / `api_key` / `basic` / `oauth2_client_credentials` (and where the secret comes from — env var name).
+- Auth: `bearer` / `api_key` / `basic` / `oauth2_client_credentials` (and where the secret comes from: env var name).
 - Pagination strategy per endpoint: `offset` / `cursor` / `link_header` / `page_number`.
 - Rate limit (requests per second).
 - Endpoints: path, target table name (`as`), domain, `responsePath`, `incrementalField`.
@@ -85,7 +85,7 @@ Ask:
 - Format: DSV / JSON / XML / Parquet (and delimiter / quote / header for DSV).
 - Arrival cadence and trigger: schedule / file sensor / ACK file.
 
-Document narratively in the spec under "Extract → File source" — there is no Starlake `extract:` YAML for file sources; the load step handles them via the `metadata.directory` pattern.
+Document narratively in the spec under "Extract → File source": there is no Starlake `extract:` YAML for file sources; the load step handles them via the `metadata.directory` pattern.
 
 ### If `stream`
 
@@ -98,7 +98,7 @@ Ask: topic, broker, format, watermark / offset strategy. Reference `kafkaload` s
 
 ## Checkpoint
 
-> **Extract defined for:** `{{source_class}}` — `<n>` table(s)/endpoint(s).
+> **Extract defined for:** `{{source_class}}`: `<n>` table(s)/endpoint(s).
 >
 > Move on to load specification? (y/n / revise)
 

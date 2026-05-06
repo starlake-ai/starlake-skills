@@ -7,7 +7,7 @@ load_tables: []  # set in this step: list of table names defined
 ## Rules
 
 - One table at a time. Loop until the user says "done with load".
-- Match write strategy to data shape — never default blindly to `OVERWRITE`. If the user is unsure, ask the question that disambiguates (see decision tree below).
+- Match write strategy to data shape: never default blindly to `OVERWRITE`. If the user is unsure, ask the question that disambiguates (see decision tree below).
 
 ## Preconditions
 
@@ -25,7 +25,7 @@ Ask the user (or infer from extract config) and pick:
 | Latest version per key, **with history** | `SCD2` |
 | Composite-key updates | `UPSERT_BY_KEY_AND_TIMESTAMP` |
 
-Document the *reason* in the spec — future-you needs to know why this strategy.
+Document the *reason* in the spec: future-you needs to know why this strategy.
 
 ## Instructions
 
@@ -77,7 +77,7 @@ Append the table name to `load_tables`.
 
 ## Checkpoint
 
-> **Load defined:** `<n>` tables — `{{load_tables[*]}}`.
+> **Load defined:** `<n>` tables: `{{load_tables[*]}}`.
 >
 > Each has at least one expectation. Ready for transforms? (y/n / revise / add another table)
 

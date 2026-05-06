@@ -8,7 +8,7 @@ followup_status: []  # set in this step: list of {action, status, evidence, bloc
 
 - This is the most important step in the workflow. Skipping it lets debt compound.
 - For each prior action item, evidence beats memory. Cite the artifact.
-- "Dropped" is a legitimate status — but it must come with a reason, not a shrug.
+- "Dropped" is a legitimate status: but it must come with a reason, not a shrug.
 
 ## Preconditions
 
@@ -55,10 +55,10 @@ Capture per item:
 Cross-check this list against `epic_artifacts`. Flag any of these patterns:
 
 - An action item marked `dropped` whose problem the user *also* lists in this epic's struggles (will be captured in step 3): that's compounding debt; call it out by name in step 4.
-- Two consecutive retros where the same theme appears in struggles — root-cause investigation needed.
-- Prior actions where `target_epic` is `{epic_id}` (this epic) and status is anything other than `done` — follow-through is breaking down for this current cycle.
+- Two consecutive retros where the same theme appears in struggles: root-cause investigation needed.
+- Prior actions where `target_epic` is `{epic_id}` (this epic) and status is anything other than `done`: follow-through is breaking down for this current cycle.
 
-Save these observations into a memo for step 4 — don't surface them yet.
+Save these observations into a memo for step 4: don't surface them yet.
 
 ### 4. Surface to the user
 
