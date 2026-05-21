@@ -25,8 +25,7 @@ starlake gizmosql <action> [options]
 ## Options
 
 - `action` (required): Action to perform: `start`, `stop`, `list`, `stop-all`
-- `--connection <value>`: Connection name (required for `start`). Must reference a DuckLake connection
-- `--process-name <value>`: Process name (required for `stop`)
+- `--connection <value>`: Connection name (required for `start` and `stop`). Must reference a DuckLake connection
 - `--port <value>`: Port for the GizmoSQL process (optional, for `start`). Overrides the `SL_DUCKDB_PORT` connection option
 - `--reportFormat <value>`: Report output format: `console`, `json`, or `html`
 
@@ -244,7 +243,7 @@ Output columns: `processName`, `port`, `pid`, `status`
 ### Stop a Specific GizmoSQL Process
 
 ```bash
-starlake gizmosql stop --process-name my-ducklake
+starlake gizmosql stop --connection my-ducklake
 ```
 
 ### Stop All GizmoSQL Processes
