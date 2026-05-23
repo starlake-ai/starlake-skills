@@ -515,6 +515,183 @@ You should see `.duckdb_secret` files for each secret created.
 
 > **Fallback chain for `secret_directory`:** `SL_DUCKDB_SECRET_HOME` option → `SL_DUCKDB_HOME` option → `SL_DUCKDB_SECRET_HOME` env var → `SL_DUCKDB_HOME` env var.
 
+### Quack (DuckDB Remote)
+
+[Quack](https://duckdb.org/docs/extensions/quack) is a DuckDB extension that turns one DuckDB instance into a query server. Pair it with DuckLake on the server to let ODBC/JDBC clients query a lakehouse **without ever holding object-storage credentials or touching Parquet files directly**.
+
+Starlake detects Quack connections automatically:
+- **Client**: `preActions` contains `'quack:` (but not `'ducklake:quack:`).
+- **Server**: connection option `quackServerToken` is set (the embedded `starlake quack` CLI uses this).
+
+#### Quack Client (consumer)
+
+A thin DuckDB engine that forwards every query to a remote Quack server. No `ducklake` extension, no S3 secret, no catalog credentials.
+
+```yaml
+connections:
+  warehouse-quack:
+    type: "jdbc"
+    options:
+      url: "jdbc:duckdb:"
+      driver: "org.duckdb.DuckDBDriver"
+      preActions: |
+        INSTALL quack; LOAD quack;
+        CREATE SECRET (TYPE quack, TOKEN '{{quackToken}}');
+        ATTACH 'quack:{{warehouseHost}}:9494' AS remote;
+      quote: "\""
+```
+
+#### Quack Server — Local DuckLake catalog
+
+Single-server setup: catalog is a local `.ducklake` file, data lives in S3. Server-side ATTACH means the client never learns DuckLake is involved.
+
+```yaml
+connections:
+  warehouse-server:
+    type: "jdbc"
+    options:
+      url: "jdbc:duckdb:"
+      driver: "org.duckdb.DuckDBDriver"
+      preActions: |
+        INSTALL ducklake; LOAD ducklake; INSTALL quack; LOAD quack;
+        CREATE SECRET (TYPE s3, KEY_ID '{{s3Key}}', SECRET '{{s3Secret}}', REGION 'eu-west-1');
+        ATTACH 'ducklake:my_catalog.ducklake' AS lake (DATA_PATH 's3://my-bucket/data/');
+      quackServerToken: "{{quackToken}}"
+      quackBind: "127.0.0.1"   # optional, default 127.0.0.1
+      quackPort: "9494"         # optional, default 9494
+      quote: "\""
+```
+
+#### Quack Server — PostgreSQL catalog (inline credentials)
+
+Use Postgres as the catalog backend when running multiple Quack servers against the same lake. Credentials are interpolated directly into the `ATTACH 'ducklake:postgres:...'` string.
+
+```yaml
+connections:
+  warehouse-server-pg:
+    type: "jdbc"
+    options:
+      url: "jdbc:duckdb:"
+      driver: "org.duckdb.DuckDBDriver"
+      preActions: |
+        INSTALL POSTGRES; LOAD POSTGRES;
+        INSTALL ducklake; LOAD ducklake;
+        INSTALL quack;    LOAD quack;
+        CREATE SECRET (
+          TYPE s3,
+          KEY_ID '{{s3Key}}',
+          SECRET '{{s3Secret}}',
+          REGION 'eu-west-1'
+        );
+        ATTACH 'ducklake:postgres:
+            dbname={{pgDatabase}}
+            host={{pgHost}}
+            port={{pgPort}}
+            user={{pgUser}}
+            password={{pgPassword}}' AS lake
+          (DATA_PATH 's3://my-bucket/data/');
+      quackServerToken: "{{quackToken}}"
+      quackBind: "127.0.0.1"
+      quackPort: "9494"
+      quote: "\""
+```
+
+#### Quack Server — PostgreSQL catalog via DuckDB SECRET
+
+Move the host/port/user/password out of the ATTACH literal into a named Postgres secret. The ATTACH then only needs `dbname=...`; DuckDB resolves the rest from the matching secret. Easier to rotate credentials and to combine with persistent secrets.
+
+```yaml
+connections:
+  warehouse-server-pg-secret:
+    type: "jdbc"
+    options:
+      url: "jdbc:duckdb:"
+      driver: "org.duckdb.DuckDBDriver"
+      preActions: |
+        INSTALL POSTGRES; LOAD POSTGRES;
+        INSTALL ducklake; LOAD ducklake;
+        INSTALL quack;    LOAD quack;
+        CREATE SECRET pg_catalog (
+          TYPE postgres,
+          HOST '{{pgHost}}',
+          PORT {{pgPort}},
+          DATABASE '{{pgDatabase}}',
+          USER '{{pgUser}}',
+          PASSWORD '{{pgPassword}}'
+        );
+        CREATE SECRET s3_lake (
+          TYPE s3,
+          KEY_ID '{{s3Key}}',
+          SECRET '{{s3Secret}}',
+          REGION 'eu-west-1'
+        );
+        ATTACH 'ducklake:postgres:dbname={{pgDatabase}}' AS lake
+          (DATA_PATH 's3://my-bucket/data/');
+      quackServerToken: "{{quackToken}}"
+      quackBind: "127.0.0.1"
+      quackPort: "9494"
+      quote: "\""
+```
+
+> **Secret names are not referenced from ATTACH.** Names like `pg_catalog` and `s3_lake` are management labels for `DROP SECRET` and `FROM duckdb_secrets()`. DuckDB resolves secrets by *scope* (matching `TYPE` + URL/host), not by name. Add an explicit `SCOPE` clause only when two secrets of the same type would otherwise both match.
+
+#### Quack Server — Multi-bucket S3 with SCOPE
+
+When catalog metadata and data files live in different buckets (or use different IAM roles), scope each S3 secret to its URL prefix. The longest matching prefix wins; an unscoped secret of the same type acts as a catch-all default.
+
+```yaml
+connections:
+  warehouse-server-multi-bucket:
+    type: "jdbc"
+    options:
+      url: "jdbc:duckdb:"
+      driver: "org.duckdb.DuckDBDriver"
+      preActions: |
+        INSTALL POSTGRES; LOAD POSTGRES;
+        INSTALL ducklake; LOAD ducklake;
+        INSTALL quack;    LOAD quack;
+
+        CREATE SECRET s3_catalog (
+          TYPE s3,
+          SCOPE 's3://catalog-bucket',
+          KEY_ID '{{s3CatalogKey}}',
+          SECRET '{{s3CatalogSecret}}',
+          REGION 'eu-west-1'
+        );
+        CREATE SECRET s3_lake (
+          TYPE s3,
+          SCOPE 's3://data-bucket',
+          KEY_ID '{{s3LakeKey}}',
+          SECRET '{{s3LakeSecret}}',
+          REGION 'eu-west-1'
+        );
+
+        ATTACH 'ducklake:postgres:dbname={{pgDatabase}}' AS lake
+          (DATA_PATH 's3://data-bucket/lake/');
+      quackServerToken: "{{quackToken}}"
+      quackBind: "127.0.0.1"
+      quackPort: "9494"
+      quote: "\""
+```
+
+Reads from `s3://catalog-bucket/...` resolve via `s3_catalog`; reads/writes under `s3://data-bucket/...` resolve via `s3_lake`. Postgres secrets follow the same model — DuckDB matches on the connection's `HOST`/`PORT`/`DATABASE` triple, so two Postgres secrets targeting different hosts coexist without explicit scopes.
+
+#### Quack CLI
+
+Run a Quack server in the Starlake JVM (no Docker, no external orchestrator):
+
+```bash
+starlake quack serve    --connection warehouse-server   # foreground
+starlake quack start    --connection warehouse-server   # detached daemon
+starlake quack stop     --connection warehouse-server
+starlake quack list
+starlake quack stop-all
+```
+
+Flags `--bind`, `--port`, `--token` override the connection's `quackBind`, `quackPort`, `quackServerToken` for that invocation. State for detached servers lives under `$SL_ROOT/.quack/`. Default `quackBind` is `127.0.0.1` — bind to `0.0.0.0` only behind a TLS-terminating reverse proxy.
+
+> **Version requirements:** DuckDB engine 1.5.2+ (Quack from `core_nightly`) or 1.5.3+ (Quack as a core extension; DuckLake supports a Quack catalog). The DuckDB ODBC driver used by client apps must also bundle a 1.5.2+ engine.
+
 ### PostgreSQL
 
 ```yaml
@@ -635,6 +812,9 @@ connections:
 | `fs.s3a.endpoint.region` | DuckDB   | S3 region (auto-translated to `s3_region`)               |
 | `fs.s3a.access.key` | DuckDB        | S3 access key (auto-translated to `s3_access_key_id`)    |
 | `fs.s3a.secret.key` | DuckDB        | S3 secret key (auto-translated to `s3_secret_access_key`) |
+| `quackServerToken` | Quack server    | Token clients must present to connect; presence flags the connection as a Quack server |
+| `quackBind`        | Quack server    | Bind address for the embedded Quack server (default `127.0.0.1`) |
+| `quackPort`        | Quack server    | Bind port for the embedded Quack server (default `9494`) |
 
 ### BigQuery Storage Options
 
@@ -664,6 +844,7 @@ Starlake uses different connection pooling strategies depending on the database:
 - **DuckDB**: Single-connection pool per database file (DuckDB is single-writer). Connections are duplicated for concurrent reads. Idle connections are cleaned up after 15 seconds.
 - **Other JDBC**: HikariCP connection pool when `SL_USE_CONNECTION_POOLING=true` environment variable is set.
 - **DuckLake**: Connections are pooled by their `ATTACH` statement to reuse the same DuckLake attachment.
+- **Quack**: Connections are pooled by their `ATTACH 'quack:...'` line so two client connections targeting the same server share an attachment.
 
 ---
 
