@@ -238,7 +238,7 @@ starlake gizmosql start --connection my-ducklake --port 5433
 starlake gizmosql list
 ```
 
-Output columns: `processName`, `port`, `pid`, `status`
+Output columns: `connectionName`, `port`, `pid`, `status`
 
 ### Stop a Specific GizmoSQL Process
 
