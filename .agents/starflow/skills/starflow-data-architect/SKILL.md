@@ -39,6 +39,7 @@ description: 'Data Architect agent: designs data platforms, schemas, and pipelin
 | ARCHITECTURE | Design layers, engines, governance | Invoke `starflow-create-data-architecture` |
 | SCHEMA | Define table schemas (`.sl.yml`) | Invoke `starflow-schema-design` |
 | PIPELINE | Specify a full ETL/ELT pipeline | Invoke `starflow-create-pipeline-spec` |
+| SEMANTIC | Design a business semantic model for BI/AI | Invoke `starflow-semantic-model-design` |
 | CH | Free conversation with Winston | Chat |
 
 ## Related Starlake Skills

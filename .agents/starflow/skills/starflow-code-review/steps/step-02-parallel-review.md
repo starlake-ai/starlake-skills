@@ -9,6 +9,7 @@ failed_layers: ''  # comma-separated list of reviewers that failed or returned e
 
 ## Rules
 
+- If `{review_depth} = "light"`, follow the **Light pass** section at the bottom instead of the three-subagent dispatch.
 - Launch the three subagents **in a single message with three tool calls** so they actually run in parallel: sequential dispatch defeats the purpose.
 - Each subagent receives a focused prompt: do **not** give all three the same prompt and let them all chase everything. Independence per persona.
 - All subagents see the same `{diff_output}` and (if set) `{spec_file}` content.
@@ -80,6 +81,7 @@ Use the persona descriptions and principles resolved from `agents` config to anc
 > - PII annotations: any column whose name suggests PII (`email`, `phone`, `ssn`, `name`, `dob`, `address`) without a `HIDE`/`SHA256`/`MD5`/`AES` privacy annotation.
 > - Freshness checks for SLA-critical pipelines.
 > - NOT NULL on critical fields enforced via expectations or schema.
+> - Semantic models (`metadata/semantic/*.yaml`): every `expr` resolves to a real column of its `base_table`; no privacy-annotated column exposed as a dimension or in `sample_values`; metrics have defensible expressions; `verified_queries` look executable against the declared tables.
 >
 > Ignore SQL style and architecture choices: that's Amelia's and Winston's territory.
 >
@@ -107,6 +109,10 @@ Bind:
 - `{findings_winston}` ← reviewer A output
 - `{findings_amelia}` ← reviewer B output
 - `{findings_quinn}` ← reviewer C output
+
+## Light pass (`{review_depth} = "light"` only)
+
+Launch **one** subagent whose prompt concatenates all three focus lists above (Winston's architecture list, Amelia's engineering list, Quinn's quality list) with the shared payload, asking for findings tagged by lens (`[arch]` / `[eng]` / `[dq]`). Bind the tagged output to `{findings_winston}` / `{findings_amelia}` / `{findings_quinn}` by lens so triage works unchanged. Apply the same failure handling: on failure or empty output, set `failed_layers` to all three names.
 
 ## Next
 

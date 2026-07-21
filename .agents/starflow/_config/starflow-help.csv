@@ -8,6 +8,7 @@ Starflow,starflow-schema-design,Schema Design,SD,Define Starlake-compatible tabl
 Starflow,starflow-create-pipeline-spec,Pipeline Spec,PS,Full ETL/ELT pipeline specification covering extract, load, transform, orchestrate.,,,3-pipeline-design,starflow-schema-design,,true,implementation_artifacts,pipeline-spec-*.md
 Starflow,starflow-transform-design,Transform Design,TD,Design SQL transformations and dependencies.,,,3-pipeline-design,starflow-create-pipeline-spec,,false,implementation_artifacts,transform-design-*.md
 Starflow,starflow-orchestration-design,Orchestration Design,OD,Design schedules, DAGs, retry/timeout policies.,,,3-pipeline-design,starflow-create-pipeline-spec,,false,implementation_artifacts,orchestration-design-*.md
+Starflow,starflow-semantic-model-design,Semantic Model Design,SM,Design a business semantic model (dimensions / facts / metrics / relationships) over pipeline tables for BI and AI consumers.,,,3-pipeline-design,starflow-transform-design,,false,implementation_artifacts,semantic-model-design-*.md
 Starflow,starflow-sprint-planning,Sprint Planning,SP,Break pipelines into sprint-sized tasks with dependency ordering.,,,4-implementation,starflow-create-pipeline-spec,,true,implementation_artifacts,sprint-plan-*.md
 Starflow,starflow-dev-pipeline,Dev Pipeline,DP,Implement a pipeline from a spec — YAML + SQL + expectations.,,,4-implementation,starflow-sprint-planning,,true,implementation_artifacts,*-implementation
 Starflow,starflow-code-review,Code Review,CR,Adversarial parallel review (Winston + Amelia + Quinn). Run before deploy.,,,4-implementation,starflow-dev-pipeline,,false,implementation_artifacts,review-*.md
@@ -19,3 +20,4 @@ Starflow,starflow-data-architect,Talk to Winston,WI,Data Architect persona — a
 Starflow,starflow-data-engineer,Talk to Amelia,AM,Data Engineer persona — pipeline implementation, transforms.,,,anytime,,,false,,
 Starflow,starflow-data-quality-engineer,Talk to Quinn,QU,Data Quality Engineer persona — expectations, lineage, governance.,,,anytime,,,false,,
 Starflow,starflow-platform-engineer,Talk to Max,MX,Platform Engineer persona — orchestration, deployment, CI/CD.,,,anytime,,,false,,
+Starflow,starflow-builder,Starflow Builder,SB,Scaffold custom personas and workflow skills or customize existing ones via the layered config.,,,anytime,,,false,,

@@ -27,6 +27,7 @@ Discovery → Architecture → Pipeline Design → Implementation
 - [`starflow-create-pipeline-spec`](skills/starflow-create-pipeline-spec/SKILL.md): Full ETL/ELT pipeline specification
 - [`starflow-transform-design`](skills/starflow-transform-design/SKILL.md): Design SQL transformations
 - [`starflow-orchestration-design`](skills/starflow-orchestration-design/SKILL.md): Design scheduling and DAGs
+- [`starflow-semantic-model-design`](skills/starflow-semantic-model-design/SKILL.md): Design the business semantic model for BI and AI consumers
 
 ### Phase 4: Implementation
 - [`starflow-dev-pipeline`](skills/starflow-dev-pipeline/SKILL.md): Implement pipeline from spec
@@ -46,6 +47,7 @@ Discovery → Architecture → Pipeline Design → Implementation
 ## Utility Skills
 
 - [`starflow-help`](skills/starflow-help/SKILL.md): Navigate the Starflow method and get recommendations
+- [`starflow-builder`](skills/starflow-builder/SKILL.md): Scaffold custom personas and workflow skills, or customize existing ones
 - [`starflow-data-quality-review`](skills/starflow-data-quality-review/SKILL.md): Review data quality expectations coverage
 - [`starflow-lineage-review`](skills/starflow-lineage-review/SKILL.md): Trace and document data lineage
 
@@ -57,6 +59,7 @@ Copy [`config/starflow.yaml`](config/starflow.yaml) to your project and customiz
 - `output_folder`: where Starflow writes planning and implementation artifacts
 - `default_engine`: local development engine (default: duckdb)
 - `target_engines`: production deployment targets
+- `unattended`: auto-answer confirmation checkpoints with documented defaults (decisions are logged and the output lands as `ready-for-review`, never `ready-for-dev`)
 
 ## Templates
 
