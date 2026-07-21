@@ -9,6 +9,11 @@ load_tables: []  # set in this step: list of table names defined
 - One table at a time. Loop until the user says "done with load".
 - Match write strategy to data shape: never default blindly to `OVERWRITE`. If the user is unsure, ask the question that disambiguates (see decision tree below).
 
+### Scale
+
+- **light**: capture all tables in one batched exchange instead of one-at-a-time. Apply the minimum expectation bar (PK uniqueness, row count > 0, NOT NULL on criticals) without negotiating each check; skip clustering unless the user raises it.
+- **deep**: for every table, additionally require a partitioning/clustering rationale (why this column, expected partition sizes) and a per-column privacy review pass (each PII candidate explicitly annotated or explicitly cleared).
+
 ## Preconditions
 
 - Step 2 complete.
@@ -81,7 +86,7 @@ Append the table name to `load_tables`.
 >
 > Each has at least one expectation. Ready for transforms? (y/n / revise / add another table)
 
-**HALT.** If "add another table", loop back. If `y`, proceed.
+**HALT.** Default: `y`. If "add another table", loop back. If `y`, proceed.
 
 ## Next
 

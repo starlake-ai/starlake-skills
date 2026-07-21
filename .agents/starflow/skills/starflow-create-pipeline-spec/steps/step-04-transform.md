@@ -10,6 +10,11 @@ transform_tasks: []  # set in this step
 - Standard SQL only. Engine-specific syntax requires a written justification in the task block.
 - Dependencies are inferred from `FROM` / `JOIN` references in the SQL: but document them explicitly so the spec is readable without parsing.
 
+### Scale
+
+- **light**: if step-01 recorded zero transforms, offer the "load only" skip proactively (in unattended mode, take it and log the decision). For a single task, skip the "Transform DAG" subsection: there is no DAG to document.
+- **deep**: for each task, additionally require a performance note (expected input volume, partition pruning applied, join strategy) and an expectation asserting aggregate consistency against an independent count.
+
 ## Preconditions
 
 - Step 3 complete. At least one load table exists (or the user is building a pure-transform pipeline that consumes existing tables).
@@ -72,7 +77,7 @@ After all tasks are defined, add a "Transform DAG" subsection listing dependenci
 >
 > Ready for orchestration? (y/n / revise / add another task)
 
-**HALT.** Loop on "add another task" or "revise". On `y`, proceed.
+**HALT.** Default: `y`. Loop on "add another task" or "revise". On `y`, proceed.
 
 ## Next
 

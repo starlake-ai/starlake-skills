@@ -8,6 +8,12 @@ extract_block: ''  # set in this step: the full YAML extract: ... block written 
 
 - One source class at a time. If `{{source_class}}` is `mixed`, ask the user which to define first; loop back through this step for each remaining class before advancing.
 - Reference the `extract` and `extract-rest-data` Starlake skills for full option lists when in doubt: do not invent flags.
+- Source facts (connection names, URLs, schemas, endpoints) are information-gathering questions: they halt even in unattended mode when not present in grounding artifacts.
+
+### Scale
+
+- **light**: ask only the identifying facts (connection/URL, tables or endpoints). Take documented defaults for tuning knobs (`fetchSize: 10000`, `numPartitions: 4`, pagination defaults, rate limits) without asking; note "default" next to each in the spec.
+- **deep**: additionally ask expected row volume per table/endpoint, growth rate, and how schema drift from this source is detected and handled. Record answers in the spec under "Extract → Volume & drift".
 
 ## Preconditions
 
@@ -102,7 +108,7 @@ Ask: topic, broker, format, watermark / offset strategy. Reference `kafkaload` s
 >
 > Move on to load specification? (y/n / revise)
 
-**HALT.** If `revise`, ask which field to change and re-prompt. If `y`, proceed.
+**HALT.** Default: `y`. If `revise`, ask which field to change and re-prompt. If `y`, proceed.
 
 ## Next
 

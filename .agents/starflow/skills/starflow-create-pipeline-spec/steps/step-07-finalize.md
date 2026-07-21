@@ -9,6 +9,12 @@ sign_off: false
 
 - Do not skip risks. A pipeline spec without a risks section is half a spec.
 - Sign-off flips `status` from `draft` to `ready-for-dev`. Do not flip without an explicit user confirmation.
+- **Unattended runs never reach `ready-for-dev`.** If `autoDecisions` in the spec frontmatter is non-empty, the highest status this step may set is `ready-for-review`.
+
+### Scale
+
+- **light**: run a condensed risk pass: pick the three most relevant items from the checklist for this pipeline, confirm them in one exchange, and record only real risks.
+- **deep**: walk the checklist item by item; every item gets either a risk row or an explicit "cleared because <reason>" note in the spec.
 
 ## Preconditions
 
@@ -46,10 +52,14 @@ sign_off: false
    >
    > Confirm sign-off and flip status to `ready-for-dev`? (y/n)
 
-   **HALT.**
+   **HALT (always)** when `autoDecisions` is empty: sign-off is a human act.
 
    - On `y`: set frontmatter `status: ready-for-dev`, set `sign_off: true`, append `7` to `stepsCompleted`, save.
    - On `n`: ask what to revise. Stay on this step (or jump back to a prior step explicitly).
+
+   **Unattended path** (`autoDecisions` non-empty): do not ask for sign-off. Set `status: ready-for-review`, leave `sign_off: false`, append `7` to `stepsCompleted`, save, and present the full `autoDecisions` list:
+
+   > **Unattended run complete.** Status is `ready-for-review`: `<d>` decisions were taken automatically (listed below). Review them, revise any step if needed, then flip status to `ready-for-dev` to unblock `starflow-dev-pipeline`.
 
 4. **Hand-off.**
 

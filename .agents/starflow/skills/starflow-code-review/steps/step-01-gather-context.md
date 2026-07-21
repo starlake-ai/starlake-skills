@@ -2,6 +2,7 @@
 diff_output: ''     # set at runtime
 spec_file: ''       # set at runtime (path or empty)
 review_mode: ''     # set at runtime: "full" | "no-spec"
+review_depth: ''    # set at runtime: "full" | "light"
 sprint_status_file: '{implementation_artifacts}/sprint-status.yaml'
 ---
 
@@ -85,7 +86,15 @@ If `{review_mode} = "full"` and the spec frontmatter has a `context` field listi
 
 ## Sanity-check size
 
-If `{diff_output}` exceeds ~3000 lines, warn and offer to chunk by file group. **HALT** for choice.
+If `{diff_output}` exceeds ~3000 lines, warn and offer to chunk by file group. **HALT** for choice. Default: chunk by file group.
+
+## Pick review depth
+
+Set `{review_depth} = "full"`. If the in-scope diff is small (fewer than ~200 changed lines across fewer than ~5 files), offer the light pass:
+
+> This is a small diff. Run a **light review** (one reviewer covering architecture, engineering, and quality lenses) instead of the full three-reviewer pass? (light/full)
+
+**HALT.** Default: `full` (never silently downgrade). On "light", set `{review_depth} = "light"`.
 
 ## Filter to data-pipeline files
 
@@ -93,7 +102,7 @@ For Starlake reviews, focus the diff on:
 
 - `**/*.sl.yml` (load, transform, domain config)
 - `**/*.sql` (transform queries)
-- `metadata/**` (Starlake metadata tree)
+- `metadata/**` (Starlake metadata tree, including `metadata/semantic/**` semantic models)
 - `dags/**` and `*dag*template*` (orchestration)
 - `env*.sl.yml` (environment configs)
 
@@ -103,13 +112,13 @@ Mention any non-pipeline files in the diff but exclude them from the parallel re
 
 Present a summary:
 
-> **Review scope:** `<n>` files changed (`<+adds>` / `<-dels>`), mode `{review_mode}`, spec `{spec_file}` (if set).
+> **Review scope:** `<n>` files changed (`<+adds>` / `<-dels>`), mode `{review_mode}`, depth `{review_depth}`, spec `{spec_file}` (if set).
 > **In scope:** `<file list, capped at 10>`
 > **Excluded:** `<non-pipeline file count>` non-pipeline files.
 >
-> Proceed with parallel review? (y/n)
+> Proceed with review? (y/n)
 
-**HALT.** On `y`, proceed. On `n`, ask what to adjust.
+**HALT.** Default: `y`. On `y`, proceed. On `n`, ask what to adjust.
 
 ## Next
 

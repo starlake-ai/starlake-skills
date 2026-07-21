@@ -25,6 +25,15 @@ planning_artifacts: "{project-root}/starflow-output/planning-artifacts"
 implementation_artifacts: "{project-root}/starflow-output/implementation-artifacts"
 project_knowledge: "{project-root}/docs"
 
+# ── Execution Mode ───────────────────────────────────────────────
+# unattended: when true, step-file workflows auto-answer confirmation
+# checkpoints with their documented default, log every auto-decision to
+# `autoDecisions:` in the output frontmatter, and finish with
+# `status: ready-for-review` instead of `ready-for-dev`.
+# Information-gathering questions and `HALT (always)` checkpoints still halt.
+# Can also be enabled per-run by asking (e.g. "create pipeline spec, unattended").
+unattended: false
+
 # ── Data Engineering Defaults ────────────────────────────────────
 default_engine: duckdb
 target_engines:

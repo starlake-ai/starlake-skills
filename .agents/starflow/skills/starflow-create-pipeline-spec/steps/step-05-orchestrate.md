@@ -10,6 +10,11 @@ schedule: ''       # set in this step
 - Do **not** hand-write Airflow / Dagster code. Define the inputs and let `dag-generate` produce the DAG file.
 - Schedule must be expressible as a cron expression OR a sensor trigger; if neither fits, the answer is "event-driven via file/Kafka sensor", not "custom Python operator".
 
+### Scale
+
+- **light**: derive the trigger from the SLA and take the documented defaults (catchup `false`, `retries: 2`, `retry_delay: 5m`, timeout 2× run time) without asking. Ask only for the alert channel. Then **skip this step's checkpoint**: continue straight into step-06 and confirm orchestration + environment together at the step-06 checkpoint.
+- **deep**: additionally do the SLA math out loud (expected runtime + retry budget vs SLA window, with numbers), and ask about backfill needs; if catchup is `true`, document the backfill window and idempotence argument.
+
 ## Preconditions
 
 - Step 4 complete (or skipped with explicit "load only").
@@ -63,7 +68,7 @@ Set `dag_name` and `schedule` in this step's frontmatter.
 >
 > Ready to lock down environment configs? (y/n / revise)
 
-**HALT.**
+**HALT.** Default: `y`. (At `light` scale this checkpoint is skipped: see Scale above.)
 
 ## Next
 

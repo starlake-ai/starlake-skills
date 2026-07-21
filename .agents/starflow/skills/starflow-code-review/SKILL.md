@@ -50,9 +50,20 @@ Step-file architecture (same rules as `starflow-create-pipeline-spec`):
 
 ### Critical Rules
 
-- **NEVER** combine the three reviewers into one prompt. The whole point is independence.
+- **NEVER** combine the three reviewers into one prompt. The whole point is independence. (Sole exception: `{review_depth} = "light"`, offered in step-01 for small diffs and accepted explicitly: one reviewer covers all three lenses.)
 - **NEVER** skip Quinn for "config-only" changes: config IS what defines data quality.
 - **ALWAYS** triage; never just dump raw findings on the user.
+
+## Review Depth
+
+Step-01 sets `{review_depth}`:
+
+- **full** (default): three independent persona subagents in parallel.
+- **light**: for small diffs (fewer than ~200 changed lines across fewer than ~5 files), step-01 offers a single-reviewer pass covering all three lenses in one prompt. Faster and cheaper; the user must accept it explicitly (never silently downgrade). Triage and reporting are unchanged.
+
+## Unattended Mode
+
+Off by default. Active when config `unattended: true` or the user asks for it in this run. Confirmation checkpoints take their documented `Default:` instead of halting; the light-review offer takes its default too (staying `full`). Information-gathering questions (what to review, spec path when nothing resolves in the cascade) still halt. BLOCKER findings are always presented in full at the end regardless of mode.
 
 ## First Step
 

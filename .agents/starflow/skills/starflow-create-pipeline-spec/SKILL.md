@@ -47,6 +47,28 @@ Scan `{implementation_artifacts}/pipeline-spec-*.md` for files whose frontmatter
 - **Resume**: load the file, set `{spec_file}` to its path, set `{steps_completed}` from frontmatter, jump to the next step in sequence.
 - **New**: copy `{starflow-root}/templates/pipeline-spec-template.md` to `{implementation_artifacts}/pipeline-spec-{{pipeline_name}}.md` (you will set `{{pipeline_name}}` in step-01). Set `{steps_completed} = []`.
 
+## Scale-Adaptive Depth
+
+Every spec carries a `scale` frontmatter field set in step-01: `light`, `standard`, or `deep`.
+
+- **light**: single source, ≤ 3 load tables, ≤ 1 transform, single target environment, no strict SLA. Steps collapse optional depth, accept documented defaults without re-asking, and merge the step-05/step-06 checkpoints into one.
+- **standard** (default): the workflow exactly as written in the step files.
+- **deep**: multi-domain, multi-environment, strict SLA, or regulated data. Steps add rigor prompts (failure modes, backfill strategy, cost, SLA math).
+
+Step-01 classifies scale from heuristics and confirms it with the user. Each step file's `### Scale` block says what changes at each level; when a step has no such block, scale does not affect it. Standard behavior is always the baseline: light and deep are deltas.
+
+## Unattended Mode
+
+Off by default. Active when config `unattended: true` (resolve via the config layers) or the user asks for it in this run (e.g. "create pipeline spec, unattended").
+
+When active:
+
+- **Confirmation checkpoints** (y/n, "ready to proceed?", "revise?"): do not halt. Take the checkpoint's documented `Default:` answer, append `{step, question, decision}` to `autoDecisions:` in the spec frontmatter, and continue.
+- **Information-gathering questions** (pipeline name, business objective, connection details, endpoints, schemas): still halt, unless the answer is present in grounding artifacts or config. Never invent facts to keep moving.
+- **`HALT (always)` checkpoints**: halt regardless of mode.
+- **Finalize**: if `autoDecisions` is non-empty, step-07 sets `status: ready-for-review` instead of `ready-for-dev` and `sign_off` stays `false`. A human reviews the decision log and flips the status; `starflow-dev-pipeline` only consumes `ready-for-dev`.
+- **Wrap-up**: end the run by presenting the full `autoDecisions` list for review.
+
 ## Workflow Architecture
 
 This skill uses **step-file architecture** for disciplined execution:
@@ -60,14 +82,14 @@ This skill uses **step-file architecture** for disciplined execution:
 
 1. **READ COMPLETELY**: read the entire step file before acting.
 2. **FOLLOW SEQUENCE**: execute sections in order.
-3. **WAIT FOR INPUT**: halt at every checkpoint marked `**HALT**`. Do not invent answers.
+3. **WAIT FOR INPUT**: halt at every checkpoint marked `**HALT**`. Do not invent answers. (In unattended mode, confirmation checkpoints take their documented `Default:` instead: see Unattended Mode.)
 4. **PERSIST STATE**: at the end of each step, append the step number to `stepsCompleted` in the spec frontmatter and save the file before loading the next step.
 
 ### Critical Rules (NO EXCEPTIONS)
 
 - **NEVER** load multiple step files simultaneously.
 - **NEVER** skip steps or reorder them based on what feels efficient.
-- **ALWAYS** halt at checkpoints and wait for human input.
+- **ALWAYS** halt at checkpoints and wait for human input (sole exception: unattended mode auto-answers confirmation checkpoints per the Unattended Mode rules).
 - **ALWAYS** save the spec file with the updated `stepsCompleted` before moving on.
 - **NEVER** mark a step complete that hasn't actually finished: partial work stays in-progress.
 

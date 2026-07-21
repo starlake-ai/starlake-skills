@@ -8,6 +8,12 @@ connections: []  # set in this step: list of named connections
 
 - Environment parity: the only thing that should change between dev / staging / prod is the **value** of a connection setting, never the **shape** of the config.
 - Secrets live in env vars or a secret manager: never inline in the spec, never in `env.PROD.sl.yml`.
+- Connection values (URLs, projects, secret names) are information-gathering questions: they halt even in unattended mode when not present in grounding artifacts.
+
+### Scale
+
+- **light**: write `env.sl.yml` (dev) and `env.PROD.sl.yml` only; add the staging overlay only if the user mentions a staging environment. The checkpoint below covers step-05 and step-06 together (step-05's checkpoint was skipped).
+- **deep**: enumerate every environment explicitly (including sandbox / DR if they exist), and for each secret record its rotation owner in the env-var table.
 
 ## Preconditions
 
@@ -67,7 +73,9 @@ connections: []  # set in this step: list of named connections
 >
 > Ready to finalize? (y/n / revise)
 
-**HALT.**
+At `light` scale, prepend the step-05 recap line (DAG, trigger, retries, alerts) to this checkpoint since its own was skipped.
+
+**HALT.** Default: `y`.
 
 ## Next
 

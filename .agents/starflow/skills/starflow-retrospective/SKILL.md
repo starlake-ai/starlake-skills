@@ -38,7 +38,7 @@ Greet `{user_name}` in `{communication_language}`. Frame the session: *We'll clo
 Step-file architecture. Same critical rules as `starflow-code-review` and `starflow-create-pipeline-spec`:
 
 - Read **only the current step file** at a time.
-- **HALT** at every checkpoint; the value of a retro is in the conversation, not the speed.
+- **HALT** at every checkpoint; the value of a retro is in the conversation, not the speed. The `unattended` config flag does not apply here: a retrospective without humans is a status report, not a retro.
 - Persist progress in `stepsCompleted` in the output file frontmatter so multi-session retros work.
 
 ## First Step

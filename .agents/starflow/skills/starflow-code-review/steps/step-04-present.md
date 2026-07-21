@@ -113,7 +113,7 @@ Append a `### Review Findings: {date}` subsection to the spec file's "Risks & Mi
 > 3. Defer all and update sprint status.
 > 4. Done: close out.
 
-**HALT** for choice.
+**HALT** for choice. Default: `4` (close out: the report is persisted either way, and with open blockers or warnings the sprint sync below marks the story `review-blocked`, so nothing slips through silently).
 
 ### 5. Sprint status sync (only if `{spec_file}` set and contains a story key)
 

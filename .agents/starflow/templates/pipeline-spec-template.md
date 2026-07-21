@@ -5,9 +5,11 @@ date: {{system-date}}
 author: {{user_name}}
 pipeline_name: {{pipeline_name}}
 domain: {{domain_name}}
-status: draft        # draft → ready-for-dev → in-progress → done
+status: draft        # draft → ready-for-dev → in-progress → done (ready-for-review after an unattended run)
+scale: standard      # light | standard | deep (set in step-01)
 risks: []
 sign_off: false
+autoDecisions: []    # populated only in unattended mode: {step, question, decision}
 
 # Per-step state (set as the workflow progresses)
 business_objective: ''
