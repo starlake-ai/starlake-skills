@@ -11,6 +11,8 @@ ALL_PLATFORMS="claude,copilot,gemini"
 MODE="global"
 ACTION="install"
 PLATFORMS="$ALL_PLATFORMS"
+CHANNEL=""
+PIN=""
 
 # ── Usage ──────────────────────────────────────────────────────────────
 usage() {
@@ -25,6 +27,11 @@ Options:
   --update                Remove existing starlake symlinks, then re-install
   --uninstall             Remove all starlake-skills symlinks
   --platforms PLATFORMS   Comma-separated: claude,copilot,gemini (default: all)
+  --channel CHANNEL       Switch the repo before installing: 'stable' (newest
+                          vX.Y.Z tag) or 'latest' (main branch). Without this
+                          flag the repo's git state is never touched.
+  --pin TAG               Switch the repo to an exact tag (e.g. v1.2.0)
+  --version               Print the installed version and exit
   --help                  Show this help message
 
 Examples:
@@ -32,6 +39,8 @@ Examples:
   $(basename "$0") --platforms claude       # Install globally for Claude Code only
   $(basename "$0") --local                  # Install into current project
   $(basename "$0") --update                 # Re-install (removes old links first)
+  $(basename "$0") --update --channel stable # Update to the newest tagged release
+  $(basename "$0") --pin v1.2.0             # Install an exact release
   $(basename "$0") --uninstall              # Remove all starlake symlinks
 EOF
   exit 0
@@ -45,6 +54,9 @@ while [[ $# -gt 0 ]]; do
     --update)    ACTION="update"; shift ;;
     --uninstall) ACTION="uninstall"; shift ;;
     --platforms) PLATFORMS="$2"; shift 2 ;;
+    --channel)   CHANNEL="$2"; shift 2 ;;
+    --pin)       PIN="$2"; shift 2 ;;
+    --version)   ACTION="version"; shift ;;
     --help)      usage ;;
     *)           echo "Unknown option: $1"; usage ;;
   esac
@@ -53,6 +65,16 @@ done
 # ── Validation ─────────────────────────────────────────────────────────
 if [[ ! -d "$AGENTS_DIR" ]]; then
   echo "Error: .agents/ directory not found at $AGENTS_DIR"
+  exit 1
+fi
+
+if [[ -n "$CHANNEL" && "$CHANNEL" != "stable" && "$CHANNEL" != "latest" ]]; then
+  echo "Error: --channel must be 'stable' or 'latest' (got '$CHANNEL')"
+  exit 1
+fi
+
+if [[ -n "$CHANNEL" && -n "$PIN" ]]; then
+  echo "Error: --channel and --pin are mutually exclusive"
   exit 1
 fi
 
@@ -70,6 +92,63 @@ resolve_base_dir() {
   else
     echo ".$platform"
   fi
+}
+
+repo_version() {
+  if git -C "$REPO_DIR" describe --tags --always 2>/dev/null; then
+    return
+  fi
+  # Tarball installs (install-remote.sh) have no .git but carry a stamped VERSION file.
+  if [[ -f "$REPO_DIR/VERSION" ]]; then
+    cat "$REPO_DIR/VERSION"
+    return
+  fi
+  echo "unknown"
+}
+
+# Switch the repo to the requested channel or pinned tag.
+# Only called when --channel or --pin was passed explicitly.
+switch_version() {
+  if ! command -v git >/dev/null 2>&1; then
+    echo "Error: git is required for --channel / --pin"
+    exit 1
+  fi
+  if ! git -C "$REPO_DIR" rev-parse --git-dir >/dev/null 2>&1; then
+    echo "Error: $REPO_DIR is not a git repository"
+    echo "(release-tarball install? switch versions with install-remote.sh --pin instead)"
+    exit 1
+  fi
+
+  if ! git -C "$REPO_DIR" fetch --tags --quiet 2>/dev/null; then
+    echo "  Warning: could not fetch from remote, using local refs"
+    ((WARNINGS++)) || true
+  fi
+
+  local ref=""
+  if [[ -n "$PIN" ]]; then
+    ref="$PIN"
+  elif [[ "$CHANNEL" == "stable" ]]; then
+    ref="$(git -C "$REPO_DIR" tag --list 'v[0-9]*' --sort=-v:refname | head -n 1)"
+    if [[ -z "$ref" ]]; then
+      echo "Error: no vX.Y.Z tags found; the stable channel requires at least one release tag"
+      exit 1
+    fi
+  else # latest
+    ref="main"
+  fi
+
+  echo "Switching repo to $ref"
+  if ! git -C "$REPO_DIR" checkout --quiet "$ref"; then
+    echo "Error: could not check out '$ref' (uncommitted changes in $REPO_DIR?)"
+    exit 1
+  fi
+  if [[ "$ref" == "main" ]]; then
+    git -C "$REPO_DIR" pull --ff-only --quiet 2>/dev/null || {
+      echo "  Warning: could not fast-forward main, using local state"
+      ((WARNINGS++)) || true
+    }
+  fi
+  echo "Installed version: $(repo_version)"
 }
 
 # Check if a symlink points into our repo
@@ -179,6 +258,17 @@ uninstall_platform() {
 
 # ── Main ───────────────────────────────────────────────────────────────
 IFS=',' read -ra PLATFORM_LIST <<< "$PLATFORMS"
+
+if [[ "$ACTION" == "version" ]]; then
+  repo_version
+  exit 0
+fi
+
+# A channel/pin switch may add or remove skill folders, so re-link from scratch.
+if [[ ( -n "$CHANNEL" || -n "$PIN" ) && "$ACTION" != "uninstall" ]]; then
+  switch_version
+  [[ "$ACTION" == "install" ]] && ACTION="update"
+fi
 
 case "$ACTION" in
   install)

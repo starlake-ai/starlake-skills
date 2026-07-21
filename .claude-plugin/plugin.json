@@ -1,7 +1,7 @@
 {
   "name": "starlake-skills",
-  "version": "1.1.0",
-  "description": "Starlake data pipeline skills — 45+ CLI skills plus the optional Starflow methodology for guided data engineering workflows",
+  "version": "1.2.0",
+  "description": "Starlake data pipeline skills — a skill for every CLI command plus the optional Starflow methodology for guided data engineering workflows",
   "author": {
     "name": "Starlake Team"
   },

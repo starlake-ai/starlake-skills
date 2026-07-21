@@ -12,11 +12,20 @@
     Remove all starlake-skills symlinks
 .PARAMETER Platforms
     Comma-separated list: claude,copilot,gemini (default: all)
+.PARAMETER Channel
+    Switch the repo before installing: 'stable' (newest vX.Y.Z tag) or 'latest'
+    (main branch). Without this parameter the repo's git state is never touched.
+.PARAMETER Pin
+    Switch the repo to an exact tag (e.g. v1.2.0)
+.PARAMETER Version
+    Print the installed version and exit
 .EXAMPLE
     .\install.ps1
     .\install.ps1 -Platforms "claude"
     .\install.ps1 -Local
     .\install.ps1 -Update
+    .\install.ps1 -Update -Channel stable
+    .\install.ps1 -Pin v1.2.0
     .\install.ps1 -Uninstall
 #>
 param(
@@ -25,6 +34,10 @@ param(
     [switch]$Update,
     [switch]$Uninstall,
     [string]$Platforms = "claude,copilot,gemini",
+    [ValidateSet("stable", "latest")]
+    [string]$Channel = "",
+    [string]$Pin = "",
+    [switch]$Version,
     [switch]$Help
 )
 
@@ -57,6 +70,76 @@ $Action = if ($Uninstall) { "uninstall" } elseif ($Update) { "update" } else { "
 if (-not (Test-Path $AgentsDir)) {
     Write-Error ".agents/ directory not found at $AgentsDir"
     exit 1
+}
+
+if ($Channel -and $Pin) {
+    Write-Error "-Channel and -Pin are mutually exclusive"
+    exit 1
+}
+
+# ── Versioning helpers ─────────────────────────────────────────────────
+function Get-RepoVersion {
+    # Relax EAP locally: under "Stop", redirected native stderr can become a
+    # terminating error in Windows PowerShell 5.1.
+    $ErrorActionPreference = "Continue"
+    $v = git -C $RepoDir describe --tags --always 2>$null
+    $ErrorActionPreference = "Stop"
+    if ($LASTEXITCODE -eq 0 -and $v) { return $v }
+    # Archive installs (install-remote.ps1) have no .git but carry a stamped VERSION file.
+    $versionFile = Join-Path $RepoDir "VERSION"
+    if (Test-Path $versionFile) { return (Get-Content $versionFile -First 1) }
+    "unknown"
+}
+
+# Switch the repo to the requested channel or pinned tag.
+# Only called when -Channel or -Pin was passed explicitly.
+function Switch-Version {
+    if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+        Write-Error "git is required for -Channel / -Pin"
+        exit 1
+    }
+    # Relax EAP for the native git calls below (see Get-RepoVersion).
+    $ErrorActionPreference = "Continue"
+    git -C $RepoDir rev-parse --git-dir 2>$null | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "$RepoDir is not a git repository (release-archive install? switch versions with install-remote.ps1 -Pin instead)"
+        exit 1
+    }
+
+    git -C $RepoDir fetch --tags --quiet 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "  Warning: could not fetch from remote, using local refs"
+        $script:Warnings++
+    }
+
+    $ref = ""
+    if ($Pin) {
+        $ref = $Pin
+    } elseif ($Channel -eq "stable") {
+        $ref = git -C $RepoDir tag --list 'v[0-9]*' --sort=-v:refname 2>$null | Select-Object -First 1
+        if (-not $ref) {
+            Write-Error "no vX.Y.Z tags found; the stable channel requires at least one release tag"
+            exit 1
+        }
+    } else { # latest
+        $ref = "main"
+    }
+
+    Write-Host "Switching repo to $ref"
+    git -C $RepoDir checkout --quiet $ref 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "could not check out '$ref' (uncommitted changes in $RepoDir?)"
+        exit 1
+    }
+    if ($ref -eq "main") {
+        git -C $RepoDir pull --ff-only --quiet 2>$null
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "  Warning: could not fast-forward main, using local state"
+            $script:Warnings++
+        }
+    }
+    $ErrorActionPreference = "Stop"
+    Write-Host "Installed version: $(Get-RepoVersion)"
 }
 
 # ── Helpers ────────────────────────────────────────────────────────────
@@ -166,6 +249,17 @@ function Uninstall-Platform {
 
 # ── Main ───────────────────────────────────────────────────────────────
 $PlatformList = $Platforms -split ","
+
+if ($Version) {
+    Get-RepoVersion
+    exit 0
+}
+
+# A channel/pin switch may add or remove skill folders, so re-link from scratch.
+if (($Channel -or $Pin) -and ($Action -ne "uninstall")) {
+    Switch-Version
+    if ($Action -eq "install") { $Action = "update" }
+}
 
 switch ($Action) {
     "install" {

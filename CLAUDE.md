@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-This repository is a **skills bundle**: not application code. It ships ~50 markdown-based "Agent Skills" for the [Starlake](https://starlake.ai) data pipeline CLI, plus the optional **Starflow** guided methodology. The skills are consumed by AI coding assistants (Claude Code, GitHub Copilot, Gemini CLI) by symlinking the skill folders into each tool's `skills/` directory.
+This repository is a **skills bundle**: not application code. It ships markdown-based "Agent Skills" covering the [Starlake](https://starlake.ai) data pipeline CLI, plus the optional **Starflow** guided methodology. The skills are consumed by AI coding assistants (Claude Code, GitHub Copilot, Gemini CLI) by symlinking the skill folders into each tool's `skills/` directory.
 
 There is no build, no tests, and no runtime code. Changes are almost always edits to `SKILL.md` files (skill content) or to `scripts/install.sh` / `scripts/install.ps1` (the installer).
 
@@ -47,6 +47,11 @@ The installer iterates immediate subdirectories of `.agents/skills/` and `.agent
 
 When adding a new platform or changing path conventions, update **both** scripts and the README install section in lock-step.
 
+Distribution has two channels sharing the same layout:
+
+- **Git clone** (contributors): symlinks point into the clone; `--channel stable|latest` / `--pin` switch the checked-out ref (only when passed explicitly).
+- **GitHub Releases** (end users): `.github/workflows/release.yml` packs `.tar.gz`/`.zip` assets on every `vX.Y.Z` tag push, with a `VERSION` file stamped in (the `--version` fallback when `.git` is absent). `scripts/install-remote.sh` / `.ps1` download and unpack a release to `~/.starlake-skills`, then run the inner installer. The remote pair is also kept feature-parallel, and refuses to overwrite a git clone.
+
 ## Common commands
 
 ```bash
@@ -74,6 +79,8 @@ When editing a step-file workflow:
 - Each step file: frontmatter declaring runtime variables it sets, a "Rules" block, "Preconditions" (what `stepsCompleted` must contain), step instructions with explicit `**HALT**` checkpoints, "Save" (append step number to `stepsCompleted`, persist output file), and a `## Next` pointer to the next step.
 - Never inline step content into `SKILL.md` for "convenience": the just-in-time loading is the point. Reading all steps up front bloats context unnecessarily.
 - When adding a new step, update the step index table in `SKILL.md`.
+- **Checkpoints and modes**: every `**HALT**` confirmation checkpoint carries a `Default:` line (consumed by unattended mode, which logs auto-taken defaults to `autoDecisions:` frontmatter and caps the final status at `ready-for-review`). Information-gathering questions and `**HALT (always)**` checkpoints halt in every mode. Steps whose depth varies by pipeline size declare it in a `### Scale` block (light/deep deltas over the standard baseline, driven by the `scale` frontmatter field set in step-01).
+- Templates for scaffolding new personas and workflow skills live in `.agents/starflow/templates/builder/` and are consumed by `starflow-builder`; keep them in sync when step-file conventions change.
 
 ## Starflow vs. core skills
 
