@@ -152,6 +152,7 @@ Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all sy
 - **secure**: RLS, CLS, privacy transformations
 
 ### Orchestration
+- **dag-create**: Create a ready-to-deploy one-off DAG (Airflow/Dagster) from a natural-language pipeline description
 - **dag-deploy** / **dag-generate**: Airflow/Dagster DAG generation
 
 ### Utilities
