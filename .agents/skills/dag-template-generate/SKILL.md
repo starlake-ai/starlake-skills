@@ -12,6 +12,20 @@ Turns a natural-language pipeline description into two artifacts for a Starlake 
 
 Prefer a built-in template whenever it fits; write a custom template only for genuinely custom behavior.
 
+## Invocation
+
+Describe what the generated DAGs must do — the skill triggers on requests like:
+
+- "Generate a DAG template that loads my domain tables and emails the team on completion"
+- "Create a custom Airflow template and DAG config for the starbake domain"
+- "I need a reusable Dagster transform template with a custom option"
+
+## Required context
+
+- A Starlake project (`SL_ROOT`) with its `metadata/` tree: `application.sl.yml` (dagRef defaults, `schedulePresets`), `metadata/load/{domain}/` and/or `metadata/transform/{domain}/` definitions, and `metadata/dags/` for the DAG configs this skill writes.
+- The Starlake CLI (1.5.x) — `starlake dag-generate` renders the template.
+- **Supported orchestrators**: Airflow (2.x and 3.x) and Dagster with the `shell`, `cloud_run`, `dataproc`, `fargate` execution environments; Snowflake with `sql` only. Snowflake custom templates must start from the built-in snowflake template source (it inlines its own body); one-off Snowflake DAGs are not possible at all — see [dag-create](../dag-create/SKILL.md).
+
 ## Workflow
 
 1. **Gather requirements** (ask only for what's missing, then generate everything in one turn):
@@ -324,6 +338,19 @@ with OrchestrationFactory.create_orchestration(job=sl_job) as orchestration:
 starlake dag-generate --outputDir /tmp/dags --clean
 python -c "import ast, pathlib; [ast.parse(p.read_text()) for p in pathlib.Path('/tmp/dags').rglob('*.py')]"
 ```
+
+### Option hygiene in conversation
+
+**User**: "Add `load_dependencies: 'true'` to my transform DAG config so dependencies run first."
+
+**Assistant**: `load_dependencies` is not read by anything — the options map is free-form and unknown keys are silently ignored, so this would do nothing. The documented option in the transform template header is `run_dependencies_first`. Emits the corrected options block:
+
+```yaml
+  options:
+    run_dependencies_first: "True"
+```
+
+and reminds: pre-load options (`pre_load_strategy`, `global_ack_file_path`, `ack_wait_timeout`) would be equally inert here — transform template headers do not document them.
 
 ## Validation checklist
 

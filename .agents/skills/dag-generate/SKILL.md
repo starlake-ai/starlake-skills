@@ -177,3 +177,5 @@ starlake dag-generate --outputDir /tmp/dags --withRoles --clean
 - [load](../load/SKILL.md) - Load data
 - [lineage](../lineage/SKILL.md) - Visualize task dependencies
 - [config](../config/SKILL.md) - Configuration reference (environment variables)
+- [dag-create](../dag-create/SKILL.md) - Create a one-off deployable DAG (Airflow/Dagster) without templates
+- [dag-template-generate](../dag-template-generate/SKILL.md) - Author a custom DAG template + YAML DAG config from a description

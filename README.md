@@ -145,7 +145,7 @@ Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all sy
 - **acl-dependencies** / **col-lineage** / **lineage** / **table-dependencies**
 
 ### Operations
-- **console** / **freshness** / **gizmosql** / **metrics** / **migrate** / **serve** / **settings** / **validate**
+- **console** / **freshness** / **gizmosql** / **metrics** / **migrate** / **quack** / **serve** / **settings** / **validate**
 
 ### Security
 - **iam-policies**: IAM policies
@@ -153,7 +153,7 @@ Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all sy
 
 ### Orchestration
 - **dag-create**: Create a ready-to-deploy one-off DAG (Airflow/Dagster) from a natural-language pipeline description
-- **dag-deploy** / **dag-generate**: Airflow/Dagster DAG generation
+- **dag-deploy** / **dag-generate**: Airflow/Dagster DAG generation and deployment
 - **dag-template-generate**: Generate a custom Jinja2 DAG template + YAML DAG config from a pipeline description
 
 ### Utilities
