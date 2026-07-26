@@ -121,5 +121,6 @@ expectations:
 
 - [load](../load/SKILL.md) - Expectations applied during data loading
 - [transform](../transform/SKILL.md) - Expectations applied to transform outputs
+- [test](../test/SKILL.md) - Unit tests evaluate declared expectations as a test oracle
 - [validate](../validate/SKILL.md) - Validate project configuration
 - [config](../config/SKILL.md) - Configuration reference
