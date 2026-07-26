@@ -32,7 +32,7 @@ Derive every configuration value from the project's YAML metadata:
 Rules:
 
 - **Schedules**: resolve preset names (`daily`, `hourly`, …) through `application.schedulePresets`. Tables with a different schedule than the requested one belong in a DIFFERENT pipeline — ask, or generate one pipeline per schedule (they can share one file via `pipelines = [pipeline_a, pipeline_b]`). Always use standard 5-field cron expressions (`@daily` aliases and 6-field crons are not portable).
-- **Write strategies** (`APPEND`, `OVERWRITE`, `UPSERT_BY_KEY`, `SCD2`, …) are applied by the Starlake CLI from the table/task YAML. Read them to explain behavior to the user — NEVER pass them to `sl_load`/`sl_transform` (they are not orchestration parameters). Note: load tables declare them under `table.metadata.writeStrategy`, transforms at the top-level `task.writeStrategy`.
+- **Write strategies** (`APPEND`, `OVERWRITE`, `UPSERT_BY_KEY`, `SCD2`, …) are applied by the Starlake CLI from the table/task YAML. Read them to explain behavior to the user — NEVER pass them to `sl_load`/`sl_transform` (they are not orchestration parameters). Note: load tables declare them under `table.metadata.writeStrategy`, transforms at the top-level `task.writeStrategy`. While reading them, validate their own YAML requirements (`key`/`timestamp`/`sink.partition` — see [load](../load/SKILL.md)) and flag violations before generating; `type: "ADAPTATIVE"` is not a real value (adaptive selection is the `types:` condition map — a literal `ADAPTATIVE` string is silently accepted and degrades to APPEND).
 - **Transform ordering**: a transform whose SQL reads another transform's sink must run after it (e.g. `kpi.top_customers` reads `kpi.order_summary` → `order_summary >> top_customers`). For complex projects use the [lineage](../lineage/SKILL.md) skill (`starlake lineage`) to compute the ordering instead of parsing SQL by hand.
 - **Pre-load strategy**: from the user's request or an existing DAG config (`metadata/dags/*.sl.yml` `options.pre_load_strategy`). Valid values: `imported`, `ack`, `pending`, `none` (strict lowercase). Invalid strings make the job constructor raise — do not invent values.
 
@@ -130,10 +130,51 @@ Environment for these commands comes from the `sl_env_var` option (JSON map — 
 - `SL_STARLAKE_PATH` (default `starlake`): path to the starlake executable [OPTIONAL]
 - `pre_load_strategy` (default `none`): `imported` | `ack` | `pending` | `none` [OPTIONAL]
 - `global_ack_file_path`, `ack_wait_timeout`: required companions of the `ack` strategy [OPTIONAL]
+- `pre_load_sensor` (default `false`), `pre_load_poke_interval`, `pre_load_timeout`, `pre_load_sensor_soft_fail`, `pre_load_not_ready_sentinel_path`: sensor/sentinel variants of the pre-load task (in sensor mode `ack_wait_timeout` is ignored) — see [preload](../preload/SKILL.md) [OPTIONAL]
 - `retries` (default 1), `retry_delay` (default 300 s) [OPTIONAL]
 - Airflow only: `tags` (space-separated), `start_date`, `end_date`, `catchup`, `default_dag_args` (JSON map), `sl_include_env_vars` [OPTIONAL]
 
 These are the same options documented in the header comments of the bundled dag-generate templates — they are the option API shared by generated and one-off DAGs. The options dict is a free-form map: a key the framework never reads is **silently ignored** (e.g. `load_dependencies` does nothing — the real key is `run_dependencies_first`). Only emit documented keys and warn the user about any unknown ones.
+
+## Strategy semantics and consistency checks
+
+Before emitting the DAG file, cross-check the derived configuration against these rules. Three outcomes: **refuse and fix** (the output would be broken), **warn and ask** (valid but suspicious — proceed only on confirmation), or **inform**.
+
+### Refuse and fix (never generate these)
+
+- **Broken IMPORTED chain**: with `pre_load_strategy: "imported"` the chain is `sl_pre_load >> skip_or_start >> sl_import >> loads`. Never wire `sl_pre_load` straight to `sl_load` — the import (stage) step moves the files the load consumes.
+- **Invalid strategy string**: `pre_load_strategy` must be exactly one of `imported`, `ack`, `pending`, `none` (lowercase). Anything else — including `IMPORTED` uppercase or sensor-style names — makes the job constructor raise `ValueError` at DAG definition time.
+- **Write strategy as a parameter**: `sl_load`/`sl_transform` have no write-strategy argument and the options dict has no write-strategy key. If the user wants a different write behavior, the change belongs in the table/task YAML (`writeStrategy` — see [load](../load/SKILL.md)); offer that as a separate step.
+- **Snowflake one-off DAG**: not composable by hand (the executor needs CLI-embedded statements/json context and fails at definition time). Route to [dag-generate](../dag-generate/SKILL.md).
+
+### Warn and ask
+
+- **`ack` without `global_ack_file_path`**: works, but the framework falls back to a date-coupled default (`{datasets}/pending/{domain}/{YYYY-MM-DD}.ack`) — the producer must write TODAY's file name. Recommend an explicit stable path.
+- **Ack companions without `ack`**: `global_ack_file_path`/`ack_wait_timeout` are read only when the strategy is `ack`; under any other strategy they are inert.
+- **`sl_import` under `ack`/`pending`**: the canonical chains are `imported → pre_load >> gate >> import >> loads`; `ack`/`pending → pre_load >> gate >> loads`; `none → loads`. Adding an import step to `ack`/`pending` is non-canonical — confirm the user really has co-arriving incoming files to stage.
+- **Schedule conflict**: a table whose own `metadata.schedule` differs from the requested DAG schedule (e.g. an hourly table in a daily DAG) is being re-scheduled. Offer one pipeline per schedule instead (a single file may export `pipelines = [a, b]`).
+- **Double scheduling**: requested tables/tasks already covered by a `dagRef` in scope will run under BOTH the generated DAG and this one-off DAG.
+- **YAML strategy misconfiguration**: while reading `writeStrategy`, flag definitions `starlake validate` would reject — `UPSERT_BY_KEY`/`DELETE_THEN_INSERT` without `key`; `UPSERT_BY_KEY_AND_TIMESTAMP`/`SCD2` without `key` + `timestamp`; `OVERWRITE_BY_PARTITION` without `sink.partition`. The DAG would deploy but every load run would fail.
+- **`type: "ADAPTATIVE"` literal**: not a real strategy value — it is silently accepted as a custom no-op that degrades to APPEND behavior. Adaptive selection is a `types: {STRATEGY: 'condition'}` map with NO `type` key. `SCD2` inside a `types:` map is not implemented (ingestion-time error).
+- **Unknown option keys**: the options dict is free-form; unknown keys are silently ignored (`load_dependencies` and `incoming_path` are known inert examples — real key for the former is `run_dependencies_first`).
+- **Invalid `dataset_triggering_strategy`**: values other than `any`/`all` (lowercase) silently fall back to `any` at runtime — no error will ever surface it, so catch it here.
+
+### Inform
+
+- With both a cron and upstream datasets, cron wins (Airflow). Event semantics differ by orchestrator: Dagster `any` still requires every monitored asset to have materialized at least once; Snowflake supports `all` semantics only.
+
+### "DAG load strategy" vocabulary
+
+Older Starlake material names a DAG-level load-strategy axis (`FILE_SENSOR`, `FILE_SENSOR_DOMAIN`, `ACK_FILE_SENSOR`, `NONE`). **These are not configuration keys** — express the intent with `pre_load_strategy`:
+
+| If the user says | Configure | Behavior |
+|---|---|---|
+| file sensor (table or domain) | `pre_load_strategy: "imported"` | preload scans the domain's incoming directory (per-table counts; domain-granular) |
+| ack file sensor | `pre_load_strategy: "ack"` + `global_ack_file_path` | preload waits on the ack file (retry every `ack_wait_timeout` s by default; the `pre_load_sensor` option family switches to a poke-loop sensor) and **deletes it** on success |
+| check staged/pending files | `pre_load_strategy: "pending"` | preload matches files already in the pending area against table patterns |
+| no sensor | `pre_load_strategy: "none"` | no pre-load task |
+
+For a true orchestrator-native sensor on an arbitrary path, add a native task (Airflow `FileSensor`) alongside the starlake tasks — that is orchestrator territory, not a starlake option. See [preload](../preload/SKILL.md) for what each strategy actually checks.
 
 ## Validate the generated DAG
 
@@ -146,18 +187,21 @@ from ai.starlake.orchestration.__main__ import load_pipelines
 ps = load_pipelines('<path>/my_dag.py'); assert ps, 'no pipelines exported'
 print([p.pipeline_id if hasattr(p, 'pipeline_id') else p for p in ps])"
 
-# 2a. Airflow: the DagBag must parse it without errors
+# 2a. Airflow: the DagBag must parse it without errors AND actually contain the DAG
 # (include_examples exists on Airflow 2 only — Airflow 3 removed it and skips examples by default)
 python -c "
 import airflow
 from airflow.models import DagBag
 kwargs = {'include_examples': False} if airflow.__version__.startswith('2') else {}
 db = DagBag('<dags folder>', **kwargs)
-assert not db.import_errors, db.import_errors"
+assert not db.import_errors, db.import_errors
+assert '<expected dag id>' in db.dags, list(db.dags)"
 
 # 2b. Dagster: the module exposes 'defs' (Definitions) — validate the code location
 dagster definitions validate -f <path>/my_dag.py
 ```
+
+Airflow's safe mode only parses files whose text contains BOTH the strings `dag` and `airflow` (case-insensitive). A one-off file built with `StarlakeJobFactory` has no `import airflow` line — `airflow` is usually only matched via the `StarlakeOrchestrator.AIRFLOW` literal — and may legitimately never contain the word `dag` at all. Make sure the module `description` (or a comment) mentions the Airflow DAG (e.g. `"Airflow DAG loading the starbake tables"`), otherwise the scheduler silently skips the file and a DagBag check without the dag-id assertion false-passes.
 
 Deploy with [dag-deploy](../dag-deploy/SKILL.md) or by copying the file to the orchestrator's DAG folder / code location.
 
@@ -172,6 +216,7 @@ The skill reads the metadata, confirms `starbake.orders` normally runs hourly (w
 - [dag-generate](../dag-generate/SKILL.md) - Template-driven DAG generation (reusable, metadata-regenerated)
 - [dag-deploy](../dag-deploy/SKILL.md) - Deploy DAG files to the target directory
 - [load](../load/SKILL.md) - Load semantics and write strategies
+- [preload](../preload/SKILL.md) - Pre-load strategy semantics (imported/ack/pending/none)
 - [transform](../transform/SKILL.md) - Transform tasks the DAG orchestrates
 - [lineage](../lineage/SKILL.md) - Compute transform dependency ordering
 - [config](../config/SKILL.md) - Environment variables and application structure
