@@ -101,6 +101,17 @@ Always re-read the actual header of the template you extend — it is the single
 
 Option hygiene: an option key the template never reads is silently ignored (e.g. `load_dependencies` does nothing — the real key is `run_dependencies_first`; `incoming_path` is likewise consumed by nothing). Cross-check every option you emit against the template header and warn the user about unknown keys — even example configs shipped with Starlake projects may carry inert options.
 
+## Strategy consistency checks
+
+Cross-check the DAG configuration you emit against these rules before finishing:
+
+- `pre_load_strategy` accepts exactly `imported`, `ack`, `pending`, `none` — lowercase (omitting the option is legal: it defaults to `none`, no gate). Any other value (uppercase variants, sensor-style names like `FILE_SENSOR`/`ACK_FILE_SENSOR`) fails at DAG definition time; sensor vocabulary maps onto the real axis (`imported` = incoming-files check, `ack` = ack-file wait + consume, `pending` = staged-files check, `none` = no gate). There is no separate "DAG load strategy" option — see [preload](../preload/SKILL.md) for what each strategy checks.
+- Pre-load options belong to LOAD DAG configs only: on a transform DAG config (`scheduled_task` templates) and on snowflake DAG configs, `pre_load_strategy`/`global_ack_file_path`/`ack_wait_timeout` and the `pre_load_*` sensor/sentinel options are inert (those template headers do not document them — and unknown/undocumented options are silently ignored).
+- With `pre_load_strategy: "ack"`, set an explicit `global_ack_file_path` (the framework default is date-coupled: `{datasets}/pending/{domain}/{YYYY-MM-DD}.ack`) and size `ack_wait_timeout` (the wait is retry-based; in sensor mode — `pre_load_sensor: "true"` — `ack_wait_timeout` is ignored and `pre_load_timeout` governs the wait). With any other strategy, drop both ack companions.
+- Write strategies (`writeStrategy` in table/task YAML) never appear in DAG configs, template options, or template bodies — the CLI applies them at load/transform run time. When helping a user whose YAML carries `UPSERT_BY_KEY`/`SCD2`/etc., check the YAML's own requirements (`key`, `timestamp`, `sink.partition`) and point violations to [load](../load/SKILL.md) and `starlake validate`. `type: "ADAPTATIVE"` is not a value — adaptive is the `types:` condition map, and `SCD2` inside a `types:` map is not implemented (ingestion-time error).
+- `dataset_triggering_strategy` accepts `any`/`all` (lowercase); anything else silently falls back to `any` at runtime — flag it at generation time.
+- Warn when a table's own `metadata.schedule` diverges from the schedule group the user expects: schedule grouping is computed from table metadata, so a table with a different schedule lands in a different generated DAG, not in this one.
+
 ## Adding orchestrator-native tasks
 
 When the user needs tasks beyond the `sl_*` actions (send an email, ping an external system, ...), add them with the orchestrator's OWN constructs — they are outside the starlake Python library.
@@ -328,6 +339,7 @@ After generating the artifacts, always verify:
 - [dag-generate](../dag-generate/SKILL.md) - Run DAG generation from the DAG configs this skill produces
 - [dag-deploy](../dag-deploy/SKILL.md) - Deploy generated DAGs to target directory
 - [load](../load/SKILL.md) - Load data (write strategies live in table metadata)
+- [preload](../preload/SKILL.md) - Pre-load strategy semantics (imported/ack/pending/none)
 - [transform](../transform/SKILL.md) - Run transform tasks
 - [config](../config/SKILL.md) - Configuration reference (environment variables)
 - [connection](../connection/SKILL.md) - Database connections referenced by loads/transforms

@@ -233,6 +233,8 @@ Use for: Historical tracking of dimension changes, audit trails.
 
 #### ADAPTATIVE Strategy (Dynamic Selection)
 
+> **Trap:** `ADAPTATIVE` is NOT a `type:` value. Writing `writeStrategy.type: "ADAPTATIVE"` literally is accepted silently by the CLI as an unknown custom strategy whose write mode degrades to APPEND. Adaptive selection is expressed ONLY through the `types:` condition map below, with no `type` key.
+
 ```yaml
 # By day of week (full refresh on Sunday)
 writeStrategy:
