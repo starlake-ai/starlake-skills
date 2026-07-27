@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This repository is a **skills bundle**: not application code. It ships markdown-based "Agent Skills" covering the [Starlake](https://starlake.ai) data pipeline CLI, plus the optional **Starflow** guided methodology. The skills are consumed by AI coding assistants (Claude Code, GitHub Copilot, Gemini CLI) by symlinking the skill folders into each tool's `skills/` directory.
 
-There is no build, no tests, and no runtime code. Changes are almost always edits to `SKILL.md` files (skill content) or to `scripts/install.sh` / `scripts/install.ps1` (the installer).
+There is no build and no runtime code. The only automation is a structural docs linter (`python3 scripts/lint_skills.py`, run in CI) that checks frontmatter, relative links, README-catalog sync, and template-header grammar in fenced examples — it does not (and cannot) test skill *behavior*, which is LLM-executed prose. Changes are almost always edits to `SKILL.md` files (skill content) or to `scripts/install.sh` / `scripts/install.ps1` (the installer).
 
 ## Repository layout
 
@@ -61,13 +61,15 @@ Distribution has two channels sharing the same layout:
 ./scripts/install.sh --platforms claude    # restrict to one assistant
 
 # After editing a SKILL.md, no rebuild is needed: symlinks pick up changes immediately.
+
+python3 scripts/lint_skills.py            # structural lint (frontmatter, links, catalog sync) — CI runs this on every PR
 ```
 
 ## Editing skills
 
 - Keep the YAML frontmatter (`name`, `description`): assistants use it for skill discovery.
 - The `description` is what makes a skill auto-trigger; lead with the user-visible action and the CLI command name.
-- Keep the README's "Skills Catalog" section in sync when adding, removing, or renaming a skill folder.
+- Keep the README's "Skills Catalog" section in sync when adding, removing, or renaming a skill folder (CI enforces this: the linter fails if a skill folder is missing from the catalog or the advertised count is stale).
 - Keep `.agents/starflow/_config/starflow-help.csv` in sync when adding/removing/renaming any starflow skill (columns: `module, skill, display-name, menu-code, description, action, args, phase, after, before, required, output-location, outputs`). `starflow-help` depends on it for adaptive recommendations.
 - The `extract-rest-*`, `extract-bq-schema`, and `extract-schema` skills are part of the same family: when adding cross-cutting features (retries, pagination, auth), check whether siblings need the same edit.
 

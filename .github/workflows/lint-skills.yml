@@ -1,0 +1,17 @@
+name: lint-skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Structural lint (frontmatter, links, catalog sync, header grammar)
+        run: python3 scripts/lint_skills.py

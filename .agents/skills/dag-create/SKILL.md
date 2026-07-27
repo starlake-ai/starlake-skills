@@ -11,6 +11,16 @@ Use this skill when the user wants a one-off DAG mixing loads and transforms in 
 
 **Respond in a single conversation turn**: read the metadata, then emit the complete DAG file in one reply. Never split the file across turns.
 
+## Invocation
+
+Describe the pipeline in natural language — the skill triggers on requests like:
+
+- "Create an Airflow DAG that loads the starbake tables daily and then runs the kpi transforms"
+- "I need a one-off Dagster job for these three tables plus two transforms, hourly"
+- "Build me a deployable DAG file for my project — no templates, just one Python file"
+
+The skill reads the project's `metadata/` and replies with the complete DAG file (see Example conversations).
+
 ## Prerequisites
 
 - The Starlake project root (`SL_ROOT`) with its `metadata/` directory.
@@ -205,11 +215,33 @@ Airflow's safe mode only parses files whose text contains BOTH the strings `dag`
 
 Deploy with [dag-deploy](../dag-deploy/SKILL.md) or by copying the file to the orchestrator's DAG folder / code location.
 
-## Example
+## Example conversations
+
+### Conversation 1 — happy path
 
 User: *"Create an Airflow DAG that loads the three starbake tables daily at 2am with the imported pre-load strategy, then runs the kpi transforms."*
 
 The skill reads the metadata, confirms `starbake.orders` normally runs hourly (warns about the schedule override and the existing dagRef coverage), derives `kpi.order_summary >> kpi.top_customers` from the transform SQL, and emits the complete DAG file in one reply: the Step 3 skeleton with a `StarlakeSchedule` for the `starbake` domain, the IMPORTED pre-load group, one `sl_load` per table in a domain task group, the two transforms chained in lineage order, and `start >> pre_load >> loads >> transforms >> end`.
+
+### Conversation 2 — consistency checks in action
+
+**User**: "Create an Airflow DAG that loads all three starbake tables daily using an ACK file sensor, and upsert customers by customer id. Then run the kpi transforms."
+
+**Assistant** (first reply — checks before generating):
+
+- "ACK file sensor" is not a configuration key — it maps to `pre_load_strategy: "ack"` (see the vocabulary table above).
+- No ack path was given: the framework default is date-coupled (`{SL_ROOT}/datasets/pending/starbake/{YYYY-MM-DD}.ack` — the producer must write TODAY's filename). An explicit `global_ack_file_path` is recommended.
+- `starbake.orders` is configured `hourly` in its own metadata; pulling it into a daily DAG re-schedules it. Alternative: one pipeline per schedule in the same file (`pipelines = [daily_p, hourly_p]`).
+- Upsert cannot be set from the DAG: `sl_load` has no write-strategy parameter. The change belongs in `customers.sl.yml` (`writeStrategy.type: "UPSERT_BY_KEY"`, `key: ["id"]` — the customers primary key is `id`; `customer_id` is the orders-side foreign key). Offered as a separate metadata edit.
+- `application.dagRef.load` already covers these tables — they would be scheduled by BOTH the generated DAG and this one-off DAG.
+
+It then asks: proceed daily-only with an explicit ack path, and keep APPEND for now?
+
+**User**: "Daily only is fine, use /data/acks/starbake.ack, keep APPEND."
+
+**Assistant** (second reply): emits the complete Airflow DAG file — the Step 3 skeleton with a `description` mentioning the Airflow DAG, `pre_load_strategy: 'ack'`, `global_ack_file_path: '/data/acks/starbake.ack'`, `ack_wait_timeout`, the ACK chain `sl_pre_load >> skip_or_start >> loads` (no `sl_import` under `ack`), the transforms chained `order_summary >> top_customers`, and the validation commands.
+
+Note on the single-turn rule: once configuration is settled, the full file always arrives in ONE reply. Warn-and-confirm checks (like the schedule conflict above) legitimately precede generation — they are user agency, not drip-feeding.
 
 ## Related Skills
 

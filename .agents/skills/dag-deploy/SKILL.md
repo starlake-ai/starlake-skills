@@ -44,3 +44,4 @@ starlake dag-deploy --inputDir /tmp/generated_dags --outputDir /opt/airflow/dags
 ## Related Skills
 
 - [dag-generate](../dag-generate/SKILL.md) - Generate DAGs (run before deploy)
+- [dag-create](../dag-create/SKILL.md) - One-off DAG files you can deploy the same way
