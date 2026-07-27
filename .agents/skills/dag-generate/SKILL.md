@@ -59,10 +59,9 @@ dag:
   template: "load/dagster__scheduled_table__shell.py.j2"
   filename: "dagster_all_load.py"
   options:
-    run_dependencies_first: "true"
     sl_env_var: '{"SL_ROOT": "{{SL_ROOT}}"}'
     SL_STARLAKE_PATH: "{{SL_ROOT}}/starlake"
-    pre_load_strategy: "none"       # pending, imported, ack, none
+    pre_load_strategy: "ack"        # pending, imported, ack, none
     global_ack_file_path: "{{SL_ROOT}}/datasets/pending/starbake/GO.ack"
     ack_wait_timeout: "60"          # seconds
 ```
@@ -99,58 +98,34 @@ table:
 
 **Priority** (lowest to highest): project -> domain -> table/task
 
-### DAG Scheduling Options
+### DAG Scheduling
 
-```yaml
-# metadata/dags/sales_load_dag.sl.yml
-dag:
-  name: "sales_load_dag"
-  schedule: "0 2 * * *" # Cron expression (2 AM daily)
-  catchup: true # Process historical runs
-  default_pool: "default_pool"
-  description: "Daily sales data load from SFTP"
+The DAG configuration file has exactly four keys under `dag`: `comment`, `template`, `filename`, and `options` — there are no top-level `name`, `schedule`, `catchup`, `default_pool`, `description`, or `tags` keys.
 
-  tags:
-    - "production"
-    - "sales"
-    - "daily"
+- **Schedule** comes from the project metadata, not from the DAG config: table-level `metadata.schedule` (a cron or a `schedulePresets` name from `application.sl.yml`) for load DAGs, task-level cron for transform DAGs.
+- Behavior toggles like `catchup`, `start_date`, `end_date`, or `tags` are `options` entries — valid keys are the ones documented in the header comments of the chosen template.
 
-  options:
-    sl_env_var: '{"SL_ROOT": "${root_path}", "SL_DATASETS": "${root_path}/datasets", "SL_TIMEZONE": "Europe/Paris"}'
-```
+### Pre-Load Strategy
 
-### Load Strategy Options
-
-Control how load DAGs detect and trigger file processing:
-
-```yaml
-dag:
-  load:
-    strategy: "FILE_SENSOR" # How to trigger load
-    options:
-      incoming_path: "{{SL_ROOT}}/incoming/{{domain}}"
-      pending_path: "{{SL_ROOT}}/datasets/pending/{{domain}}"
-      global_ack_file_path: "{{SL_ROOT}}/datasets/pending/{{domain}}/{{{{ds}}}}.ack"
-```
+Control how generated load DAGs check for incoming files before loading, with the `pre_load_strategy` option (see the Dagster example above):
 
 | Strategy | Description |
 |---|---|
-| `FILE_SENSOR` | Watch for new files in incoming directory per table |
-| `FILE_SENSOR_DOMAIN` | Watch for new files at domain level |
-| `ACK_FILE_SENSOR` | Wait for an acknowledgment (.ack) file before processing |
-| `NONE` | No sensor -- triggered by schedule only |
+| `imported` | Check the domain incoming directory; stage (import) files before loading |
+| `ack` | Wait for the acknowledgment file at `global_ack_file_path` (up to `ack_wait_timeout` seconds) |
+| `pending` | Check the pending/stage area for files matching the table patterns |
+| `none` | No pre-load check -- load runs on schedule (default) |
 
 ### Custom DAG Templates
 
-Override the default Jinja2 template for full control over DAG generation:
+Override the default Jinja2 template for full control over DAG generation — `dag.template` is a plain string:
 
 ```yaml
 dag:
-  template:
-    file: "custom_template.py.j2" # Relative to metadata/dags/template or absolute
+  template: "load/airflow__scheduled_table__custom.py.j2" # Relative to metadata/dags/templates/ or absolute
 ```
 
-Place custom templates in `metadata/dags/template/`.
+Place custom templates in `metadata/dags/templates/load/` or `metadata/dags/templates/transform/`. Custom template names must follow the `{orchestrator}__scheduled_{table|task}__{env}.py.j2` convention — the segment before the first `__` selects the orchestrator.
 
 ### DAG Assignment Hierarchy
 

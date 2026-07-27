@@ -154,6 +154,7 @@ Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all sy
 ### Orchestration
 - **dag-create**: Create a ready-to-deploy one-off DAG (Airflow/Dagster) from a natural-language pipeline description
 - **dag-deploy** / **dag-generate**: Airflow/Dagster DAG generation
+- **dag-template-generate**: Generate a custom Jinja2 DAG template + YAML DAG config from a pipeline description
 
 ### Utilities
 - **bq-info** / **compare** / **parquet2csv** / **site** / **summarize** / **test**
