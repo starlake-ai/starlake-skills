@@ -65,10 +65,11 @@ Follows the standard rules (see `starflow-create-pipeline-spec`): confirmation c
 
 ## Outcome
 
-A `metadata/semantic/<model>.yaml` ready for the Cockpit semantic editor and AI/BI consumers, plus a design record explaining every decision.
+A `metadata/semantic/<model>.yaml` ready for the Cockpit semantic editor and AI/BI consumers, plus a design record explaining every decision. Offer the natural next step: `starlake semantic-export` to produce the vendor-neutral Apache Ossie version for non-Starlake consumers.
 
 ## Related Starlake Skills
 
 - `semantic`: YAML format reference (authoritative)
+- `semantic-export`: export the finished model to Apache Ossie interchange format
 - `table-dependencies`: foreign keys for relationships
 - `secure`: privacy annotations feeding the privacy gate

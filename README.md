@@ -140,6 +140,7 @@ Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all sy
 
 ### Semantic Layer
 - **semantic**: Author semantic models in `metadata/semantic/` (dimensions, facts, metrics, relationships, verified queries) for BI tools and AI agents
+- **semantic-export**: Export semantic models to the Apache Ossie interchange format (`starlake semantic-export`)
 
 ### Lineage & Diagrams
 - **acl-dependencies** / **col-lineage** / **lineage** / **table-dependencies**

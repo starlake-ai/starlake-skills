@@ -7,7 +7,7 @@ description: Author semantic model YAML in metadata/semantic for BI tools and AI
 
 Define the business semantic layer of a Starlake project. Semantic models live as YAML files in `metadata/semantic/` (the folder is created by `bootstrap`) and describe the warehouse in business terms: logical tables, dimensions, facts, metrics, relationships, and verified queries. They are consumed by the Starlake Cockpit's semantic model editor and by AI/BI agents that translate natural-language questions into SQL.
 
-The format is aligned with the Snowflake semantic model specification (the YAML consumed by Cortex Analyst and convertible to native Snowflake semantic views). For vendor-neutral interchange, the same modeling concepts are being standardized as **Apache Ossie (Incubating)**, formerly Open Semantic Interchange (OSI); reference converters exist between the Snowflake format and Ossie, so models authored here have a portability path to any Ossie-compatible BI tool, query engine, or AI agent.
+The format is aligned with the Snowflake semantic model specification (the YAML consumed by Cortex Analyst and convertible to native Snowflake semantic views). For vendor-neutral interchange, the same modeling concepts are standardized as **Apache Ossie (Incubating)**, formerly Open Semantic Interchange (OSI). Starlake exports models to Ossie natively: run `starlake semantic-export` (see the `semantic-export` skill), giving every model a portability path to any Ossie-compatible BI tool, query engine, or AI agent.
 
 ## File Layout
 
@@ -136,6 +136,7 @@ Only include SQL you have actually run against the warehouse: "verified" is a pr
 
 ## Related Skills
 
+- `semantic-export`: export models to the Apache Ossie interchange format
 - `bootstrap`: creates the `metadata/semantic/` folder
 - `table-dependencies`: lists foreign keys to derive `relationships` from
 - `secure`: privacy annotations that dictate what must stay out of the model
