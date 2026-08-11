@@ -146,7 +146,7 @@ Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all sy
 - **acl-dependencies** / **col-lineage** / **lineage** / **table-dependencies**
 
 ### Operations
-- **console** / **freshness** / **gizmosql** / **metrics** / **migrate** / **quack** / **serve** / **settings** / **validate**
+- **console** / **freshness** / **metrics** / **migrate** / **quack** / **serve** / **settings** / **validate**
 
 ### Security
 - **iam-policies**: IAM policies

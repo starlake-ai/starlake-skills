@@ -171,7 +171,6 @@ starlake transform --name my_job --connection warehouse-quack
 
 ## Related Skills
 
-- [connection](../connection/SKILL.md): Database connection configuration
-- [gizmosql](../gizmosql/SKILL.md): Sibling command for the GizmoSQL/Flight server
+- [connection](../connection/SKILL.md): Database connection configuration, including Arrow Flight SQL client connections
 - [settings](../settings/SKILL.md): Print settings and test connections
 - [config](../config/SKILL.md): Configuration reference

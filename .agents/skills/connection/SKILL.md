@@ -46,7 +46,7 @@ application:
 | `KAFKA`  | Apache Kafka                            |
 | `REST`   | REST API (aliases: `HTTP`, `API`): used with `extract-rest-schema` and `extract-rest-data` |
 
-Starlake auto-detects the specific database engine from the JDBC URL prefix (e.g., `jdbc:snowflake:`, `jdbc:duckdb:`, `jdbc:postgresql:`, `jdbc:redshift:`, `jdbc:mysql:`, `jdbc:mariadb:`).
+Starlake auto-detects the specific database engine from the JDBC URL prefix (e.g., `jdbc:snowflake:`, `jdbc:duckdb:`, `jdbc:postgresql:`, `jdbc:redshift:`, `jdbc:mysql:`, `jdbc:mariadb:`). Exception: `jdbc:arrow-flight-sql:` URLs are a transport, not an engine; the engine comes from the `dialect` option (default `duckdb`), see [Arrow Flight SQL (Remote)](#arrow-flight-sql-remote).
 
 ---
 
@@ -772,6 +772,30 @@ SELECT * FROM duckdb_logs_parsed('Quack');
 ```
 
 Regex-on-SQL is reliable for kind-level matches (SELECT vs INSERT) but fragile for table-level rules. For genuine table isolation, restrict what the server's session sees (expose only specific views) and use the authorization hook for the read/write distinction.
+
+### Arrow Flight SQL (Remote)
+
+Starlake can be a client of any [Arrow Flight SQL](https://arrow.apache.org/docs/format/FlightSql.html) server: a quack-on-demand gateway, GizmoSQL, Dremio, Doris, or any engine fronted by Flight SQL. Primary scenario: a DuckDB/DuckLake lakehouse served over Flight SQL, with the same isolation model as Quack (server owns the catalog and object-storage credentials; the client only speaks SQL).
+
+```yaml
+connections:
+  qod_bi:
+    type: "jdbc"
+    options:
+      url: "jdbc:arrow-flight-sql://localhost:31338?useEncryption=true&disableCertificateVerification=true&tenant=acme&pool=bi&superuser=true"
+      user: "{{FLIGHT_USER}}"
+      password: "{{FLIGHT_PASSWORD}}"
+      # dialect: duckdb   # optional, duckdb is the default
+      # driver: "..."     # optional, defaults to org.apache.arrow.driver.jdbc.ArrowFlightJdbcDriver
+```
+
+Key points:
+
+- **URL passthrough**: everything after `host:port` goes to the Arrow driver untouched. `useEncryption` / `disableCertificateVerification` are TLS flags consumed by the driver; parameters like `tenant`, `pool`, `superuser` are forwarded to the server (quack-on-demand routing). Different query strings get distinct connection pools.
+- **`dialect` option**: Flight SQL is a transport; `dialect` selects the engine profile (DDL, merge strategies, audit tables, quoting). Defaults to `duckdb`. `mariadb` normalizes to `mysql`, `databricks` to `spark`.
+- **Driver**: not bundled; `setup` downloads it when `ENABLE_FLIGHTSQL=true` (default), version pinned with `FLIGHT_SQL_JDBC_VERSION`.
+- **Fully remote client**: no client-side `ATTACH 'ducklake:...'`, no local DuckDB session setup (S3 secrets, home_directory); `preActions`/`postActions` still run as session SQL on the remote connection.
+- **Loads**: with a duckdb dialect, `read_csv(...)` runs server-side, so load file paths must be visible to the server (object storage or shared filesystem).
 
 ### PostgreSQL
 
