@@ -31,16 +31,26 @@ Downloads the latest [GitHub Release](https://github.com/starlake-ai/starlake-sk
 curl -fsSL https://raw.githubusercontent.com/starlake-ai/starlake-skills/main/scripts/install-remote.sh | bash
 ```
 
-**On Windows (PowerShell):**
+**On Windows (cmd, recommended — no admin rights, no execution-policy change):**
+```bat
+curl -fsSL -o "%TEMP%\sl-skills-install.cmd" https://raw.githubusercontent.com/starlake-ai/starlake-skills/main/scripts/install-remote.cmd && "%TEMP%\sl-skills-install.cmd"
+```
+
+The `.cmd` launches the PowerShell installer with a *per-process* `-ExecutionPolicy Bypass`, which any user may do — no administrator rights are involved anywhere: the install downloads a release into `%USERPROFILE%\.starlake-skills` and links the skills as directory **junctions** (not symlinks), so no admin and no Developer Mode are needed.
+
+<details><summary>PowerShell alternative (works when your execution policy already allows local scripts)</summary>
+
 ```powershell
 irm https://raw.githubusercontent.com/starlake-ai/starlake-skills/main/scripts/install-remote.ps1 -OutFile "$env:TEMP\install-remote.ps1"; & "$env:TEMP\install-remote.ps1"
 ```
+
+</details>
 
 Pass `--pin vX.Y.Z` (`-Pin` on Windows) for an exact release; re-run the same command any time to update to the latest release. Extra options (`--platforms claude`, `--local`, `--uninstall`) pass through to the inner installer.
 
 ### 2. Install from a Git Clone (contributors)
 
-Clone the repository and run the install script ([scripts/install.sh](scripts/install.sh) on macOS/Linux, [scripts/install.ps1](scripts/install.ps1) on Windows). Skills are symlinked from the clone, so edits and `git pull` are live immediately:
+Clone the repository and run the install script ([scripts/install.sh](scripts/install.sh) on macOS/Linux, [scripts/install.cmd](scripts/install.cmd) on Windows). Skills are linked from the clone, so edits and `git pull` are live immediately:
 
 **On macOS / Linux:**
 ```bash
@@ -48,10 +58,10 @@ git clone https://github.com/starlake-ai/starlake-skills.git ~/.starlake-skills
 ~/.starlake-skills/scripts/install.sh
 ```
 
-**On Windows (PowerShell):**
-```powershell
-git clone https://github.com/starlake-ai/starlake-skills.git "$HOME\.starlake-skills"
-& "$HOME\.starlake-skills\scripts\install.ps1"
+**On Windows (cmd):**
+```bat
+git clone https://github.com/starlake-ai/starlake-skills.git "%USERPROFILE%\.starlake-skills"
+"%USERPROFILE%\.starlake-skills\scripts\install.cmd"
 ```
 
 This installs skills for **Claude Code**, **GitHub Copilot**, and **Gemini CLI**. To install for specific platforms only:
@@ -62,7 +72,7 @@ This installs skills for **Claude Code**, **GitHub Copilot**, and **Gemini CLI**
 
 ### 3. Project-Local Installation
 
-Install skills into the current project directory instead of globally using [scripts/install.sh](scripts/install.sh) (or [scripts/install.ps1](scripts/install.ps1) on Windows):
+Install skills into the current project directory instead of globally using [scripts/install.sh](scripts/install.sh) (or [scripts/install.cmd](scripts/install.cmd) on Windows):
 
 ```bash
 git clone https://github.com/starlake-ai/starlake-skills.git /tmp/starlake-skills

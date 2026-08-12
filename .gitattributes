@@ -1,0 +1,3 @@
+# .cmd files must reach Windows with CRLF endings (cmd.exe mis-parses some
+# LF-only constructs, e.g. labels); .ps1 stay ASCII-only for PowerShell 5.1.
+*.cmd text eol=crlf
