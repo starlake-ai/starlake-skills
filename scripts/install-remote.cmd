@@ -16,14 +16,16 @@ rem All arguments pass through to install-remote.ps1 (-Pin vX.Y.Z, -Platforms
 rem claude, -Local, -Uninstall...).
 setlocal
 set "PS1=%~dp0install-remote.ps1"
-if exist "%PS1%" goto run
-rem Running standalone (downloaded copy): fetch the matching .ps1 first.
-set "PS1=%TEMP%\starlake-skills-install-remote.ps1"
-curl -fsSL -o "%PS1%" https://raw.githubusercontent.com/starlake-ai/starlake-skills/main/scripts/install-remote.ps1
-if errorlevel 1 (
-  echo failed to download install-remote.ps1 - check network/proxy
-  exit /b 1
+if not exist "%PS1%" (
+  rem Running standalone (downloaded copy): fetch the matching .ps1 first.
+  rem The literal %TEMP% path is used inside this block on purpose: %PS1%
+  rem would expand to its pre-block value (no delayed expansion here).
+  set "PS1=%TEMP%\starlake-skills-install-remote.ps1"
+  curl -fsSL -o "%TEMP%\starlake-skills-install-remote.ps1" https://raw.githubusercontent.com/starlake-ai/starlake-skills/main/scripts/install-remote.ps1
+  if errorlevel 1 (
+    echo failed to download install-remote.ps1 - check network/proxy
+    exit /b 1
+  )
 )
-:run
 powershell -NoProfile -ExecutionPolicy Bypass -File "%PS1%" %*
 exit /b %ERRORLEVEL%
