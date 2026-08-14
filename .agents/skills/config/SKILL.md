@@ -749,6 +749,16 @@ attributes:
 
 ---
 
+## Artifact Distribution
+
+All Starlake artifacts are distributed from GitHub Releases on `starlake-ai/starlake`; nothing is published to Maven Central or Sonatype.
+
+- **Releases**: tag `vX.Y.Z` carries `starlake-core_2.13-X.Y.Z-assembly.jar` and `starlake-api_2.13-X.Y.Z.zip`, each with a `.sha256` companion (`shasum -a 256 -c` compatible).
+- **Snapshots**: a rolling pre-release tagged `v<version>-SNAPSHOT` (e.g. `v1.7.1-SNAPSHOT`) carries the same two artifacts for the current development version; its assets are overwritten on every snapshot build.
+- One URL scheme for both: `https://github.com/starlake-ai/starlake/releases/download/v<version>/<asset>`.
+- `starlake upgrade` and the setup script list release versions only; to install a snapshot explicitly, set `SL_VERSION` to the snapshot version (e.g. `SL_VERSION=1.7.1-SNAPSHOT`) before running setup.
+- Optional per-dependency setup toggles (e.g. `ENABLE_FLIGHTSQL`, default true) control which extra driver jars setup downloads into `bin/deps`.
+
 ## Resources
 
 - **JSON Schema**: https://www.schemastore.org/starlake.json
