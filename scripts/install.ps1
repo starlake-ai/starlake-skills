@@ -28,6 +28,11 @@
     .\install.ps1 -Pin v1.2.0
     .\install.ps1 -Uninstall
 #>
+# PositionalBinding=$false: every argument must be named. Without it, stray
+# positional strings silently bound to $Platforms/$Channel/$Pin in declaration
+# order (a mis-forwarded "-Platforms x" landed as $Channel = "x" and died on
+# the ValidateSet), which is exactly the failure mode we never want silent.
+[CmdletBinding(PositionalBinding = $false)]
 param(
     [switch]$Global,
     [switch]$Local,

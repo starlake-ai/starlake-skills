@@ -8,10 +8,14 @@
     Install an exact release (e.g. v1.2.0). Default: latest release.
 .PARAMETER Dir
     Install directory (default: ~/.starlake-skills)
-.PARAMETER InstallerArgs
-    Remaining arguments are passed through to install.ps1
-    (e.g. -Platforms "claude", -Local, -Uninstall). -Uninstall skips the
-    download and runs the already installed copy's uninstaller.
+.PARAMETER Platforms
+    Comma-separated platforms forwarded to install.ps1
+    (claude,copilot,gemini - default: install.ps1's default, i.e. all).
+.PARAMETER Local
+    Forwarded to install.ps1: link into ./.<platform>/skills of the current
+    directory instead of the home directory.
+.PARAMETER Uninstall
+    Skip the download and run the already installed copy's uninstaller.
 .EXAMPLE
     .\install-remote.ps1
     .\install-remote.ps1 -Pin v1.2.0
@@ -20,9 +24,10 @@
 param(
     [string]$Pin = "",
     [string]$Dir = "",
-    [switch]$Help,
-    [Parameter(ValueFromRemainingArguments = $true)]
-    [string[]]$InstallerArgs = @()
+    [string]$Platforms = "",
+    [switch]$Local,
+    [switch]$Uninstall,
+    [switch]$Help
 )
 
 Set-StrictMode -Version Latest
@@ -38,15 +43,31 @@ $BaseUrl = if ($env:STARLAKE_SKILLS_BASE_URL) { $env:STARLAKE_SKILLS_BASE_URL } 
 $ApiUrl = if ($env:STARLAKE_SKILLS_API_URL) { $env:STARLAKE_SKILLS_API_URL } else { "https://api.github.com/repos/$RepoSlug/releases/latest" }
 $InstallDir = if ($Dir) { $Dir } elseif ($env:STARLAKE_SKILLS_DIR) { $env:STARLAKE_SKILLS_DIR } else { Join-Path $HOME ".starlake-skills" }
 
+# Forward options to install.ps1 BY NAME (hashtable splat). Never splat an
+# array here: array elements bind POSITIONALLY, so "-Platforms x" ended up as
+# the literal value of install.ps1's first positional string parameters
+# ($Platforms = "-Platforms", $Channel = "x") and died on the Channel
+# ValidateSet.
+$Forward = @{}
+if ($Platforms) { $Forward["Platforms"] = $Platforms }
+if ($Local)     { $Forward["Local"] = $true }
+
+# In-process "&" of a .ps1 only sets $LASTEXITCODE when the child script calls
+# exit; under Set-StrictMode reading it unset is an error. Default to 0.
+function Get-ChildExitCode {
+    if (Test-Path variable:global:LASTEXITCODE) { return $global:LASTEXITCODE }
+    return 0
+}
+
 # Uninstall never needs a download.
-if ($InstallerArgs -contains "-Uninstall") {
+if ($Uninstall) {
     $installer = Join-Path $InstallDir "scripts/install.ps1"
     if (-not (Test-Path $installer)) {
         Write-Error "no installation found at $InstallDir"
         exit 1
     }
-    & $installer @InstallerArgs
-    exit $LASTEXITCODE
+    & $installer -Uninstall @Forward
+    exit (Get-ChildExitCode)
 }
 
 # Never clobber a git clone: that workflow updates via git, not archives.
@@ -88,7 +109,9 @@ try {
     Move-Item $Unpacked $InstallDir
 
     Write-Host "Installed $Tag to $InstallDir"
-    & (Join-Path $InstallDir "scripts/install.ps1") -Update @InstallerArgs
+    & (Join-Path $InstallDir "scripts/install.ps1") -Update @Forward
+    $InstallExitCode = Get-ChildExitCode
 } finally {
     if (Test-Path $TmpDir) { Remove-Item $TmpDir -Recurse -Force }
 }
+exit $InstallExitCode
