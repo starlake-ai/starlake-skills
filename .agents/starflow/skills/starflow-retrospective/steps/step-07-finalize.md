@@ -9,6 +9,10 @@ sign_off: false
 - The output file isn't real until it's saved with `status: done` and `stepsCompleted` includes `7`.
 - Sprint status is updated last, after the user signs off: partial retros that update sprint status mid-flight produce confusing trails.
 
+## Preconditions
+
+- `stepsCompleted` includes `6` (next-epic risks saved).
+
 ## Instructions
 
 ### 1. Compose the body

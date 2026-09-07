@@ -10,6 +10,10 @@ patterns: []
 - Name root causes carefully. "Schema drift surprised us twice" is a pattern; "the data team is bad at communication" is a person attribution and is wrong on its face.
 - The compounding-debt list from step 2 is your strongest signal: surface it explicitly here.
 
+## Preconditions
+
+- `stepsCompleted` includes `3` (wins, struggles, surprises captured in the output file).
+
 ## Instructions
 
 ### 1. Synthesize candidate patterns
@@ -56,7 +60,7 @@ If `{patterns}` includes any compounding ones, present a short standalone callou
 
 Note this for step 6.
 
-### 4. Save
+## Save
 
 Update the output file. Append `4` to `stepsCompleted`. Save.
 

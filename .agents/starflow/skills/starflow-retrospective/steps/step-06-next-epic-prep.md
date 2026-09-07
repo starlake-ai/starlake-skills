@@ -10,6 +10,10 @@ next_epic_risks: []
 - Compounding-debt patterns from step 4 land here automatically.
 - Don't speculate beyond what the retro evidenced.
 
+## Preconditions
+
+- `stepsCompleted` includes `5` (action items committed).
+
 ## Instructions
 
 ### 1. Auto-seed from compounding patterns
@@ -59,7 +63,7 @@ For each:
 
 Cap at ~5 risks total: the goal is a useful prep memo, not a fear list.
 
-### 4. Save
+## Save
 
 Update `{next_epic_risks}`. Append `6` to `stepsCompleted`. Save.
 

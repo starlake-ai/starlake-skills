@@ -70,6 +70,8 @@ Summarize:
 > - Dropped: `<n>` (reasons: `<short list>`)
 > - Carry-forward: `<n>` (will become new action items in step 5)
 
+## Save
+
 Bind `{followup_status}` to the captured list. Append `2` to `stepsCompleted`. Save the output file with the followup_status block.
 
 ## Next

@@ -12,6 +12,10 @@ surprises: []
 - No blame. Phrase struggles in terms of systems, conditions, and processes: not people.
 - Concrete examples beat generalities. "The DuckDB → BigQuery promotion took three retries" beats "Deployment was hard".
 
+## Preconditions
+
+- `stepsCompleted` includes `2` (follow-through done, or `2` recorded as skipped: no prior retro).
+
 ## Instructions
 
 ### 1. Wins
@@ -77,7 +81,7 @@ For each surprise:
 
 Bind to `{surprises}`.
 
-### 4. Save
+## Save
 
 Update the output file with the three blocks. Append `3` to `stepsCompleted`. Save.
 
