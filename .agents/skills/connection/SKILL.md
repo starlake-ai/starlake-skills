@@ -138,20 +138,30 @@ Client/server templates (local and PostgreSQL catalogs, multi-bucket SCOPE), the
 
 ### Quack-on-Demand (QoD)
 
-Quack-on-Demand is a multi-tenant gateway that serves DuckDB/DuckLake pools over Arrow Flight SQL: the gateway owns the catalogs and object-storage credentials and routes each session to the right pool, with the same isolation model as a Quack server. A QoD connection is an [Arrow Flight SQL](#arrow-flight-sql-remote) client connection whose URL query parameters drive the routing — `tenant` selects the tenant, `pool` selects the server-side pool to attach to, and `superuser=true` requests superuser privileges on it:
+[Quack-on-Demand](https://qod.starlake.ai/) is a multi-tenant Arrow Flight SQL gateway in front of DuckDB/DuckLake pools: the gateway authenticates the connection, authorizes each statement, and routes it to the least-loaded DuckDB node of the target pool — the same isolation model as a Quack server (the gateway owns catalogs and object-storage credentials; the client only speaks SQL). A QoD connection is an [Arrow Flight SQL](#arrow-flight-sql-remote) client connection whose **URL query parameters drive the routing**:
+
+| Parameter | Required | Meaning |
+|-----------|----------|---------|
+| `tenant`  | yes — no default | Target tenant: display name or surrogate ID (`t-<8 hex>`) |
+| `pool`    | yes — no default | Pool name within that tenant |
+| `superuser=true` | no | Validate the credential against the **system realm** instead of the tenant realm. `tenant`/`pool` still drive the routing — this flag only picks which realm checks the credential |
+
+For JDBC these three are **URL-only**: they cannot be supplied via headers or encoded in the username, and the edge applies no defaults — the URL must fully address its target.
 
 ```yaml
 connections:
   qod_bi:
     type: "jdbc"
     options:
-      url: "jdbc:arrow-flight-sql://localhost:31338?useEncryption=true&disableCertificateVerification=true&tenant=acme&pool=bi&superuser=true"
-      user: "{{FLIGHT_USER}}"
+      url: "jdbc:arrow-flight-sql://localhost:31338?useEncryption=true&disableCertificateVerification=true&tenant=acme&pool=bi"
+      user: "{{FLIGHT_USER}}"        # Basic auth against the tenant realm
       password: "{{FLIGHT_PASSWORD}}"
       # dialect: duckdb   # optional, duckdb is the default
 ```
 
-Every distinct query string gets its own client-side connection pool, so define one connection per tenant/pool combination. Transport details (driver download, `dialect`, remote loads) are in [Arrow Flight SQL (Remote)](#arrow-flight-sql-remote) below.
+Authentication is Basic (`user`/`password`, validated by the tenant's auth provider — database, JWT, or OIDC) or a bearer JWT passed as `token=<jwt>` in the URL instead of user/password. `useEncryption=true` is required while edge TLS is enabled (the default); `disableCertificateVerification=true` accepts a self-signed certificate.
+
+Every distinct query string gets its own client-side connection pool, so define one connection per tenant/pool combination. Transport details (driver download, `dialect`, remote loads) are in [Arrow Flight SQL (Remote)](#arrow-flight-sql-remote) below; full gateway docs at [qod.starlake.ai](https://qod.starlake.ai/).
 
 ### Arrow Flight SQL (Remote)
 
