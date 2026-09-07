@@ -1,6 +1,6 @@
 ---
 name: serve
-description: Run the Starlake HTTP server
+description: Run the Starlake HTTP server with `starlake serve` — expose all CLI commands as a REST API for programmatic or remote execution, with configurable host and port. Use for server mode, API access, or daemon-style usage
 ---
 
 # Serve Skill

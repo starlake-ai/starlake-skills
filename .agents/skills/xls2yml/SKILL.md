@@ -1,6 +1,6 @@
 ---
 name: xls2yml
-description: Convert Excel domain/schema definitions to Starlake YAML
+description: 'Convert Excel to YAML with `starlake xls2yml`: turn domain/table schema definitions managed in .xlsx spreadsheets into Starlake load configs, with optional ACL/RLS policy files and BigQuery IAM policy tags'
 ---
 
 # XLS to YML Skill

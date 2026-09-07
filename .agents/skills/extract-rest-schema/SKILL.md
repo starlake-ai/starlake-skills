@@ -1,6 +1,6 @@
 ---
 name: extract-rest-schema
-description: Extract schemas from REST API endpoints by fetching sample responses and inferring data structure
+description: 'Infer table schemas from REST API endpoints with `starlake extract-rest-schema`: fetch sample JSON responses and reverse-engineer them into Starlake YAML domain/table definitions (schema only; use extract-rest-data for the rows)'
 ---
 
 # Extract REST Schema Skill

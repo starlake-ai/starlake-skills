@@ -1,6 +1,6 @@
 ---
 name: bq-info
-description: Get table information from BigQuery
+description: Get BigQuery table information with `starlake bq-info` — schema, row count, size, partitioning, and clustering details for datasets and tables in a GCP project
 ---
 
 # BigQuery Info Skill

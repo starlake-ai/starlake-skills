@@ -1,6 +1,6 @@
 ---
 name: secure
-description: Apply Row Level Security (RLS) and Column Level Security (CLS) policies
+description: Apply row-level security (RLS) and column-level security (CLS) with `starlake secure` — mask PII, hash or encrypt sensitive columns, and restrict which users or groups see which rows, columns, and tables
 ---
 
 # Secure Skill

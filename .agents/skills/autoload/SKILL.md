@@ -1,6 +1,6 @@
 ---
 name: autoload
-description: Automatically infer schemas and load data from the incoming directory
+description: Infer schemas from files in the incoming directory and load them into the warehouse in one step with `starlake autoload`. Use for quick starts or new data files with no YAML table definitions yet; generates the table configs automatically.
 ---
 
 # AutoLoad Skill

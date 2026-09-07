@@ -1,6 +1,6 @@
 ---
 name: acl-dependencies
-description: Generate ACL (Access Control List) dependencies graph
+description: Visualize access control with `starlake acl-dependencies` — graph which users and groups can access which tables, from the ACL and RLS (row-level security) definitions in your YAML, output as SVG, PNG, or JSON
 ---
 
 # ACL Dependencies Skill

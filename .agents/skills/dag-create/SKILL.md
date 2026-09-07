@@ -1,6 +1,6 @@
 ---
 name: dag-create
-description: Create a ready-to-deploy one-off orchestration DAG (Airflow or Dagster Python file) from a natural-language pipeline description, composing sl_load, sl_transform, sl_import and sl_pre_load via the starlake-orchestration API
+description: Create a ready-to-deploy one-off orchestration DAG (Airflow or Dagster Python file) from a natural-language pipeline description via the starlake-orchestration API — a bespoke single file, no Jinja2 template and no `starlake dag-generate` run needed
 ---
 
 # DAG Create Skill

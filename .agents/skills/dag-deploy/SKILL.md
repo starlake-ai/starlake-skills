@@ -1,6 +1,6 @@
 ---
 name: dag-deploy
-description: Deploy generated DAGs to a target directory
+description: Deploy generated DAG files with `starlake dag-deploy` — copy DAGs produced by dag-generate into a target directory such as your Airflow DAGs folder or Dagster repository, optionally cleaning it first. Use to publish or ship DAGs to the scheduler
 ---
 
 # DAG Deploy Skill

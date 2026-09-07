@@ -1,6 +1,6 @@
 ---
 name: col-lineage
-description: Generate column-level lineage for a specific task
+description: Trace column-level lineage for one transform task with `starlake col-lineage` — show how each output column derives from its source columns through the SQL, for fine-grained data provenance and impact analysis
 ---
 
 # Column Lineage Skill

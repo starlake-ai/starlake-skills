@@ -1,6 +1,6 @@
 ---
 name: kafkaload
-description: Load or offload data to/from Kafka topics
+description: Load files into Kafka topics or offload Kafka topics to files with `starlake kafkaload`, in batch or streaming mode with optional SQL transforms. Use to publish data to Kafka, dump a topic to Parquet, or stream between them.
 ---
 
 # Kafka Load Skill

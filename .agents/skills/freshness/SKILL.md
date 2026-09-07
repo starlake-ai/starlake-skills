@@ -1,6 +1,6 @@
 ---
 name: freshness
-description: Check data freshness and last update timestamps
+description: Check data freshness with `starlake freshness` — detect stale data by querying last updated timestamps per table, with warn/error thresholds, persisted to the SL_LAST_EXPORT audit table for monitoring
 ---
 
 # Freshness Skill

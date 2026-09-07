@@ -1,6 +1,6 @@
 ---
 name: ingest
-description: Ingest data from specific paths into a domain/table
+description: Ingest specific file paths into one domain/table with `starlake ingest <domain> <schema> <paths>` — low-level, programmatic loading of named files. Use when targeting exact files; use load to scan the pending area by directory.
 ---
 
 # Ingest Skill

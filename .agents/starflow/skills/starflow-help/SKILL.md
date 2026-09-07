@@ -1,6 +1,6 @@
 ---
 name: starflow-help
-description: 'Reads the Starflow manifest and scans existing artifacts to tell the user where they are and what to do next. Use when the user asks "what should I do next", "starflow help", "where am I in starflow", or just "/help" inside Starflow.'
+description: 'Starflow orientation: tells the user where they are in the methodology and recommends the next step. Use when the user asks "what should I do next", "starflow help", "where am I in starflow", or just "/help" inside Starflow.'
 ---
 
 # Starflow Help & Navigation

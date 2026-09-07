@@ -1,6 +1,6 @@
 ---
 name: infer-schema
-description: Infer a Starlake schema from a data file
+description: 'Infer a Starlake table schema from a data file with `starlake infer-schema`: detect column names and types from a CSV, JSON, XML, or Parquet sample (or a JSON Schema) and generate the load YAML config'
 ---
 
 # Infer Schema Skill

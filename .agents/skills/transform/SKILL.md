@@ -1,6 +1,6 @@
 ---
 name: transform
-description: Run SQL or Python transformation tasks
+description: Run a SQL or Python transformation task with `starlake transform` — execute, compile, or preview transform queries, run a task with its upstream dependencies, dry-run on BigQuery, or run all tasks matching a tag
 ---
 
 # Transform Skill

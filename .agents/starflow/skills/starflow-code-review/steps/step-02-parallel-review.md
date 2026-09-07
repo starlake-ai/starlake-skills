@@ -91,7 +91,7 @@ Use the persona descriptions and principles resolved from `agents` config to anc
 
 ## Dispatch
 
-Launch all three subagents **in one message with three Agent tool calls in parallel**. The exact subagent type depends on the harness; if a generic agent is the only available type, use it for all three with the persona-specific prompt. If `bmad-review-adversarial-general` / `bmad-review-edge-case-hunter` style helper agents are installed, prefer them.
+Launch all three subagents **in one message with three Agent tool calls in parallel**. The exact subagent type depends on the harness; if a generic agent is the only available type, use it for all three with the persona-specific prompt.
 
 If subagents are unavailable in this environment, generate three prompt files in `{implementation_artifacts}/review-prompts/` (one per reviewer), **HALT**, and ask the user to run them in separate sessions and paste back the results. When pasted, resume here.
 

@@ -1,6 +1,6 @@
 ---
 name: extract-rest-data
-description: Extract data from REST API endpoints into CSV or JSON Lines files with pagination, auth, incremental, resume, proxy, and mTLS support
+description: 'Extract data only from REST API endpoints into CSV or JSON Lines files with `starlake extract-rest-data`: pagination, auth (bearer, API key, OAuth2), rate limiting, incremental extraction, resume, proxy, and mTLS support'
 ---
 
 # Extract REST Data Skill

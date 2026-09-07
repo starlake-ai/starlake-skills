@@ -1,6 +1,6 @@
 ---
 name: cnxload
-description: Load files (Parquet/CSV/JSON) into a JDBC table
+description: Load a Parquet, CSV, or JSON file directly into a JDBC database table with `starlake cnxload`. Use to push one file into PostgreSQL, MySQL, or any JDBC target without the full Starlake load pipeline or YAML schemas.
 ---
 
 # Connection Load Skill

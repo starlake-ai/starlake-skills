@@ -1,6 +1,6 @@
 ---
 name: iam-policies
-description: Apply IAM (Identity and Access Management) policies
+description: Apply IAM (Identity and Access Management) policies with `starlake iam-policies` — set up permissions, roles, ACLs, and policy tags on warehouse resources such as BigQuery datasets and tables
 ---
 
 # IAM Policies Skill

@@ -1,25 +1,6 @@
 ---
-skill_name: config
-version: 3.0.0
-description: Starlake configuration reference: environment variables, application structure, attribute types, storage patterns, and best practices
-tags:
-  [
-    starlake,
-    data-engineering,
-    etl,
-    yaml,
-    configuration,
-    schema,
-    spark,
-    duckdb,
-    bigquery,
-    snowflake,
-    airflow,
-    dagster,
-  ]
-author: Starlake Team
-created: 2026-02-06
-updated: 2026-03-04
+name: config
+description: 'Starlake configuration reference — `SL_*` environment variables, `application.sl.yml` structure, project layout, attribute types, and storage patterns. Use for cross-cutting configuration questions and as the index to the specialized skills (connection, load, secure, expectations, dag-generate...).'
 ---
 
 # Starlake Configuration Skill (Transversal Reference)
@@ -329,7 +310,7 @@ connections:
 
 | Topic | Skill | Details |
 |---|---|---|
-| Connection types (BigQuery, Snowflake, DuckDB...) | [settings](../settings/SKILL.md) | Full connection YAML examples |
+| Connection types (BigQuery, Snowflake, DuckDB...) | [connection](../connection/SKILL.md) | Create/modify connections, full YAML examples |
 | Write strategies (APPEND, SCD2, ADAPTATIVE...) | [load](../load/SKILL.md) | Strategy comparison, YAML examples |
 | Privacy transformations (HIDE, SHA256, AES...) | [secure](../secure/SKILL.md) | Privacy types, BigQuery policies |
 | Data quality expectations | [expectations](../expectations/SKILL.md) | Syntax, macros, variables |

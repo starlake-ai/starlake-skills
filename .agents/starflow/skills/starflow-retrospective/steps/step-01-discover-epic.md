@@ -72,7 +72,7 @@ Read enough of each to be conversant: don't paste them into context wholesale.
 
 Set `{output_file} = {implementation_artifacts}/retrospectives/retrospective-epic-{epic_id}.md`.
 
-Create it (or copy from a template) with this frontmatter shape:
+Create it with this frontmatter shape:
 
 ```yaml
 ---

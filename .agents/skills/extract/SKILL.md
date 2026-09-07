@@ -1,6 +1,6 @@
 ---
 name: extract
-description: Extract both schema and data from a JDBC source
+description: 'Extract both schema AND data from a JDBC database in one shot with `starlake extract`: reverse-engineer tables into Starlake YAML then export the rows to files; also drives REST API and OpenAPI/Swagger extract configs'
 ---
 
 # Extract Skill

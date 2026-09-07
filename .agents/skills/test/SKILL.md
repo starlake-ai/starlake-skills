@@ -1,6 +1,6 @@
 ---
 name: test
-description: Run integration tests for your Starlake project
+description: Run integration tests with `starlake test` — verify load and transform tasks against expected data files and declared expectations in an isolated DuckDB, for regression testing, CI test reports (junit.xml), and coverage sites
 ---
 
 # Test Skill

@@ -1,6 +1,6 @@
 ---
 name: load
-description: Load data from the pending area into the data warehouse
+description: Load files from the pending area into the data warehouse with `starlake load`, validating against defined table schemas and applying write strategies. Use when YAML schemas already exist; see autoload to infer schemas from incoming files.
 ---
 
 # Load Skill

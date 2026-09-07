@@ -1,6 +1,6 @@
 ---
 name: parquet2csv
-description: Convert Parquet files to CSV format
+description: Convert Parquet files to CSV with `starlake parquet2csv` — export data to systems without Parquet support or inspect it in human-readable form, with configurable separators, headers, and partitions
 ---
 
 # Parquet to CSV Skill

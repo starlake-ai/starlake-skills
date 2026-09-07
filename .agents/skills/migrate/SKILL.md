@@ -1,6 +1,6 @@
 ---
 name: migrate
-description: Migrate project configuration to the latest Starlake version
+description: 'Migrate a Starlake project to the latest version format with `starlake migrate`: upgrade YAML config files after a Starlake upgrade, renaming deprecated keys and handling breaking schema changes between releases'
 ---
 
 # Migrate Skill

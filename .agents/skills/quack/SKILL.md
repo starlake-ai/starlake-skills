@@ -1,6 +1,6 @@
 ---
 name: quack
-description: Manage Quack DuckDB query servers exposing DuckLake over a thin remote protocol — serve (foreground), start/stop/list/stop-all (background)
+description: Manage Quack DuckDB query servers with `starlake quack` — expose DuckLake tables to remote clients over a thin protocol without sharing storage credentials; serve (foreground), start/stop/list/stop-all (background)
 ---
 
 # Quack Skill
