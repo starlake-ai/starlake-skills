@@ -15,31 +15,7 @@ starlake extract [options]
 
 ## Options
 
-Combines all options from [extract-schema](../extract-schema/SKILL.md) and [extract-data](../extract-data/SKILL.md).
-
-### Schema Extraction Options
-
-- `--config <value>`: Database tables & connection info
-- `--outputDir <value>`: Where to output YML files
-- `--tables <value>`: Database tables to extract
-- `--connectionRef <value>`: JDBC connection reference
-- `--all`: Extract all schemas and tables
-- `--external`: Output YML files to the external folder
-- `--parallelism <value>`: Parallelism level
-- `--snakecase`: Apply snake_case to column names
-
-### Data Extraction Options
-
-- `--limit <value>`: Limit number of records
-- `--numPartitions <value>`: Partition parallelism
-- `--ignoreExtractionFailure`: Continue on extraction failure
-- `--clean`: Clean target files before extraction
-- `--incremental`: Export only new data since last extraction
-- `--includeSchemas <value>`: Domains to include
-- `--excludeSchemas <value>`: Domains to exclude
-- `--includeTables <value>`: Tables to include
-- `--excludeTables <value>`: Tables to exclude
-- `--reportFormat <value>`: Report output format: `console`, `json`, or `html`
+Combines all options from [extract-schema](../extract-schema/SKILL.md) and [extract-data](../extract-data/SKILL.md) — see those skills for the full, authoritative option lists.
 
 ## Configuration Context
 
@@ -58,80 +34,18 @@ extract:
         - "TABLE"
 ```
 
-### Advanced Extract Configuration
-
-```yaml
-# metadata/extract/source_db.sl.yml
-version: 1
-extract:
-  connectionRef: "source_postgres"
-  jdbcSchemas:
-    - schema: "sales"
-      tableTypes:
-        - "TABLE"
-        - "VIEW"
-      tables:
-        - name: "orders"
-          fullExport: false          # Incremental extraction
-          partitionColumn: "id"      # Column for parallel extraction
-          numPartitions: 4           # Parallelism level
-          timestamp: "updated_at"    # Incremental tracking column
-          fetchSize: 1000            # JDBC fetch size
-        - name: "customers"
-          fullExport: true
-```
+Advanced `jdbcSchemas` configuration (incremental extraction via `fullExport`/`timestamp`, parallel extraction via `partitionColumn`/`numPartitions`, `fetchSize`, custom SQL, column selection, remarks queries) is documented in [extract-schema](../extract-schema/SKILL.md).
 
 ### Connection Configuration
 
-The connection referenced in the extract config must be defined in `application.sl.yml`:
-
-```yaml
-# metadata/application.sl.yml
-version: 1
-application:
-  connections:
-    source_postgres:
-      type: jdbc
-      options:
-        url: "jdbc:postgresql://{{PG_HOST}}:{{PG_PORT}}/{{PG_DB}}"
-        driver: "org.postgresql.Driver"
-        user: "{{DATABASE_USER}}"
-        password: "{{DATABASE_PASSWORD}}"
-```
+The `connectionRef` in the extract config must name a connection defined in `application.sl.yml` — see [connection](../connection/SKILL.md) for connection templates by database.
 
 ## REST API Extract Configuration
 
-Extract schemas and data from REST API endpoints. See dedicated skills for full details:
+When the extract config contains a `restAPI:` block instead of `jdbcSchemas:`, extraction targets REST API endpoints (auth: `bearer`, `api_key`, `basic`, `oauth2_client_credentials`; pagination: `offset`, `cursor`, `link_header`, `page_number`). The `restAPI` configuration format is documented in the dedicated skills:
+
 - [extract-rest-schema](../extract-rest-schema/SKILL.md): infer schemas from API responses
-- [extract-rest-data](../extract-rest-data/SKILL.md): extract data to CSV with pagination, auth, rate limiting
-
-```yaml
-# metadata/extract/my-rest-api.sl.yml
-version: 1
-extract:
-  restAPI:
-    baseUrl: "https://api.example.com/v2"
-    auth:
-      type: bearer
-      token: "{{API_TOKEN}}"
-    rateLimit:
-      requestsPerSecond: 10
-    defaults:
-      pagination:
-        type: offset
-        limitParam: "limit"
-        offsetParam: "offset"
-        pageSize: 100
-    endpoints:
-      - path: "/customers"
-        as: "customer"
-        domain: "crm"
-        responsePath: "$.data"
-        incrementalField: "updated_at"
-```
-
-Supported auth types: `bearer`, `api_key`, `basic`, `oauth2_client_credentials`.
-Supported pagination: `offset`, `cursor`, `link_header`, `page_number`.
+- [extract-rest-data](../extract-rest-data/SKILL.md): extract data with pagination, auth, rate limiting, incremental, and resume
 
 ## OpenAPI Extract Configuration
 

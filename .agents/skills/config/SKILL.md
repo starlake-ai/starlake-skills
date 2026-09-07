@@ -171,7 +171,7 @@ application:
     load: "default_load_dag"
     transform: "default_transform_dag"
 
-  # Connections: see [settings](../settings/SKILL.md) for all connection types
+  # Connections: see [connection](../connection/SKILL.md) for all connection types
   connections:
     duckdb-local:
       type: jdbc
