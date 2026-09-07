@@ -1,6 +1,6 @@
 # Quack Connection Reference
 
-Quack client/server connection templates, the embedded CLI, and server authentication/authorization hooks. Overview in [../SKILL.md](../SKILL.md); server lifecycle commands in the `quack` skill.
+Quack client/server connection templates, the embedded CLI, and server authentication/authorization hooks. Overview in [../SKILL.md](../SKILL.md); server lifecycle commands in the `quack` skill. For the multi-tenant gateway variant served over Arrow Flight SQL, see Quack-on-Demand (QoD) in [../SKILL.md](../SKILL.md).
 
 ### Quack (DuckDB Remote)
 

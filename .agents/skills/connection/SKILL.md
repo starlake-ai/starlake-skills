@@ -136,10 +136,9 @@ Quack turns one DuckDB instance into a query server: pair it with DuckLake on th
 
 Client/server templates (local and PostgreSQL catalogs, multi-bucket SCOPE), the embedded `starlake quack` CLI, and server authentication/authorization hooks live in [reference/quack.md](reference/quack.md). See also the [quack](../quack/SKILL.md) skill for managing servers.
 
+### Quack-on-Demand (QoD)
 
-### Arrow Flight SQL (Remote)
-
-Starlake can be a client of any [Arrow Flight SQL](https://arrow.apache.org/docs/format/FlightSql.html) server: a quack-on-demand gateway, GizmoSQL, Dremio, Doris, or any engine fronted by Flight SQL. Primary scenario: a DuckDB/DuckLake lakehouse served over Flight SQL, with the same isolation model as Quack (server owns the catalog and object-storage credentials; the client only speaks SQL).
+Quack-on-Demand is a multi-tenant gateway that serves DuckDB/DuckLake pools over Arrow Flight SQL: the gateway owns the catalogs and object-storage credentials and routes each session to the right pool, with the same isolation model as a Quack server. A QoD connection is an [Arrow Flight SQL](#arrow-flight-sql-remote) client connection whose URL query parameters drive the routing — `tenant` selects the tenant, `pool` selects the server-side pool to attach to, and `superuser=true` requests superuser privileges on it:
 
 ```yaml
 connections:
@@ -150,12 +149,29 @@ connections:
       user: "{{FLIGHT_USER}}"
       password: "{{FLIGHT_PASSWORD}}"
       # dialect: duckdb   # optional, duckdb is the default
+```
+
+Every distinct query string gets its own client-side connection pool, so define one connection per tenant/pool combination. Transport details (driver download, `dialect`, remote loads) are in [Arrow Flight SQL (Remote)](#arrow-flight-sql-remote) below.
+
+### Arrow Flight SQL (Remote)
+
+Starlake can be a client of any [Arrow Flight SQL](https://arrow.apache.org/docs/format/FlightSql.html) server: a [Quack-on-Demand](#quack-on-demand-qod) gateway, GizmoSQL, Dremio, Doris, or any engine fronted by Flight SQL. Primary scenario: a DuckDB/DuckLake lakehouse served over Flight SQL, with the same isolation model as Quack (server owns the catalog and object-storage credentials; the client only speaks SQL).
+
+```yaml
+connections:
+  flight_sql:
+    type: "jdbc"
+    options:
+      url: "jdbc:arrow-flight-sql://localhost:31338?useEncryption=true&disableCertificateVerification=true"
+      user: "{{FLIGHT_USER}}"
+      password: "{{FLIGHT_PASSWORD}}"
+      # dialect: duckdb   # optional, duckdb is the default
       # driver: "..."     # optional, defaults to org.apache.arrow.driver.jdbc.ArrowFlightJdbcDriver
 ```
 
 Key points:
 
-- **URL passthrough**: everything after `host:port` goes to the Arrow driver untouched. `useEncryption` / `disableCertificateVerification` are TLS flags consumed by the driver; parameters like `tenant`, `pool`, `superuser` are forwarded to the server (quack-on-demand routing). Different query strings get distinct connection pools.
+- **URL passthrough**: everything after `host:port` goes to the Arrow driver untouched. `useEncryption` / `disableCertificateVerification` are TLS flags consumed by the driver; parameters the driver does not consume (like QoD's `tenant`, `pool`, `superuser`) are forwarded to the server. Different query strings get distinct connection pools.
 - **`dialect` option**: Flight SQL is a transport; `dialect` selects the engine profile (DDL, merge strategies, audit tables, quoting). Defaults to `duckdb`. `mariadb` normalizes to `mysql`, `databricks` to `spark`.
 - **Driver**: not bundled; `setup` downloads it when `ENABLE_FLIGHTSQL=true` (default), version pinned with `FLIGHT_SQL_JDBC_VERSION`.
 - **Fully remote client**: no client-side `ATTACH 'ducklake:...'`, no local DuckDB session setup (S3 secrets, home_directory); `preActions`/`postActions` still run as session SQL on the remote connection.
