@@ -1,6 +1,6 @@
 ---
 name: expectations
-description: Data quality expectations syntax, built-in macros, and validation patterns
+description: Define data quality checks and assertions on loaded or transformed data — SQL-based expectations (uniqueness, row counts, null checks) evaluated by `starlake load` and `starlake transform`, with warn-or-fail thresholds
 ---
 
 # Expectations Skill

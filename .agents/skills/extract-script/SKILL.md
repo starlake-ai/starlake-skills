@@ -1,6 +1,6 @@
 ---
 name: extract-script
-description: Generate extraction scripts from Mustache/SSP templates
+description: 'Generate custom extraction and DDL scripts (CREATE, ALTER, DROP) from Mustache/SSP templates with `starlake extract-script`, per database platform (BigQuery, Postgres, Synapse), with audit schema and incremental delta-column support'
 ---
 
 # Extract Script Skill

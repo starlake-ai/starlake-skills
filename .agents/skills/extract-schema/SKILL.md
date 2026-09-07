@@ -1,6 +1,6 @@
 ---
 name: extract-schema
-description: Extract database schemas into Starlake YAML configuration files
+description: 'Extract schema only from a JDBC database with `starlake extract-schema`: reverse-engineer tables, columns, and types from Postgres, MySQL, Oracle, DuckDB, etc. into Starlake YAML load configs (no data export)'
 ---
 
 # Extract Schema Skill

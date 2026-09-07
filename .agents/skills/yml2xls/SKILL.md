@@ -1,6 +1,6 @@
 ---
 name: yml2xls
-description: Convert Starlake YAML definitions to Excel spreadsheets
+description: 'Convert YAML to Excel with `starlake yml2xls`: export Starlake domain/table definitions to .xlsx spreadsheets for sharing data models with non-technical stakeholders or round-tripping back via xls2yml'
 ---
 
 # YML to XLS Skill

@@ -1,6 +1,6 @@
 ---
 name: compare
-description: Compare two versions of a Starlake project
+description: Diff two versions of a Starlake project with `starlake compare` — report schema changes, added/removed tables, and modified configurations between file paths, git commits, or git tags
 ---
 
 # Compare Skill

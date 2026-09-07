@@ -1,6 +1,6 @@
 ---
 name: metrics
-description: Compute statistical metrics on table data
+description: Compute statistics and profile table data with `starlake metrics` — min/max/mean/stddev for continuous columns, distinct counts and category frequencies for discrete ones, stored in the SL_METRICS audit table
 ---
 
 # Metrics Skill

@@ -1,6 +1,6 @@
 ---
 name: extract-data
-description: Extract data from database tables to CSV/Parquet files
+description: 'Extract data only (no schema) from JDBC database tables into CSV/Parquet files with `starlake extract-data`: full or incremental export, parallel partitioned extraction, and schema/table include-exclude filtering'
 ---
 
 # Extract Data Skill

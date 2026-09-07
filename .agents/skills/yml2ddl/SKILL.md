@@ -1,6 +1,6 @@
 ---
 name: yml2ddl
-description: Generate SQL DDL statements from Starlake YAML definitions
+description: 'Generate SQL DDL (CREATE/ALTER TABLE) from Starlake YAML table definitions with `starlake yml2ddl`: target BigQuery, Snowflake, Postgres, Redshift, Synapse, or DuckDB via type mappings, optionally applying directly to the database'
 ---
 
 # YML to DDL Skill

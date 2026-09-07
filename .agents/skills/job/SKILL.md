@@ -1,6 +1,6 @@
 ---
 name: job
-description: Run a job (alias for transform)
+description: Run a SQL or Python transformation task with `starlake job`, an alias for `starlake transform` — identical options and behavior for executing, compiling, or previewing transform tasks and their dependencies
 ---
 
 # Job Skill

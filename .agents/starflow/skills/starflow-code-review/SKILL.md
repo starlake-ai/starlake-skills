@@ -1,6 +1,6 @@
 ---
 name: starflow-code-review
-description: 'Adversarial parallel review of pipeline changes. Spawns Winston (architect), Amelia (engineer), and Quinn (data quality) as independent subagents, then triages findings. Use when the user says "review pipeline", "code review", or "review this data change".'
+description: 'Adversarial multi-persona review of data pipeline changes. Use when the user says "review pipeline", "code review", or "review this data change", or wants pipeline configs, transforms, and expectations checked before merging.'
 ---
 
 # Starflow Code Review

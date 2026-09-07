@@ -1,6 +1,6 @@
 ---
 name: settings
-description: Print project settings or test a database connection
+description: Print resolved project settings or test an existing connection with `starlake settings --test-connection <name>`. Use to debug configuration or check that a BigQuery, Snowflake, DuckDB, or PostgreSQL connection works; use connection to define one.
 ---
 
 # Settings Skill

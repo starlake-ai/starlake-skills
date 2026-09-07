@@ -1,6 +1,6 @@
 ---
 name: lineage
-description: Generate task dependency graphs (data lineage)
+description: Visualize data lineage with `starlake lineage` — a task dependency graph showing data flow and upstream/downstream dependencies between transform tasks and source tables, output as SVG, PNG, DOT, or JSON
 ---
 
 # Lineage Skill

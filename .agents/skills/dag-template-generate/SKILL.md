@@ -1,6 +1,6 @@
 ---
 name: dag-template-generate
-description: Generate a custom Jinja2 DAG template and its YAML DAG configuration from a natural-language pipeline description (Airflow, Dagster, Snowflake)
+description: Generate a custom Jinja2 DAG template and its YAML DAG configuration for `starlake dag-generate` from a natural-language pipeline description (Airflow, Dagster, Snowflake) — use when built-in templates need extra tasks or custom behavior
 ---
 
 # DAG Template Generate Skill

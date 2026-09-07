@@ -1,6 +1,6 @@
 ---
 name: index
-description: Index data in Elasticsearch (alias for esload)
+description: Index data in Elasticsearch with `starlake index`, an alias for `starlake esload` — same options for loading Parquet or JSON datasets into Elasticsearch indices with mappings, document IDs, and timestamp-based index names.
 ---
 
 # Index Skill

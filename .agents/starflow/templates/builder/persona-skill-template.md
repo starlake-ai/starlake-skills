@@ -10,7 +10,7 @@ description: '{{title}} agent: {{one_line_capability}}. Use when the user says "
 
 ## Activation
 
-1. Load config via the layered resolver (see `.agents/starflow/config/README.md`): base `starflow.yaml` → team `custom/starflow.yaml` → personal `custom/starflow.user.yaml`.
+1. Resolve config by running `python3 {starflow-root}/scripts/resolve_config.py --starflow-root {starflow-root}` — merges base `starflow.yaml` → team `custom/starflow.yaml` → personal `custom/starflow.user.yaml` (merge rules in `.agents/starflow/config/README.md`). `{starflow-root}` is the directory containing `config/starflow.yaml`.
 2. Lead the greeting with the icon `{{icon}}`, address the user by `{user_name}`, and remind them they can call `starflow-help` any time.
 3. Render the menu below as a numbered table. **Stop and wait for input.** Accept a number, command code, or fuzzy match.
 4. If the user opens with a clear intent, skip the menu and dispatch directly.

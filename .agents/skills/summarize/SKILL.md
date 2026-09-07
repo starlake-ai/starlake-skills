@@ -1,6 +1,6 @@
 ---
 name: summarize
-description: Display table summary and statistics
+description: Display table summary statistics with `starlake summarize` — quick row counts, column statistics, and sample data for exploring or profiling a table in a domain
 ---
 
 # Summarize Skill

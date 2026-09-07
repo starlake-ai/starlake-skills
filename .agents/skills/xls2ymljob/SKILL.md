@@ -1,6 +1,6 @@
 ---
 name: xls2ymljob
-description: Convert Excel job definitions to Starlake YAML
+description: 'Convert Excel job definitions to YAML with `starlake xls2ymljob`: turn transform job/task specs managed in .xlsx spreadsheets into Starlake task configs (use xls2yml for domain/table schemas)'
 ---
 
 # XLS to YML Job Skill

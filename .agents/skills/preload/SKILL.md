@@ -1,6 +1,6 @@
 ---
 name: preload
-description: Check for files available for loading in the landing/pending area
+description: Check whether files are ready for loading with `starlake preload` — counts stageable files in the incoming/landing area (imported), staged files in the pending area (pending), or tests an ack file (ack). Use in orchestration to gate stage/load steps.
 ---
 
 # PreLoad Skill

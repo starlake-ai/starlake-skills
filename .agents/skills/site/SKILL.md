@@ -1,6 +1,6 @@
 ---
 name: site
-description: Generate project documentation website
+description: Generate a documentation website for the project with `starlake site` — docs covering all domains, tables, attributes, transforms, and their relationships, output as Docusaurus MDX or JSON
 ---
 
 # Site Skill

@@ -1,6 +1,6 @@
 ---
 name: table-dependencies
-description: Generate table dependency graph based on foreign key relationships
+description: Generate a table dependency graph with `starlake table-dependencies` — an entity-relationship (ER) diagram of your data model built from the foreign key relationships declared in table YAML, output as SVG, PNG, or JSON
 ---
 
 # Table Dependencies Skill

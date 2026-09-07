@@ -1,6 +1,6 @@
 ---
 name: starflow-retrospective
-description: 'End-of-epic retrospective for a data pipeline batch. Pulls the previous retro and checks follow-through on action items, then captures wins/struggles/patterns and produces new action items with clear ownership. Use when the user says "run a retro", "epic retrospective", or "retro the {epic}".'
+description: 'End-of-epic retrospective for a data pipeline batch. Use when the user says "run a retro", "epic retrospective", or "retro the {epic}", or wants to close out an epic with lessons learned and action items.'
 ---
 
 # Starflow Retrospective
@@ -27,7 +27,7 @@ Data pipelines accumulate quiet debt: a partition strategy that "works for now",
 python3 {starflow-root}/scripts/resolve_config.py --starflow-root {starflow-root}
 ```
 
-Bind `user_name`, `communication_language`, `project_name`, `planning_artifacts`, `implementation_artifacts`, `date`, and the `agents` array.
+Bind `user_name`, `communication_language`, `project_name`, `planning_artifacts`, `implementation_artifacts`, `project_knowledge`, `date`, and the `agents` array.
 
 ### Step 2: Greet
 

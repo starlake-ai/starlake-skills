@@ -1,6 +1,6 @@
 ---
 name: stage
-description: Move files from the landing area to the pending area
+description: Move data files from the landing area to the pending area with `starlake stage`, decompressing archives and handling ACK files. Use as the first ingestion step before `starlake load` processes the staged files.
 ---
 
 # Stage Skill

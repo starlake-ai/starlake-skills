@@ -1,6 +1,6 @@
 ---
 name: extract-bq-schema
-description: Extract schemas directly from BigQuery datasets
+description: 'Extract table schemas from BigQuery datasets with `starlake extract-bq-schema`: reverse-engineer BigQuery tables into Starlake YAML via the native BigQuery API (not JDBC), for a whole GCP project, specific dataset.table pairs, or external datasets'
 ---
 
 # Extract BigQuery Schema Skill

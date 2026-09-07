@@ -1,6 +1,6 @@
 ---
 name: bootstrap
-description: Create a new Starlake project from a template
+description: Create a new Starlake project with `starlake bootstrap` — scaffold the standard metadata/load/transform directory structure and starter config from a template (quickstart, simple). Use when initializing or setting up a new project.
 ---
 
 # Bootstrap Skill

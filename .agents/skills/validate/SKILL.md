@@ -1,6 +1,6 @@
 ---
 name: validate
-description: Validate project configuration, YAML files, and connections
+description: Check project YAML and config validity with `starlake validate` — syntax, JSON Schema compliance, type/connectionRef/dagRef/foreign-key references, write-strategy consistency. Use to catch config errors before runtime, not to test live connections.
 ---
 
 # Validate Skill

@@ -1,6 +1,6 @@
 ---
 name: dag-generate
-description: Generate orchestration DAGs (Airflow/Dagster) from your Starlake project
+description: Generate orchestration DAGs with `starlake dag-generate` — render Airflow or Dagster Python DAG files from your project metadata and Jinja2 templates to schedule loads and transforms; regenerate after schema or schedule changes
 ---
 
 # DAG Generate Skill

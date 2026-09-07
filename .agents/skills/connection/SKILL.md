@@ -1,6 +1,6 @@
 ---
 name: connection
-description: Create or modify database connections in application.sl.yml
+description: Create or modify database connection definitions in `application.sl.yml` (BigQuery, Snowflake, DuckDB, DuckLake, PostgreSQL, Redshift, Kafka, Elasticsearch). Use to add or configure a connection; verify it with `starlake settings --test-connection`.
 ---
 
 # Connection Skill

@@ -1,6 +1,6 @@
 ---
 name: esload
-description: Load data into Elasticsearch
+description: Load or index data into Elasticsearch with `starlake esload` (alias `starlake index`) — push Parquet or JSON datasets into Elasticsearch indices with custom mappings, document IDs, and timestamp-based index names.
 ---
 
 # ESLoad Skill

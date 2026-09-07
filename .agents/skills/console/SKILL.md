@@ -1,6 +1,6 @@
 ---
 name: console
-description: Start the Starlake interactive REPL console
+description: Start the interactive REPL with `starlake console` — a shell/prompt session that runs Starlake commands without restarting the JVM each time, for fast iterative work on loads and transforms
 ---
 
 # Console Skill

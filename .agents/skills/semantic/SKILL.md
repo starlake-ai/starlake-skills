@@ -1,6 +1,6 @@
 ---
 name: semantic
-description: Author semantic model YAML in metadata/semantic for BI tools and AI agents - logical tables, dimensions, facts, metrics, relationships, and verified queries
+description: Author semantic model YAML in metadata/semantic for BI tools and AI agents — logical tables, dimensions, facts, metrics, relationships, and verified queries, exportable via `starlake semantic-export`
 ---
 
 # Semantic Model Skill
