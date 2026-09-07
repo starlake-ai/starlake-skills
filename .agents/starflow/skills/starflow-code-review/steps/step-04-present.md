@@ -10,6 +10,10 @@ report_file: '{implementation_artifacts}/review-{date}-{spec_basename}.md'
 - WARNINGs are listed concisely. SUGGESTIONs collapsed into a count + expandable list.
 - APPROVED items only mentioned in a summary line, not as a list.
 
+## Preconditions
+
+- Step 3 complete: `{findings_unified}` bound (deduplicated, classified).
+
 ## Instructions
 
 ### 1. Clean review shortcut

@@ -11,6 +11,10 @@ action_items: []
 - "Do better at X" is not an action item. "Add a partition-strategy review checklist to step-03 of `starflow-create-pipeline-spec` by epic-N+1" is.
 - Cap at 5 new items. If more are tempting, the team is over-committing: pick the top 5 and explicitly note the rest as deferred.
 
+## Preconditions
+
+- `stepsCompleted` includes `4` (patterns and root causes saved).
+
 ## Instructions
 
 ### 1. Carry-forwards become drafts
@@ -75,7 +79,7 @@ Capture each as:
 
 If more than 5 items survived, **HALT** and ask the user to pick the top 5. Note the deferred ones in the output file under a "## Deferred from this retro" section: they should be re-considered at next retro.
 
-### 5. Save
+## Save
 
 Update `{action_items}`. Append `5` to `stepsCompleted`. Save.
 

@@ -51,11 +51,11 @@ Scan `{implementation_artifacts}/pipeline-spec-*.md` for files whose frontmatter
 
 Every spec carries a `scale` frontmatter field set in step-01: `light`, `standard`, or `deep`.
 
-- **light**: single source, ≤ 3 load tables, ≤ 1 transform, single target environment, no strict SLA. Steps collapse optional depth, accept documented defaults without re-asking, and merge the step-05/step-06 checkpoints into one.
+- **light**: steps collapse optional depth, accept documented defaults without re-asking, and merge the step-05/step-06 checkpoints into one.
 - **standard** (default): the workflow exactly as written in the step files.
-- **deep**: multi-domain, multi-environment, strict SLA, or regulated data. Steps add rigor prompts (failure modes, backfill strategy, cost, SLA math).
+- **deep**: steps add rigor prompts (failure modes, backfill strategy, cost, SLA math).
 
-Step-01 classifies scale from heuristics and confirms it with the user. Each step file's `### Scale` block says what changes at each level; when a step has no such block, scale does not affect it. Standard behavior is always the baseline: light and deep are deltas.
+Step-01 classifies scale from heuristics (its signal table is the source of truth for the thresholds) and confirms it with the user. Each step file's `### Scale` block says what changes at each level; when a step has no such block, scale does not affect it. Standard behavior is always the baseline: light and deep are deltas.
 
 ## Unattended Mode
 
@@ -71,27 +71,14 @@ When active:
 
 ## Workflow Architecture
 
-This skill uses **step-file architecture** for disciplined execution:
-
-- **Just-In-Time Loading**: read only the current step file into context.
-- **Sequential Enforcement**: complete steps in order. No skipping.
-- **State Tracking**: persist progress in `stepsCompleted: [...]` in the spec frontmatter so the workflow is resumable across context windows.
-- **Append-Only Building**: each step adds to the spec: never silently rewrites prior steps.
-
-### Step Processing Rules
-
-1. **READ COMPLETELY**: read the entire step file before acting.
-2. **FOLLOW SEQUENCE**: execute sections in order.
-3. **WAIT FOR INPUT**: halt at every checkpoint marked `**HALT**`. Do not invent answers. (In unattended mode, confirmation checkpoints take their documented `Default:` instead: see Unattended Mode.)
-4. **PERSIST STATE**: at the end of each step, append the step number to `stepsCompleted` in the spec frontmatter and save the file before loading the next step.
+This skill uses **step-file architecture** for disciplined execution: read only the current step file into context (just-in-time loading), execute its sections in order, and each step appends to the spec — never silently rewrite prior steps' output.
 
 ### Critical Rules (NO EXCEPTIONS)
 
-- **NEVER** load multiple step files simultaneously.
-- **NEVER** skip steps or reorder them based on what feels efficient.
-- **ALWAYS** halt at checkpoints and wait for human input (sole exception: unattended mode auto-answers confirmation checkpoints per the Unattended Mode rules).
-- **ALWAYS** save the spec file with the updated `stepsCompleted` before moving on.
-- **NEVER** mark a step complete that hasn't actually finished: partial work stays in-progress.
+- **READ COMPLETELY**: read the entire step file before acting on it.
+- **NEVER** load more than one step file at a time, skip steps, or reorder them based on what feels efficient.
+- **ALWAYS** halt at checkpoints marked `**HALT**` and wait for human input; do not invent answers. (Sole exception: unattended mode auto-answers confirmation checkpoints per the Unattended Mode rules.)
+- **ALWAYS** end a step by appending its number to `stepsCompleted` in the spec frontmatter and saving the file before loading the next step — this is what makes the workflow resumable across context windows. Never mark a step complete that hasn't actually finished: partial work stays in-progress.
 
 ## First Step
 

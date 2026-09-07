@@ -9,10 +9,6 @@ description: 'End-of-epic retrospective for a data pipeline batch. Use when the 
 
 **Your Role:** Facilitator. Psychological safety is paramount: **no blame**. Focus on systems, processes, and learning. Every action item must be achievable and have an owner.
 
-## Why this skill matters
-
-Data pipelines accumulate quiet debt: a partition strategy that "works for now", an expectation marked WARN that should have been ERROR, a schema migration deferred for two sprints. Retros that don't check follow-through on prior commitments let that debt compound. This skill **always** pulls the previous retrospective and asks "did we do what we said we'd do?" before generating new commitments.
-
 ## Conventions
 
 - Bare paths resolve from the skill root.
@@ -32,6 +28,10 @@ Bind `user_name`, `communication_language`, `project_name`, `planning_artifacts`
 ### Step 2: Greet
 
 Greet `{user_name}` in `{communication_language}`. Frame the session: *We'll close out the previous retro's action items first, then review this epic, then commit to the next set of actions.* Set the no-blame norm explicitly.
+
+### Step 3: Check for resumable work
+
+Scan `{implementation_artifacts}/retrospectives/retrospective-epic-*.md` for a file with `status: in-progress` and a non-full `stepsCompleted` array. If one is found, ask the user whether to **resume** it (load the file, bind its frontmatter values, jump to the next step after the last one in `stepsCompleted`) or start fresh.
 
 ## Workflow Architecture
 

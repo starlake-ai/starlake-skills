@@ -9,6 +9,10 @@ findings_unified: []  # set in this step
 - Be precise. When uncertain between categories, prefer the more conservative classification (BLOCKER over WARNING, WARNING over SUGGESTION).
 - A finding from two reviewers is stronger evidence: note it in the merged source field.
 
+## Preconditions
+
+- Step 2 complete: `{findings_winston}`, `{findings_amelia}`, `{findings_quinn}` bound (light pass: the single reviewer's output in all three), `{failed_layers}` noted.
+
 ## Instructions
 
 ### 1. Normalize

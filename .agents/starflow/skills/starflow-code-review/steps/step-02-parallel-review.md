@@ -15,6 +15,10 @@ failed_layers: ''  # comma-separated list of reviewers that failed or returned e
 - All subagents see the same `{diff_output}` and (if set) `{spec_file}` content.
 - Subagents receive **no conversation context**: only the prompts below. Their world is the diff.
 
+## Preconditions
+
+- Step 1 complete: `{diff_output}` non-empty, `{review_mode}` and `{review_depth}` bound.
+
 ## Prepare shared payload
 
 Build a shared block to embed in each prompt:

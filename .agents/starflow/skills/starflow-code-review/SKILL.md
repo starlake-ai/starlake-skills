@@ -9,9 +9,9 @@ description: 'Adversarial multi-persona review of data pipeline changes. Use whe
 
 **Your Role:** Reviewer-of-record. You gather context, dispatch the three parallel reviews, deduplicate and triage findings, and present a single actionable report. No noise, no filler.
 
-## Why three reviewers (not five layers in series)
+## The three reviewers
 
-The previous version of this skill listed five sequential review layers in prose. That guarantees coverage but produces a single perspective doing five passes: the same biases apply each time. Three independent personas reviewing **in parallel** catches more, because each has a different prior:
+Three independent personas review **in parallel**, each with a different prior — independent perspectives catch more than one reviewer making multiple passes:
 
 - **Winston (Architect)** sees write strategies, partition design, schema evolution risk. Cares about "will this design hold up at 10× volume?"
 - **Amelia (Engineer)** sees SQL correctness, idempotence, performance, convention compliance. Cares about "will this run reliably and re-run safely?"
@@ -59,11 +59,11 @@ Step-file architecture (same rules as `starflow-create-pipeline-spec`):
 Step-01 sets `{review_depth}`:
 
 - **full** (default): three independent persona subagents in parallel.
-- **light**: for small diffs (fewer than ~200 changed lines across fewer than ~5 files), step-01 offers a single-reviewer pass covering all three lenses in one prompt. Faster and cheaper; the user must accept it explicitly (never silently downgrade). Triage and reporting are unchanged.
+- **light**: for small diffs (threshold defined in step-01), step-01 offers a single-reviewer pass covering all three lenses in one prompt. Faster and cheaper; the user must accept it explicitly (never silently downgrade). Triage and reporting are unchanged.
 
 ## Unattended Mode
 
-Off by default. Active when config `unattended: true` or the user asks for it in this run. Confirmation checkpoints take their documented `Default:` instead of halting; the light-review offer takes its default too (staying `full`). Information-gathering questions (what to review, spec path when nothing resolves in the cascade) still halt. BLOCKER findings are always presented in full at the end regardless of mode.
+Off by default. Active when config `unattended: true` or the user asks for it in this run. Same semantics as `starflow-create-pipeline-spec` § Unattended Mode: confirmation checkpoints take their documented `Default:` instead of halting (the light-review offer takes its default too, staying `full`); information-gathering questions (what to review, spec path when nothing resolves in the cascade) and `HALT (always)` checkpoints still halt. Skill-specific addition: BLOCKER findings are always presented in full at the end regardless of mode.
 
 ## First Step
 
