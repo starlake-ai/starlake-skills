@@ -18,8 +18,6 @@ starlake table-dependencies [options]
 - `--output <value>`: Output file path (default: console output)
 - `--all-attrs`: Include all attributes in the diagram (not just primary/foreign keys). Default: true
 - `--reload`: Reload YAML files from disk before computing
-- `--svg`: Generate SVG image
-- `--png`: Generate PNG image
 - `--json`: Generate JSON output
 - `--related`: Include only entities that have relationships to other entities
 - `--tables <value>`: Comma-separated list of specific tables to include
@@ -50,40 +48,30 @@ table:
 
 ## Examples
 
-### Generate Full ER Diagram as SVG
+### Generate Full ER Diagram as JSON
 
 ```bash
-starlake table-dependencies --svg --output tables.svg --all
+starlake table-dependencies --json --output tables.json --all
 ```
 
 ### Generate Diagram for Specific Tables
 
 ```bash
-starlake table-dependencies --tables starbake.orders,starbake.order_lines --svg --output orders.svg
+starlake table-dependencies --tables starbake.orders,starbake.order_lines --json --output orders.json
 ```
 
 ### Show Only Related Tables
 
 ```bash
-starlake table-dependencies --related --svg --output related.svg
+starlake table-dependencies --related --json --output related.json
 ```
 
-### Generate JSON Output
+### Render an Image
+
+Starflow outputs DOT and JSON only (the UI draws the diagrams from the JSON). To get an image, render the DOT output with GraphViz:
 
 ```bash
-starlake table-dependencies --json --output tables.json
-```
-
-### Show Only Primary/Foreign Keys
-
-```bash
-starlake table-dependencies --all-attrs false --svg --output keys_only.svg
-```
-
-### Generate PNG Image
-
-```bash
-starlake table-dependencies --png --output tables.png --all
+starlake table-dependencies --output table-dependencies.dot --all && dot -Tsvg table-dependencies.dot -o table-dependencies.svg
 ```
 
 ## Related Skills
