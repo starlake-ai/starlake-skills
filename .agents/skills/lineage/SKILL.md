@@ -5,7 +5,7 @@ description: Generate task dependency graphs (data lineage)
 
 # Lineage Skill
 
-Generates a visual graph of task dependencies (data lineage). Shows how transform tasks depend on each other and on source tables. Outputs to DOT, SVG, PNG, or JSON formats.
+Generates a visual graph of task dependencies (data lineage). Shows how transform tasks depend on each other and on source tables. Outputs to DOT or JSON.
 
 ## Usage
 
@@ -18,9 +18,7 @@ starlake lineage [options]
 - `--output <value>`: Output file path (default: console output)
 - `--task <value>`: Comma-separated list of tasks to compute dependencies for (default: all)
 - `--reload`: Reload YAML files from disk before computing lineage
-- `--viz`: Generate a DOT file (Graphviz format)
-- `--svg`: Generate SVG image
-- `--png`: Generate PNG image
+- `--viz`: Generate a DOT file
 - `--json`: Generate JSON output
 - `--print`: Print dependencies as text to console
 - `--objects <value>`: Comma-separated list of object types to display: `task`, `table`, `view`, `unknown`
@@ -53,22 +51,16 @@ The lineage graph shows:
 
 ## Examples
 
-### Generate Full Lineage as SVG
+### Generate Full Lineage as JSON
 
 ```bash
-starlake lineage --output lineage.svg --svg --all
+starlake lineage --json --output lineage.json --all
 ```
 
 ### Generate Lineage for Specific Tasks
 
 ```bash
-starlake lineage --task kpi.order_summary --svg --output order_lineage.svg
-```
-
-### Generate JSON Lineage
-
-```bash
-starlake lineage --json --output lineage.json --all
+starlake lineage --task kpi.order_summary --json --output order_lineage.json
 ```
 
 ### Print Lineage as Text
@@ -88,13 +80,15 @@ starlake lineage --viz --output lineage.dot --all --verbose
 Show only tasks and tables (exclude views):
 
 ```bash
-starlake lineage --objects task,table --svg --output lineage.svg --all
+starlake lineage --objects task,table --json --output lineage.json --all
 ```
 
-### Generate PNG Image
+### Render an Image
+
+Starflow outputs DOT and JSON only (the UI draws the diagrams from the JSON). To get an image, render the DOT output with GraphViz:
 
 ```bash
-starlake lineage --png --output lineage.png --all
+starlake lineage --viz --output lineage.dot --all && dot -Tsvg lineage.dot -o lineage.svg
 ```
 
 ## Related Skills
