@@ -168,7 +168,7 @@ Run [scripts/install.sh](scripts/install.sh) with `--uninstall` to remove all sy
 - **dag-template-generate**: Generate a custom Jinja2 DAG template + YAML DAG config from a pipeline description
 
 ### Utilities
-- **bq-info** / **compare** / **parquet2csv** / **site** / **summarize** / **test**
+- **bq-info** / **compare** / **impact** / **parquet2csv** / **site** / **summarize** / **test**
 
 ## Starflow Method (Optional)
 
