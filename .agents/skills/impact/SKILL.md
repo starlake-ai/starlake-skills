@@ -32,7 +32,8 @@ starlake impact [options]
 
 ### Rendering
 - `--env <name>`: env used to render the SQL variables
-- `--format <value>`: `text` (default), `json`, `markdown` or `html`
+- `--format <value>`: `text` (default), `json`, `markdown`, `html` or `plan` (what `transform --impacted` runs)
+- `starlake transform --impacted --base <ref>` runs the `run` entries of the plan.
 - `--output <file>`: write the report to this local file instead of stdout (recommended in CI)
 - `--template <file>`: Jinja template replacing the built-in HTML one; the values it receives are already HTML-escaped
 
