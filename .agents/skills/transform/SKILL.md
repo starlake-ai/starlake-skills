@@ -15,7 +15,7 @@ starlake transform [options]
 
 ## Options
 
-- `--name <value>`: Task name in the form `domain.task` (required unless `--tags` is used)
+- `--name <value>`: Task name in the form `domain.task` (required unless `--tags` or `--impacted` is used)
 - `--compile`: Return the final compiled SQL query without executing it
 - `--sync-apply`: Update YAML attributes to match the SQL query columns
 - `--sync-preview`: Preview YAML attribute changes that would match the SQL query
@@ -29,6 +29,8 @@ starlake transform [options]
 - `--pageSize <value>`: Number of records per page (for interactive mode)
 - `--pageNumber <value>`: Page number to display (for interactive mode)
 - `--recursive`: Execute all upstream dependencies recursively before this task
+- `--impacted`: Run the tasks that the changes since `--base` impact, found as `starlake impact` finds them, upstream tasks first. A task runs once, as scheduled: an incremental task only rewrites its current slice. Tasks reached only through a changed load table are not run: load the table again first
+- `--base <value>`: With `--impacted`: git ref of the old side. Its merge-base with HEAD is compared with the project as it is, uncommitted edits included
 - `--test`: Run in test mode without committing changes
 - `--accessToken <value>`: Access token for authentication (e.g. GCP)
 - `--options k1=v1,k2=v2`: Substitution arguments for the SQL template
@@ -149,6 +151,14 @@ Execute the task and all its upstream dependencies:
 
 ```bash
 starlake transform --name kpi.order_summary --recursive
+```
+
+### Run What a Change Impacts
+
+Run the tasks that `starlake impact` finds for the changes since a git ref, upstream first:
+
+```bash
+starlake transform --impacted --base origin/main
 ```
 
 ### Interactive Query (Preview Results)
