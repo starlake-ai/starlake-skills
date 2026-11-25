@@ -18,8 +18,6 @@ starlake acl-dependencies [options]
 - `--output <value>`: Output file path (default: console output)
 - `--grantees <value>`: Comma-separated list of users/groups to include (default: all)
 - `--reload`: Reload YAML files from disk before computing
-- `--svg`: Generate SVG image
-- `--png`: Generate PNG image
 - `--json`: Generate JSON output
 - `--tables <value>`: Comma-separated list of tables to include (default: all)
 - `--all`: Include all ACLs in the output
@@ -46,34 +44,30 @@ table:
 
 ## Examples
 
-### Generate Full ACL Graph as SVG
-
-```bash
-starlake acl-dependencies --svg --output acl.svg --all
-```
-
-### Filter by Specific Users
-
-```bash
-starlake acl-dependencies --grantees "user:analyst@domain.com,group:analytics_team" --svg --output acl.svg
-```
-
-### Filter by Specific Tables
-
-```bash
-starlake acl-dependencies --tables starbake.orders,starbake.customers --svg --output acl.svg
-```
-
-### Generate JSON Output
+### Generate Full ACL Graph as JSON
 
 ```bash
 starlake acl-dependencies --json --output acl.json --all
 ```
 
-### Generate PNG Image
+### Filter by Specific Users
 
 ```bash
-starlake acl-dependencies --png --output acl.png --all
+starlake acl-dependencies --grantees "user:analyst@domain.com,group:analytics_team" --json --output acl.json
+```
+
+### Filter by Specific Tables
+
+```bash
+starlake acl-dependencies --tables starbake.orders,starbake.customers --json --output acl.json
+```
+
+### Render an Image
+
+Starflow outputs DOT and JSON only (the UI draws the diagrams from the JSON). To get an image, render the DOT output with GraphViz:
+
+```bash
+starlake acl-dependencies --output acl-dependencies.dot --all && dot -Tsvg acl-dependencies.dot -o acl-dependencies.svg
 ```
 
 ## Related Skills
