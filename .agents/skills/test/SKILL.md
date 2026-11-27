@@ -18,20 +18,38 @@ starlake test [options]
 - `--load`: Test load tasks only
 - `--transform`: Test transform tasks only
 - `--domain <value>`: Test only this domain
-- `--table <value>`: Test only this table/task within the selected domain — **broken up to 1.6.0**, see warning below
+- `--table <value>`: Test only the table (load) or task (transform) folder with this exact name, in the selected domain or, without `--domain`, in every domain — **broken on 1.7.11 and earlier, every 1.8.x, 1.9.0 and 1.9.1**, see warning below
 - `--test <value>`: Run only the test cases with this name
 - `--site`: Generate test results as a website
 - `--outputDir <value>`: Output directory for test results
 - `--accessToken <value>`: Access token for authentication (e.g. GCP)
 - `--reportFormat <value>`: Report output format: `console`, `json`, or `html`
 
-> **Warning (up to Starlake 1.6.0):** `--table` is wired to the test-name filter
-> ([starlake#1676](https://github.com/starlake-ai/starlake/issues/1676)), so any
-> table-scoped run — `--domain X --table Y` or `--table domain.table` — silently
-> executes **0 tests and exits 0**, which reads as green in CI. Until the fix
-> ships, scope with `--domain` (which works) and check the report's test count.
-> `--test <name>` works, but filters by test-case name across **all** tables of
-> the selected domain(s).
+> **Warning — affected versions: 1.7.11 and earlier, every 1.8.x, 1.9.0 and
+> 1.9.1, and snapshot builds without the fix:** `--table` is wired to the
+> test-name filter
+> ([starlake#1676](https://github.com/starlake-ai/starlake/issues/1676)):
+> `--domain X --table Y` runs only the test cases named `Y`, usually none, so
+> it silently executes **0 tests and exits 0**, which reads as green in CI, and
+> `--domain X --table Y --test Z` runs every test named `Z` in **all** tables of
+> the domain (the last of `--table` and `--test` wins). On those versions, do
+> not pass `--table`: narrow the run with `--domain`, `--load`, `--transform`
+> and `--test`. As `--test` selects that test name in every table of the
+> domain, give test cases table-specific names (e.g. `orders_nominal`) when one
+> table must run alone, then check in `junit.xml` that `tests` is above 0 and
+> that the `testcase` names (`<domain>.<table>.<test>`) are the ones you meant.
+>
+> **Fixed in 1.7.12 on the 1.7 line, and in the first 1.9 release after
+> 1.9.1** (no 1.8.x release carries the fix:
+> [starlake#2022](https://github.com/starlake-ai/starlake/pull/2022),
+> [starlake#2034](https://github.com/starlake-ai/starlake/pull/2034)): `--table`
+> takes the exact name of the table or task folder, so `--table starbake.orders`
+> matches no folder and fails (write `--domain starbake --table orders`), and an
+> explicit `--domain`, `--table` or `--test` selection that yields no test
+> result fails with exit code 1 (`No test matches ...`). To tell which
+> behaviour a build has, whatever its version label,
+> `starlake test --domain <a domain> --table no_such_folder; echo $?` prints 1
+> on a fixed build and 0 on an affected one.
 
 ## How tests execute
 
@@ -46,11 +64,28 @@ starlake test [options]
   and the column **names** must match (case-insensitive) — keep the column
   order aligned with the target too, since the row comparison itself is
   positional. Null values are spelled `null` in the CSV. On mismatch the
-  differences are dumped next to the report; beware, the two filenames are
-  **inverted** up to 1.6.0
-  ([starlake#1677](https://github.com/starlake-ai/starlake/issues/1677)):
-  `missing<Name>.csv` holds the rows produced but not expected, and
-  `not_expected<Name>.csv` the rows expected but not produced.
+  differences are dumped in the test's report folder (by default
+  `test-reports/<load|transform>/<domain>/<table or task>/<test>/`):
+  `missing<Name>.csv` holds the rows expected but not produced, and
+  `not_expected<Name>.csv` the rows produced but not expected, `<Name>` being
+  the suffix of the expected file (`missing.csv` for `_expected.csv`,
+  `missingDeterministic.csv` for `_expectedDeterministic.csv`). When the column
+  sets differ, both files hold a one-line notice instead of rows and the record
+  counts read 0: fix the columns first. Beware: on the affected versions
+  (1.7.11 and earlier, every 1.8.x, 1.9.0 and 1.9.1) the two files hold each
+  other's rows, and so do the `Missing records` and `Not expected records`
+  counts of the JUnit failure message and the Missing Records and Unexpected
+  Records panels of the `--site` pages; the column counts are right on every
+  version ([starlake#1677](https://github.com/starlake-ai/starlake/issues/1677)).
+- JUnit counts one test case per oracle checked (each `_expected*` file and
+  each declared expectation), plus one per test whose task fails to run, not
+  one per test folder. A test folder with neither a usable `_expected*` file
+  nor a declared expectation adds none, although the console prints
+  `Test <domain>.<table>.<test> succeeded`; so does a folder whose table or
+  task is no longer declared (`Table / Task <domain>.<name> not found`).
+  Compare `tests` with the number you expect, not only with 0. On fixed
+  versions, a selection that reaches only such folders fails with
+  `No test matches`.
 - `SL_ENV` is honored. If your connection sets a jinja-driven
   `_transpileDialect` (e.g. transpiling BigQuery SQL for local DuckDB runs),
   use a dedicated test env (e.g. `env.TEST.sl.yml` forcing the DuckDB dialect):
@@ -165,8 +200,17 @@ starlake test --domain starbake
 starlake test --domain starbake --test test1
 ```
 
-(Scoping to a single table with `--table` silently runs nothing up to 1.6.0 —
-see the warning in [Options](#options).)
+### Run the Test Cases of One Table
+
+```bash
+starlake test --domain starbake --table orders
+starlake test --domain starbake --table orders --test test1
+```
+
+(Needs 1.7.12 or later on the 1.7 line, or a 1.9 release after 1.9.1. On the
+affected versions, every 1.8.x included, the first command runs only the test
+cases named `orders`, usually none, and the second runs every test named
+`test1` in the domain: see the warning in [Options](#options).)
 
 ### Generate Test Results Website
 
@@ -174,13 +218,41 @@ see the warning in [Options](#options).)
 starlake test --site --outputDir /tmp/test-results
 ```
 
-`junit.xml` is written on **every** run (default report folder
-`test-reports/`); `--site` additionally produces the browsable `index.html`.
-Caveats: `starlake test` always exits 0 — even with failing tests — so CI must
-gate on junit.xml's `tests` **and** `failures` counts, never on the exit code;
-and the site's task-coverage figure under-reports when several tasks target
-the same table
-([starlake#1670](https://github.com/starlake-ai/starlake/issues/1670)).
+`junit.xml` is written at the end of every run that completes, with or
+without `--site` (default report folder `test-reports/`, or `--outputDir`);
+`--site` additionally produces the browsable `index.html`. Caveats:
+
+- A failing test never changes the exit code: `starlake test` exits 0 when
+  tests fail, on every version. It also exits 0 with 0 tests when no
+  `--domain`, `--table` or `--test` is given (`--load` and `--transform` are
+  not selections) and, on the affected versions, when its selection matches no
+  test. On fixed versions, an explicit selection that yields no test result
+  exits 1, after writing `junit.xml` with `tests="0"`.
+- A run that aborts (for instance on a mock CSV that DuckDB cannot load) exits
+  1 without rewriting `junit.xml`: delete the report folder before each run, so
+  that a previous report is never read as this run's verdict.
+- CI therefore gates on three signals: a non-zero exit code, `tests="0"`, and
+  `failures` above 0 in `junit.xml`. It never relies on the exit code alone,
+  and never masks it with `|| true`.
+- The site's task-coverage figure under-reports when several tasks target the
+  same table ([starlake#1670](https://github.com/starlake-ai/starlake/issues/1670)).
+
+## Upgrading to a fixed release
+
+- A `--domain`, `--table` or `--test` selection that yields no test result now
+  exits 1, where it passed with 0 tests: a script that runs
+  `starlake test --domain <d>` for every domain, or `--load` and `--transform`
+  separately per domain, fails on a domain without tests of that kind. Run
+  `starlake test` once instead, or loop over the folders under
+  `metadata/tests/load` (with `--load`) and `metadata/tests/transform` (with
+  `--transform`). Each run rewrites `junit.xml` and empties the `load` and
+  `transform` folders it writes to in its report folder, so a loop that keeps the default
+  report folder ends with the last run's results only: give each run its own
+  `--outputDir`.
+- `--table <domain>.<table>` now fails: pass `--domain <domain> --table <table>`.
+- `missing<Name>.csv` and `not_expected<Name>.csv`, the JUnit record counts and
+  the record panels of the `--site` pages are swapped back: update any script
+  that read one file for the other.
 
 ## Related Skills
 
