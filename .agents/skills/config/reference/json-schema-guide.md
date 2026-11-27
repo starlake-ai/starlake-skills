@@ -293,7 +293,7 @@ How data is written to the target.
 | `UPSERT_BY_KEY_AND_TIMESTAMP` | Key + timestamp merge | `key`, `timestamp` |
 | `DELETE_THEN_INSERT` | Clear then insert | - |
 | `OVERWRITE_BY_PARTITION` | Partition-level replace | - |
-| `SCD2` | Slowly Changing Dimension Type 2 | `key`, `timestamp`, `startTs`, `endTs` |
+| `SCD2` | Slowly Changing Dimension Type 2 | `key`, `timestamp` or `checkColumns`, `startTs`, `endTs` |
 
 **Properties:**
 
@@ -305,6 +305,7 @@ How data is written to the target.
 | `on` | enum | `TARGET` or `SOURCE_AND_TARGET` |
 | `startTs` | string | SCD2 validity start timestamp |
 | `endTs` | string | SCD2 validity end timestamp |
+| `checkColumns` | array | columns that SCD2 compares to detect a new version, instead of timestamp (exclusive with it; not with on: SOURCE_AND_TARGET). ["*"] compares every column except the key and the validity columns. A null on one side only counts as a change. |
 
 **Examples:**
 

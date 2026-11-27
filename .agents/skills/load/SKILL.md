@@ -140,7 +140,7 @@ table:
 | `UPSERT_BY_KEY_AND_TIMESTAMP` | Upsert with timestamp check | `key`, `timestamp`, `on: TARGET` | CDC, incremental |
 | `OVERWRITE_BY_PARTITION` | Replace specific partitions | Requires `sink.partition` | Partitioned fact tables |
 | `DELETE_THEN_INSERT` | Delete matching keys, then insert | `key` | Transactional updates |
-| `SCD2` | Slowly Changing Dimension Type 2 | `key`, `timestamp`, `startTs`, `endTs`, `on: BOTH` | Historical tracking |
+| `SCD2` | Slowly Changing Dimension Type 2 | `key`, `timestamp` or `checkColumns`, `startTs`, `endTs`, `on: BOTH` | Historical tracking |
 | `ADAPTATIVE` | Runtime strategy selection | `types: { strategy: 'condition' }` | Dynamic routing |
 
 #### APPEND Strategy
@@ -224,6 +224,8 @@ writeStrategy:
 ```
 
 Use for: Historical tracking of dimension changes, audit trails.
+
+`checkColumns`: columns that SCD2 compares to detect a new version, instead of timestamp (exclusive with it; not with on: SOURCE_AND_TARGET). ["*"] compares every column except the key and the validity columns. A null on one side only counts as a change.
 
 **SCD2 Behavior:**
 
